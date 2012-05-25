@@ -28,22 +28,22 @@ namespace WpfApplication1
 
         private void PageUpButton_Click(object sender, RoutedEventArgs e)
         {
-            app.documentInfo.CurrentPage--;
+            app.sessionInfo.documentInfo.CurrentPage--;
         }
 
         private void PageDownButton_Click(object sender, RoutedEventArgs e)
         {
-            app.documentInfo.CurrentPage++;
+            app.sessionInfo.documentInfo.CurrentPage++;
         }
 
         private void PagesPerSheetChecked(object sender, RoutedEventArgs e)
         {
-            app.documentInfo.PagesPerSheet = Int32.Parse((sender as RadioButton).Content.ToString());
+            app.sessionInfo.printOptions.PagesPerSheet = Int32.Parse((sender as RadioButton).Content.ToString());
         }
 
         private void DuplexChecked(object sender, RoutedEventArgs e)
         {
-            app.documentInfo.Duplex = sender.Equals(RadioTwoSide);
+            app.sessionInfo.printOptions.Duplex = sender.Equals(RadioTwoSide);
         }
 
         public void LoadDocument()

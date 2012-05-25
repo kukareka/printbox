@@ -28,7 +28,7 @@ namespace WpfApplication1
         
         public MainWindow()
         {
-            DataContext = app.documentInfo;
+            DataContext = app.sessionInfo;
             InitializeComponent();            
             openFileDlg.Filter = "Documents|*.doc;*.docx;*.rtf";
         }

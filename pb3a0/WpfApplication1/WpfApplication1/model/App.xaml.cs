@@ -18,7 +18,8 @@ namespace WpfApplication1
     public partial class App : Application
     {
         private static string XPS_PRINTER_NAME = "Microsoft XPS Document Writer";
-        public DocumentInfo documentInfo = new DocumentInfo();
+        public SessionInfo sessionInfo = new SessionInfo();
+        public GuiManager guiManager = new GuiManager();
         public XpsDocument xpsDocument = null;
         object missing = Type.Missing;
 
@@ -54,7 +55,7 @@ namespace WpfApplication1
 
                         try
                         {
-                            this.documentInfo.PageCount = wordDoc.ComputeStatistics(Word.WdStatistic.wdStatisticPages);
+                            this.sessionInfo.documentInfo.PageCount = wordDoc.ComputeStatistics(Word.WdStatistic.wdStatisticPages);
                             object background = false, range = Word.WdPrintOutRange.wdPrintAllDocument, outputFileName = dstDocPath,
                                 copies = 1, pageType = Word.WdPrintOutPages.wdPrintAllPages, printToFile = true, collate = false,
                                 manualDuplexPrint = false, printZoomColumn = 1, printZoomRow = 1;
@@ -101,19 +102,19 @@ namespace WpfApplication1
 
         public bool LoadDocument(string documentPath)
         {
-            documentInfo.documentPath = documentPath;
+            sessionInfo.documentInfo.documentPath = documentPath;
 
             if (xpsDocument != null)
             {
                 xpsDocument.Close();
             }
 
-            documentInfo.xpsDocumentPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToBinary().ToString("x") + ".xps");
+            sessionInfo.documentInfo.xpsDocumentPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToBinary().ToString("x") + ".xps");
 
-            if (ConvertToXPS(this.documentInfo.documentPath, this.documentInfo.xpsDocumentPath))
+            if (ConvertToXPS(sessionInfo.documentInfo.documentPath, sessionInfo.documentInfo.xpsDocumentPath))
             {
-                xpsDocument = new XpsDocument(this.documentInfo.xpsDocumentPath, System.IO.FileAccess.Read);
-                documentInfo.CurrentPage = 0;
+                xpsDocument = new XpsDocument(sessionInfo.documentInfo.xpsDocumentPath, System.IO.FileAccess.Read);
+                sessionInfo.documentInfo.CurrentPage = 0;
                 (MainWindow as MainWindow).LoadDocument();
                 return true;
             }

@@ -39,7 +39,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Content="Копій" VerticalAlignment="Center" />
-                                <pb:UpDown Grid.Column="1" CurrentValue="{Binding Copies, Mode=TwoWay}" Min="1" Max="150"/>
+                                <pb:UpDown Grid.Column="1" CurrentValue="{Binding printOptions.Copies, Mode=TwoWay}" Min="1" Max="150"/>
                             </Grid>
                         </GroupBox>
 
@@ -54,10 +54,10 @@
                                     <RowDefinition Height="1*" />
                                 </Grid.RowDefinitions>
                                 <Label Content="Від" VerticalAlignment="Center" />
-                                <pb:UpDown Grid.Column="1" CurrentValue="{Binding PrintRangeFrom, Mode=TwoWay}" Min="1" Max="{Binding PrintRangeTo, Mode=OneWay}"/>
+                                <pb:UpDown Grid.Column="1" CurrentValue="{Binding printOptions.PrintRangeFrom, Mode=TwoWay}" Min="1" Max="{Binding printOptions.PrintRangeTo, Mode=OneWay}"/>
                                 <Label Grid.Row="1" Content="До" VerticalAlignment="Center" />
-                                <pb:UpDown Grid.Row="1" Grid.Column="1" CurrentValue="{Binding PrintRangeTo, Mode=TwoWay}" Min="{Binding PrintRangeFrom, Mode=OneWay}" 
-                                   Max="{Binding PageCount, Mode=OneWay}"/>
+                                <pb:UpDown Grid.Row="1" Grid.Column="1" CurrentValue="{Binding printOptions.PrintRangeTo, Mode=TwoWay}" Min="{Binding printOptions.PrintRangeFrom, Mode=OneWay}" 
+                                   Max="{Binding documentInfo.PageCount, Mode=OneWay}"/>
                             </Grid>
                         </GroupBox>
                         <GroupBox Header="Масштаб">
@@ -97,7 +97,7 @@
                         </GroupBox>
                         <TextBlock HorizontalAlignment="Center" Margin="15">
                             <TextBlock.Text>
-                                <Binding Path="PrintCost" Converter="{StaticResource moneyConverter}" StringFormat="Вартість: {0} грн."/>
+                                <Binding Path="printOptions.PrintCost" Converter="{StaticResource moneyConverter}" StringFormat="Вартість: {0} грн."/>
                             </TextBlock.Text>
                         </TextBlock>
                     </StackPanel>
@@ -107,14 +107,14 @@
                 <TextBlock>
                     <TextBlock.Text>
                             <MultiBinding StringFormat="Page {0} of {1}">
-                            <Binding Path="CurrentPage" Converter="{StaticResource incrementalConverter}" ConverterParameter="1"/>
-                            <Binding Path="PageCount"/>
+                            <Binding Path="documentInfo.CurrentPage" Converter="{StaticResource incrementalConverter}" ConverterParameter="1"/>
+                            <Binding Path="documentInfo.PageCount"/>
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
             </StackPanel>
             <Viewbox Margin="10">
-                <DocumentPageView x:Name="pageView" PageNumber="{Binding CurrentPage}"></DocumentPageView>
+                <DocumentPageView x:Name="pageView" PageNumber="{Binding documentInfo.CurrentPage}"></DocumentPageView>
             </Viewbox>
         </DockPanel>
 

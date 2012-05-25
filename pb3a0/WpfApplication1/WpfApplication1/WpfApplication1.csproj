@@ -55,58 +55,62 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="model\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AuthPanel.xaml.cs">
+    <Compile Include="presenters\PrintOptions.cs" />
+    <Compile Include="presenters\SessionInfo.cs" />
+    <Compile Include="view\AuthPanel.xaml.cs">
       <DependentUpon>AuthPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DocumentTab.xaml.cs">
+    <Compile Include="view\DocumentTab.xaml.cs">
       <DependentUpon>DocumentTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FolderTab.xaml.cs">
+    <Compile Include="view\FolderTab.xaml.cs">
       <DependentUpon>FolderTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FolderTabPresenter.cs" />
-    <Compile Include="Keypad.xaml.cs">
+    <Compile Include="view\GuiManager.cs" />
+    <Compile Include="view\Keypad.xaml.cs">
       <DependentUpon>Keypad.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MoneyConverter.cs" />
-    <Compile Include="UpDown.xaml.cs">
+    <Compile Include="view\converters\MoneyConverter.cs" />
+    <Compile Include="view\UpDown.xaml.cs">
       <DependentUpon>UpDown.xaml</DependentUpon>
     </Compile>
-    <Page Include="AuthPanel.xaml">
+    <Compile Include="view\validators\IValidator.cs" />
+    <Compile Include="view\validators\LengthValidator.cs" />
+    <Page Include="view\AuthPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DocumentTab.xaml">
+    <Page Include="view\DocumentTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FolderTab.xaml">
+    <Page Include="view\FolderTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Keypad.xaml">
+    <Page Include="view\Keypad.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="view\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="model\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DocumentInfo.cs" />
-    <Compile Include="IncrementalConverter.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="presenters\DocumentInfo.cs" />
+    <Compile Include="view\converters\IncrementalConverter.cs" />
+    <Compile Include="view\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="UpDown.xaml">
+    <Page Include="view\UpDown.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -4,68 +4,44 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Diagnostics;
-using System.Collections.ObjectModel;
-using System.IO;
 
 namespace WpfApplication1
 {
-    public class DocumentInfo : DependencyObject
-    {       
-        public static DependencyProperty PageCountProperty =
-            DependencyProperty.Register("PageCount", typeof(int), typeof(DocumentInfo),
-            new PropertyMetadata(1, new PropertyChangedCallback(PageCountChanged) + new PropertyChangedCallback(PrintOptionsChanged)));
-        
-        public static DependencyProperty CurrentPageProperty =
-            DependencyProperty.Register("CurrentPage", typeof(int), typeof(DocumentInfo));
-
+    public class PrintOptions : DependencyObject
+    {
         public static DependencyProperty CopiesProperty =
-            DependencyProperty.Register("Copies", typeof(int), typeof(DocumentInfo),
+            DependencyProperty.Register("Copies", typeof(int), typeof(PrintOptions),
             new PropertyMetadata(1, new PropertyChangedCallback(PrintOptionsChanged)));
 
         public static DependencyProperty PrintRangeFromProperty =
-            DependencyProperty.Register("PrintRangeFrom", typeof(int), typeof(DocumentInfo),
+            DependencyProperty.Register("PrintRangeFrom", typeof(int), typeof(PrintOptions),
             new PropertyMetadata(1, new PropertyChangedCallback(PrintOptionsChanged)));
 
         public static DependencyProperty PrintRangeToProperty =
-            DependencyProperty.Register("PrintRangeTo", typeof(int), typeof(DocumentInfo),
+            DependencyProperty.Register("PrintRangeTo", typeof(int), typeof(PrintOptions),
             new PropertyMetadata(1, new PropertyChangedCallback(PrintOptionsChanged)));
 
         public static DependencyProperty PagesPerSheetProperty =
-            DependencyProperty.Register("PagesPerSheet", typeof(int), typeof(DocumentInfo),
+            DependencyProperty.Register("PagesPerSheet", typeof(int), typeof(PrintOptions),
             new PropertyMetadata(1, new PropertyChangedCallback(PrintOptionsChanged)));
 
         public static DependencyProperty DuplexProperty =
-            DependencyProperty.Register("Duplex", typeof(bool), typeof(DocumentInfo),
+            DependencyProperty.Register("Duplex", typeof(bool), typeof(PrintOptions),
             new PropertyMetadata(new PropertyChangedCallback(PrintOptionsChanged)));
 
         public static DependencyProperty PageCostProperty =
-            DependencyProperty.Register("PageCost", typeof(int), typeof(DocumentInfo),
+            DependencyProperty.Register("PageCost", typeof(int), typeof(PrintOptions),
             new PropertyMetadata(40, new PropertyChangedCallback(PrintOptionsChanged)));
 
         public static DependencyProperty PagesToPrintProperty =
-            DependencyProperty.Register("PagesToPrint", typeof(int), typeof(DocumentInfo));
+            DependencyProperty.Register("PagesToPrint", typeof(int), typeof(PrintOptions));
 
         public static DependencyProperty SheetsToPrintProperty =
-            DependencyProperty.Register("SheetsToPrint", typeof(int), typeof(DocumentInfo));
+            DependencyProperty.Register("SheetsToPrint", typeof(int), typeof(PrintOptions));
 
 
         public static DependencyProperty PrintCostProperty =
-            DependencyProperty.Register("PrintCost", typeof(int), typeof(DocumentInfo));
-
-        public string documentPath;
-        public string xpsDocumentPath;
-
-        public int PageCount
-        {
-            get { return (int)GetValue(PageCountProperty); }
-            set { SetValue(PageCountProperty, value); }
-        }
-
-        public int CurrentPage
-        {
-            get { return (int)GetValue(CurrentPageProperty); }
-            set { if ((value >= 0) && (value < PageCount)) SetValue(CurrentPageProperty, value); }
-        }
+            DependencyProperty.Register("PrintCost", typeof(int), typeof(PrintOptions));
 
         public int Copies
         {
@@ -121,15 +97,9 @@ namespace WpfApplication1
             set { SetValue(PrintCostProperty, value); }
         }
 
-        public static void PageCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            DocumentInfo o = d as DocumentInfo;
-            o.PrintRangeTo = o.PageCount;
-        }
-
         public static void PrintOptionsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as DocumentInfo).UpdatePrintCost();
+            (d as PrintOptions).UpdatePrintCost();
         }
 
         public void UpdatePrintCost()

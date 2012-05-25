@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using System.Collections.ObjectModel;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 using System.IO;
 
 namespace WpfApplication1
@@ -56,7 +63,7 @@ namespace WpfApplication1
             {
                 string currentFolder = value;
                 SetValue(CurrentFolderProperty, value);
-                folderContents.Clear();                
+                folderContents.Clear();
                 try
                 {
                     DirectoryInfo dir = new DirectoryInfo(currentFolder);
@@ -65,7 +72,7 @@ namespace WpfApplication1
                         try
                         {
                             if (0 == (subdir.Attributes & (FileAttributes.Hidden | FileAttributes.System)))
-                                folderContents.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FOLDER, 
+                                folderContents.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FOLDER,
                                     subdir.Name, subdir.FullName, (ImageSource)App.Current.FindResource("folderIcon")));
                         }
                         catch (Exception)
@@ -75,7 +82,7 @@ namespace WpfApplication1
                     foreach (FileInfo fi in dir.GetFiles())
                     {
                         if ((App.Current as App).IsSupportedExtension(fi.Extension))
-                            folderContents.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FILE, 
+                            folderContents.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FILE,
                                 fi.Name, fi.FullName, (ImageSource)App.Current.FindResource("documentIcon")));
                     }
                 }
@@ -83,6 +90,32 @@ namespace WpfApplication1
                 {
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// Interaction logic for FolderTab.xaml
+    /// </summary>
+    public partial class FolderTab : UserControl
+    {
+        FolderTabPresenter presenter;
+
+        public FolderTab()
+        {
+            InitializeComponent();
+            this.DataContext = presenter = new FolderTabPresenter(@"c:\");
+        }
+
+        private void Item_Click(object sender, MouseButtonEventArgs e)
+        {
+            FolderTabPresenter.FolderTabFileInfo f = (sender as FrameworkElement).DataContext as FolderTabPresenter.FolderTabFileInfo;
+            if (f.FileType == FolderTabPresenter.FolderTabFileInfo.TYPE_FOLDER) presenter.CurrentFolder = f.Path;
+            else if (f.FileType == FolderTabPresenter.FolderTabFileInfo.TYPE_FILE) (App.Current as App).LoadDocument(f.Path);
+        }
+
+        private void Button_Up(object sender, RoutedEventArgs e)
+        {
+            presenter.CurrentFolder = new DirectoryInfo(presenter.CurrentFolder).Parent.FullName;
         }
     }
 }

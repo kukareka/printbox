@@ -2,13 +2,13 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:pb="clr-namespace:WpfApplication1"
-             StartupUri="MainWindow.xaml">
+             StartupUri="../view/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <pb:IncrementalConverter x:Key="incrementalConverter" />
             <pb:MoneyConverter x:Key="moneyConverter" />
-            <BitmapImage x:Key="folderIcon" UriSource="res/folder.png"/>
-            <BitmapImage x:Key="documentIcon" UriSource="res/document.png"/>
+            <BitmapImage x:Key="folderIcon" UriSource="../res/folder.png"/>
+            <BitmapImage x:Key="documentIcon" UriSource="../res/document.png"/>
         </ResourceDictionary>         
     </Application.Resources>
 </Application>
