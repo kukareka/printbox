@@ -5,10 +5,7 @@
              StartupUri="../view/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
-            <pb:IncrementalConverter x:Key="incrementalConverter" />
-            <pb:MoneyConverter x:Key="moneyConverter" />
-            <BitmapImage x:Key="folderIcon" UriSource="../res/folder.png"/>
-            <BitmapImage x:Key="documentIcon" UriSource="../res/document.png"/>
+
         </ResourceDictionary>         
     </Application.Resources>
 </Application>

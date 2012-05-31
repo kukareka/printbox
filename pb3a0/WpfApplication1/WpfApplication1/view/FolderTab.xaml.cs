@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.ComponentModel;
 
 namespace WpfApplication1
 {
@@ -64,6 +65,8 @@ namespace WpfApplication1
                 string currentFolder = value;
                 SetValue(CurrentFolderProperty, value);
                 folderContents.Clear();
+                if (DesignerProperties.GetIsInDesignMode(this)) return;
+                
                 try
                 {
                     DirectoryInfo dir = new DirectoryInfo(currentFolder);

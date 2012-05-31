@@ -6,6 +6,12 @@
              xmlns:pb="clr-namespace:WpfApplication1"
              mc:Ignorable="d" 
              d:DesignHeight="425" d:DesignWidth="525">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <pb:IncrementalConverter x:Key="incrementalConverter" />
+            <pb:MoneyConverter x:Key="moneyConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>

@@ -65,5 +65,10 @@ namespace WpfApplication1
             documentTab.LoadDocument();
             ShowTab(documentTab);
         }
+
+        private void PromptButton_Click(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).guiManager.Prompt("message", "comment", new PhoneNumberConverter(), 10);
+        }
     }
 }

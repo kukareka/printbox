@@ -3,11 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:pb="clr-namespace:WpfApplication1"
         Title="MainWindow" Height="425" Width="525">
-    <StackPanel>
-        <Button Click="LoadButton_Click" DockPanel.Dock="Top">Load</Button>
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <Button Click="LoadButton_Click">Load</Button>
+            <Button Click="PromptButton_Click">Prompt</Button>
+        </StackPanel>
         <Grid x:Name="tabs">
             <pb:FolderTab x:Name="folderTab"/>
             <pb:DocumentTab x:Name="documentTab" Visibility="Hidden"/>
         </Grid>
-    </StackPanel>
+    </DockPanel>
 </Window>

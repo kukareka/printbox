@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace WpfApplication1
 {
@@ -38,11 +39,13 @@ namespace WpfApplication1
 
         private void PagesPerSheetChecked(object sender, RoutedEventArgs e)
         {
+            if (DesignerProperties.GetIsInDesignMode(this)) return;
             app.sessionInfo.printOptions.PagesPerSheet = Int32.Parse((sender as RadioButton).Content.ToString());
         }
 
         private void DuplexChecked(object sender, RoutedEventArgs e)
         {
+            if (DesignerProperties.GetIsInDesignMode(this)) return;
             app.sessionInfo.printOptions.Duplex = sender.Equals(RadioTwoSide);
         }
 
