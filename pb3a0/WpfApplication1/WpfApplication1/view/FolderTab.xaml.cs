@@ -19,6 +19,7 @@ namespace WpfApplication1
 {
     public class FolderTabPresenter : DependencyObject
     {
+        FolderTab tab;
         public class FolderTabFileInfo
         {
             public const int TYPE_FOLDER = 1;
@@ -37,12 +38,11 @@ namespace WpfApplication1
             public ImageSource Icon { get; set; }
         }
 
-        public FolderTabPresenter(string folder)
+        public FolderTabPresenter(FolderTab tab, string folder)
         {
+            this.tab = tab;
             this.CurrentFolder = folder;
         }
-
-
 
         public static DependencyProperty CurrentFolderProperty =
             DependencyProperty.Register("CurrentFolder", typeof(string), typeof(FolderTabPresenter));
@@ -76,7 +76,7 @@ namespace WpfApplication1
                         {
                             if (0 == (subdir.Attributes & (FileAttributes.Hidden | FileAttributes.System)))
                                 folderContents.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FOLDER,
-                                    subdir.Name, subdir.FullName, (ImageSource)App.Current.FindResource("folderIcon")));
+                                    subdir.Name, subdir.FullName, (ImageSource)tab.FindResource("folderIcon")));
                         }
                         catch (Exception)
                         {
@@ -86,7 +86,7 @@ namespace WpfApplication1
                     {
                         if ((App.Current as App).IsSupportedExtension(fi.Extension))
                             folderContents.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FILE,
-                                fi.Name, fi.FullName, (ImageSource)App.Current.FindResource("documentIcon")));
+                                fi.Name, fi.FullName, (ImageSource)tab.FindResource("documentIcon")));
                     }
                 }
                 catch (Exception)
@@ -106,7 +106,7 @@ namespace WpfApplication1
         public FolderTab()
         {
             InitializeComponent();
-            this.DataContext = presenter = new FolderTabPresenter(@"c:\");
+            this.DataContext = presenter = new FolderTabPresenter(this, @"c:\");
         }
 
         private void Item_Click(object sender, MouseButtonEventArgs e)

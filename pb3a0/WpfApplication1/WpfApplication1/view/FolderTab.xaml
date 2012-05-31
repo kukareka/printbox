@@ -7,8 +7,8 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
-            <BitmapImage x:Key="folderIcon" UriSource="../res/folder.png"/>
-            <BitmapImage x:Key="documentIcon" UriSource="../res/document.png"/>
+            <BitmapImage x:Key="folderIcon" UriSource="../res/img/folder.png"/>
+            <BitmapImage x:Key="documentIcon" UriSource="../res/img/document.png"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel>

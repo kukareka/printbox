@@ -68,7 +68,22 @@ namespace WpfApplication1
 
         private void PromptButton_Click(object sender, RoutedEventArgs e)
         {
-            (App.Current as App).guiManager.Prompt("message", "comment", new PhoneNumberConverter(), 10);
+            (App.Current as App).guiManager.Prompt("message", (FlowDocument)FindResource("commentEnterPhone"), new PhoneNumberConverter(), 10);
+        }
+
+        private void PasswordButton_Click(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).guiManager.Prompt("message", (FlowDocument)FindResource("commentEnterPassword"), new PasswordConverter(), 10);
+        }
+
+        private void AlertButton_Click(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).guiManager.Alert("message");
+        }
+
+        private void LoadingButton_Click(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).guiManager.Loading(true);
         }
     }
 }

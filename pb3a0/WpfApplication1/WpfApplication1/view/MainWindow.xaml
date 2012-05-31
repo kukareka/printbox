@@ -3,10 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:pb="clr-namespace:WpfApplication1"
         Title="MainWindow" Height="425" Width="525">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../res/instructions.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <Button Click="LoadButton_Click">Load</Button>
             <Button Click="PromptButton_Click">Prompt</Button>
+            <Button Click="PasswordButton_Click">Password</Button>
+            <Button Click="AlertButton_Click">Alert</Button>
+            <Button Click="LoadingButton_Click">Loading</Button>
         </StackPanel>
         <Grid x:Name="tabs">
             <pb:FolderTab x:Name="folderTab"/>

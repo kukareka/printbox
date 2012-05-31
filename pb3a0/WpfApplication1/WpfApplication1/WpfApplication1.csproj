@@ -61,9 +61,13 @@
     </ApplicationDefinition>
     <Compile Include="presenters\PrintOptions.cs" />
     <Compile Include="presenters\SessionInfo.cs" />
+    <Compile Include="view\AlertDialog.xaml.cs">
+      <DependentUpon>AlertDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="view\AuthPanel.xaml.cs">
       <DependentUpon>AuthPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="view\converters\PasswordConverter.cs" />
     <Compile Include="view\converters\PhoneNumberConverter.cs" />
     <Compile Include="view\DocumentTab.xaml.cs">
       <DependentUpon>DocumentTab.xaml</DependentUpon>
@@ -76,12 +80,23 @@
       <DependentUpon>Keypad.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\converters\MoneyConverter.cs" />
+    <Compile Include="view\LoadingDialog.xaml.cs">
+      <DependentUpon>LoadingDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="view\PromptDialog.xaml.cs">
       <DependentUpon>PromptDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\UpDown.xaml.cs">
       <DependentUpon>UpDown.xaml</DependentUpon>
     </Compile>
+    <Resource Include="res\instructions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Page Include="view\AlertDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="view\AuthPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -95,6 +110,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="view\Keypad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\LoadingDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -146,11 +165,12 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="res\document.png" />
+    <Resource Include="res\img\document.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="res\folder.png" />
+    <Resource Include="res\img\folder.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

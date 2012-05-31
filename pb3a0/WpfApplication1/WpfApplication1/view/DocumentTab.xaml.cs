@@ -56,8 +56,7 @@ namespace WpfApplication1
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            DocPanel.IsEnabled = false;
-            authPanel.Visibility = Visibility.Visible;
+            
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Markup;
 
 namespace WpfApplication1
 {
@@ -18,10 +19,11 @@ namespace WpfApplication1
     /// </summary>
     public partial class PromptDialog : Window
     {
-        public PromptDialog(string message, string comment, IValueConverter converter, int length)
+        public PromptDialog(string message, FlowDocument comment, IValueConverter converter, int length)
         {
             InitializeComponent();
             Message.Text = message;
+            Comment.Document = comment;
             this.Keypad.DesiredTextLength = length;
             Binding valueBinding = new Binding();
             valueBinding.Source = this.Keypad;
