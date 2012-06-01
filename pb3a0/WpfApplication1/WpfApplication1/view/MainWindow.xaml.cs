@@ -24,13 +24,12 @@ namespace WpfApplication1
     public partial class MainWindow : Window
     {
         App app = Application.Current as App;
-        OpenFileDialog openFileDlg = new OpenFileDialog();
         
         public MainWindow()
         {
             DataContext = app.sessionInfo;
-            InitializeComponent();            
-            openFileDlg.Filter = "Documents|*.doc;*.docx;*.rtf";
+            InitializeComponent();   
+            (new ControlDialog()).Show();
         }
         
         public void ShowTab(UserControl tab)
@@ -48,8 +47,9 @@ namespace WpfApplication1
             if (tts != null) tts.Visibility = Visibility.Visible;
         }
 
-        public void ShowFolders()
+        public void ShowFolder(string folder = null)
         {
+            if (folder != null) (folderTab.DataContext as FolderTab.Presenter).CurrentFolder = folder;
             ShowTab(folderTab);        
         }
 
@@ -60,32 +60,7 @@ namespace WpfApplication1
         }
 
         #region Event handlers
-        private void LoadButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (openFileDlg.ShowDialog() == false) return;
 
-            app.LoadDocument(openFileDlg.FileName);
-        }
-
-        private void PromptButton_Click(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).guiManager.Prompt("message", (FlowDocument)FindResource("commentEnterPhone"), new PhoneNumberConverter(), 10);
-        }
-
-        private void PasswordButton_Click(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).guiManager.Prompt("message", (FlowDocument)FindResource("commentEnterPassword"), new PasswordConverter(), 10);
-        }
-
-        private void AlertButton_Click(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).guiManager.Alert("message");
-        }
-
-        private void LoadingButton_Click(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).guiManager.Loading(true);
-        }
         #endregion
     }
 }

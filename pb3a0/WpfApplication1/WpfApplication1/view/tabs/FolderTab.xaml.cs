@@ -22,20 +22,20 @@ namespace WpfApplication1
     /// </summary>
     public partial class FolderTab : UserControl
     {
-        FolderTabPresenter presenter;
+        Presenter presenter;
 
         public FolderTab()
         {
             InitializeComponent();
-            this.DataContext = presenter = new FolderTabPresenter(this, @"c:\");
+            this.DataContext = presenter = new Presenter(this, @"c:\");
         }
 
         #region Event handlers
         private void Item_Click(object sender, MouseButtonEventArgs e)
         {
-            FolderTabPresenter.FolderTabFileInfo f = (sender as FrameworkElement).DataContext as FolderTabPresenter.FolderTabFileInfo;
-            if (f.FileType == FolderTabPresenter.FolderTabFileInfo.TYPE_FOLDER) presenter.CurrentFolder = f.Path;
-            else if (f.FileType == FolderTabPresenter.FolderTabFileInfo.TYPE_FILE) (App.Current as App).LoadDocument(f.Path);
+            Presenter.FolderTabFileInfo f = (sender as FrameworkElement).DataContext as Presenter.FolderTabFileInfo;
+            if (f.FileType == Presenter.FolderTabFileInfo.TYPE_FOLDER) presenter.CurrentFolder = f.Path;
+            else if (f.FileType == Presenter.FolderTabFileInfo.TYPE_FILE) (App.Current as App).LoadDocument(f.Path);
         }
 
         private void Button_Up(object sender, RoutedEventArgs e)
@@ -43,91 +43,104 @@ namespace WpfApplication1
             presenter.CurrentFolder = new DirectoryInfo(presenter.CurrentFolder).Parent.FullName;
         }
         #endregion
-    }
 
-    #region FolderTabPresenter
-    public class FolderTabPresenter : DependencyObject
-    {
-        FolderTab tab;
-        public class FolderTabFileInfo
+        #region FolderTabPresenter
+        public class Presenter : DependencyObject
         {
-            public const int TYPE_FOLDER = 1;
-            public const int TYPE_FILE = 2;
-
-            public FolderTabFileInfo(int type, string name, string path, ImageSource icon)
+            FolderTab tab;
+            public class FolderTabFileInfo
             {
-                this.FileType = type;
-                Name = name;
-                Path = path;
-                Icon = icon;
-            }
-            public int FileType { get; set; }
-            public string Name { get; set; }
-            public string Path { get; set; }
-            public ImageSource Icon { get; set; }
-        }
+                public const int TYPE_FOLDER = 1;
+                public const int TYPE_FILE = 2;
 
-        public FolderTabPresenter(FolderTab tab, string folder)
-        {
-            this.tab = tab;
-            this.CurrentFolder = folder;
-        }
-
-        #region Properties
-        #region CurrentFolder
-        public static DependencyProperty CurrentFolderProperty =
-            DependencyProperty.Register("CurrentFolder", typeof(string), typeof(FolderTabPresenter));
-
-        public string CurrentFolder
-        {
-            get { return (string)GetValue(CurrentFolderProperty); }
-            set
-            {
-                string currentFolder = value;
-                SetValue(CurrentFolderProperty, value);
-                folderContents.Clear();
-                if (DesignerProperties.GetIsInDesignMode(this)) return;
-
-                try
+                public FolderTabFileInfo(int type, string name, string path, ImageSource icon)
                 {
-                    DirectoryInfo dir = new DirectoryInfo(currentFolder);
-                    foreach (DirectoryInfo subdir in dir.GetDirectories())
+                    this.FileType = type;
+                    Name = name;
+                    Path = path;
+                    Icon = icon;
+                }
+                public int FileType { get; set; }
+                public string Name { get; set; }
+                public string Path { get; set; }
+                public ImageSource Icon { get; set; }
+            }
+
+            public Presenter(FolderTab tab, string folder)
+            {
+                this.tab = tab;
+                this.CurrentFolder = folder;
+            }
+
+            #region Properties
+            #region CurrentFolder
+            public static DependencyProperty CurrentFolderProperty =
+                DependencyProperty.Register("CurrentFolder", typeof(string), typeof(Presenter));
+
+            public string CurrentFolder
+            {
+                get { return (string)GetValue(CurrentFolderProperty); }
+                set
+                {
+                    string currentFolder = value;
+                    SetValue(CurrentFolderProperty, value);
+                    folderContents.Clear();
+                    if (DesignerProperties.GetIsInDesignMode(this)) return;
+
+                    try
                     {
-                        try
+                        DirectoryInfo dir = new DirectoryInfo(currentFolder);
+                        HasParent = dir.Parent != null;
+                        foreach (DirectoryInfo subdir in dir.GetDirectories())
                         {
-                            if (0 == (subdir.Attributes & (FileAttributes.Hidden | FileAttributes.System)))
-                                folderContents.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FOLDER,
-                                    subdir.Name, subdir.FullName, (ImageSource)tab.FindResource("folderIcon")));
+                            try
+                            {
+                                if (0 == (subdir.Attributes & (FileAttributes.Hidden | FileAttributes.System)))
+                                    folderContents.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FOLDER,
+                                        subdir.Name, subdir.FullName, (ImageSource)tab.FindResource("folderIcon")));
+                            }
+                            catch (Exception)
+                            {
+                            }
                         }
-                        catch (Exception)
+                        foreach (FileInfo fi in dir.GetFiles())
                         {
+                            if ((App.Current as App).IsSupportedExtension(fi.Extension))
+                                folderContents.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FILE,
+                                    fi.Name, fi.FullName, (ImageSource)tab.FindResource("documentIcon")));
                         }
                     }
-                    foreach (FileInfo fi in dir.GetFiles())
+                    catch (Exception)
                     {
-                        if ((App.Current as App).IsSupportedExtension(fi.Extension))
-                            folderContents.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FILE,
-                                fi.Name, fi.FullName, (ImageSource)tab.FindResource("documentIcon")));
                     }
                 }
-                catch (Exception)
+            }
+            #endregion
+
+            #region HasParent
+            public static DependencyProperty HasParentProperty =
+                DependencyProperty.Register("HasParent", typeof(bool), typeof(Presenter));
+
+            public bool HasParent
+            {
+                get { return (bool)GetValue(HasParentProperty); }
+                set { SetValue(HasParentProperty, value); }
+            }
+            #endregion
+
+            #region FolderContents
+            public ObservableCollection<FolderTabFileInfo> folderContents = new ObservableCollection<FolderTabFileInfo>();
+
+            public ObservableCollection<FolderTabFileInfo> FolderContents
+            {
+                get
                 {
+                    return folderContents;
                 }
             }
+            #endregion
+            #endregion
         }
         #endregion
-
-        #region FolderContents
-        public ObservableCollection<FolderTabFileInfo> folderContents = new ObservableCollection<FolderTabFileInfo>();
-
-        public ObservableCollection<FolderTabFileInfo> FolderContents
-        {
-            get
-            {
-                return folderContents;
-            }
-        }
-        #endregion
-    }
-    #endregion
+    }    
 }

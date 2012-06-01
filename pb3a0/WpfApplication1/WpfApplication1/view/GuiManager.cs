@@ -12,18 +12,13 @@ namespace WpfApplication1
     {
         LoadingDialog loadingDialog = null;
 
-        public void Prompt(string message, FlowDocument comment, IValueConverter converter, int length)
+        public string Prompt(string message, FlowDocument comment, IValueConverter converter, int length)
         {
             PromptDialog pd = new PromptDialog(message, comment, converter, length);
             pd.Owner = App.Current.MainWindow;
-            if ((bool)pd.ShowDialog())
-            {
-                Debug.WriteLine("OK");
-            }
-            else
-            {
-                Debug.WriteLine("Cancel");
-            }
+            string r = (bool) pd.ShowDialog() ? pd.Keypad.Text : null;
+            pd.Close();
+            return r;
         }
 
         public void Alert(string message)
@@ -31,6 +26,7 @@ namespace WpfApplication1
             AlertDialog ad = new AlertDialog(message);
             ad.Owner = App.Current.MainWindow;
             ad.ShowDialog();
+            ad.Close();
         }
 
         public void Loading(bool loading)

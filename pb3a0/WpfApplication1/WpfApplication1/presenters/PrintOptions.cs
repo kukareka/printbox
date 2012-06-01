@@ -106,7 +106,7 @@ namespace WpfApplication1
 
         #region PrintCost
         public static DependencyProperty PrintCostProperty =
-            DependencyProperty.Register("PrintCost", typeof(int), typeof(PrintOptions));
+            DependencyProperty.Register("PrintCost", typeof(int), typeof(PrintOptions), new PropertyMetadata(SessionInfo.CanPrintChanges));
 
         public int PrintCost
         {

@@ -20,7 +20,7 @@
             </Grid.ColumnDefinitions>
                 <Label Target="{Binding ElementName=TextBox_CurrentFolder}">Адреса</Label>
                 <TextBox Grid.Column="1" x:Name="TextBox_CurrentFolder" Text="{Binding Path=CurrentFolder, Mode=OneWay}"/>                        
-                <Button Grid.Column="2" Content="Вверх" Click="Button_Up" />
+                <Button Grid.Column="2" Content="Вверх" IsEnabled="{Binding HasParent}" Click="Button_Up" />
         </Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding Path=FolderContents}">

@@ -4,6 +4,7 @@ using System.Windows.Xps.Packaging;
 using Word = Microsoft.Office.Interop.Word;
 using System.IO;
 using System.Diagnostics;
+using System.Windows.Documents;
 
 namespace WpfApplication1
 {
@@ -111,6 +112,40 @@ namespace WpfApplication1
                 return true;
             }
             else return false;
+        }
+
+        public void OpenFolder(string folder)
+        {
+            (MainWindow as MainWindow).ShowFolder(folder);
+        }
+
+        public void AuthAndPrint()
+        {
+            if (Auth()) Print();
+        }
+
+        public bool Auth()
+        {
+            if (null != (sessionInfo.userInfo.Phone = guiManager.Prompt("Телефон", (FlowDocument)FindResource("commentEnterPhone"), new PhoneNumberConverter(), 10)))
+            {
+                if (null != (sessionInfo.userInfo.Password = guiManager.Prompt("Пароль", (FlowDocument)FindResource("commentEnterPassword"), new PasswordConverter(), 8)))
+                {
+                    MoneyDialog d = new MoneyDialog();
+                    d.Owner = MainWindow;
+                    if ((bool)d.ShowDialog())
+                    {
+                        Print();
+                    }
+                    d.Close();
+                }
+            }
+            return false;
+        }
+
+        public void Print()
+        {
+            if (!sessionInfo.CanPrint) return;
+            
         }
     }
 }

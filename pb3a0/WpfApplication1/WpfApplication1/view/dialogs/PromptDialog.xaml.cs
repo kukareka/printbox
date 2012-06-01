@@ -19,6 +19,8 @@ namespace WpfApplication1
     /// </summary>
     public partial class PromptDialog : Window
     {
+        App app = App.Current as App;
+
         public PromptDialog(string message, FlowDocument comment, IValueConverter converter, int length)
         {
             InitializeComponent();
@@ -41,6 +43,11 @@ namespace WpfApplication1
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Comment.Document = new FlowDocument();
         }
     }
 }

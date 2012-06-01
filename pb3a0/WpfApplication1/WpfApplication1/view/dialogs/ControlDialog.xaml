@@ -1,0 +1,16 @@
+﻿<Window x:Class="WpfApplication1.ControlDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ControlDialog" Height="234" Width="476">
+    
+    <Grid>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="30" VerticalAlignment="Top">
+            <Button Click="LoadButton_Click">Load</Button>
+            <Button Click="PromptButton_Click">Prompt</Button>
+            <Button Click="PasswordButton_Click">Password</Button>
+            <Button Click="AlertButton_Click">Alert</Button>
+            <ToggleButton Click="LoadingButton_Click">Loading</ToggleButton>
+            <Button Click="OpenFolderButton_Click">Open C:</Button>
+        </StackPanel>
+    </Grid>
+</Window>
