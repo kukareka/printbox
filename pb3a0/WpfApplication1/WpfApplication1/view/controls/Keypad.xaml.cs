@@ -19,10 +19,12 @@ namespace WpfApplication1
     /// </summary>
     public partial class Keypad : UserControl
     {
+        #region Constructors
         public Keypad()
         {
             InitializeComponent();
         }
+        #endregion
 
         #region Events
 
@@ -61,8 +63,7 @@ namespace WpfApplication1
         #endregion
 
         #endregion
-
-
+        
         #region Properties
 
         #region Text
@@ -100,8 +101,7 @@ namespace WpfApplication1
         #endregion
 
         #endregion
-
-
+        
         #region Event handlers
 
         private void DigitButton_Click(object sender, RoutedEventArgs e)

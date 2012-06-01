@@ -16,7 +16,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <pb:AuthPanel x:Name="authPanel"/>
         <DockPanel x:Name="DocPanel">
             <Grid DockPanel.Dock="Right">
                 <Grid.ColumnDefinitions>

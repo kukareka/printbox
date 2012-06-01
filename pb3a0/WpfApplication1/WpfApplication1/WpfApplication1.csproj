@@ -61,59 +61,52 @@
     </ApplicationDefinition>
     <Compile Include="presenters\PrintOptions.cs" />
     <Compile Include="presenters\SessionInfo.cs" />
-    <Compile Include="view\AlertDialog.xaml.cs">
+    <Compile Include="view\dialogs\AlertDialog.xaml.cs">
       <DependentUpon>AlertDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="view\AuthPanel.xaml.cs">
-      <DependentUpon>AuthPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\converters\PasswordConverter.cs" />
     <Compile Include="view\converters\PhoneNumberConverter.cs" />
-    <Compile Include="view\DocumentTab.xaml.cs">
+    <Compile Include="view\tabs\DocumentTab.xaml.cs">
       <DependentUpon>DocumentTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="view\FolderTab.xaml.cs">
+    <Compile Include="view\tabs\FolderTab.xaml.cs">
       <DependentUpon>FolderTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\GuiManager.cs" />
-    <Compile Include="view\Keypad.xaml.cs">
+    <Compile Include="view\controls\Keypad.xaml.cs">
       <DependentUpon>Keypad.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\converters\MoneyConverter.cs" />
-    <Compile Include="view\LoadingDialog.xaml.cs">
+    <Compile Include="view\dialogs\LoadingDialog.xaml.cs">
       <DependentUpon>LoadingDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="view\PromptDialog.xaml.cs">
+    <Compile Include="view\dialogs\PromptDialog.xaml.cs">
       <DependentUpon>PromptDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="view\UpDown.xaml.cs">
+    <Compile Include="view\controls\UpDown.xaml.cs">
       <DependentUpon>UpDown.xaml</DependentUpon>
     </Compile>
     <Resource Include="res\instructions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
-    <Page Include="view\AlertDialog.xaml">
+    <Page Include="view\dialogs\AlertDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="view\AuthPanel.xaml">
+    <Page Include="view\tabs\DocumentTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="view\DocumentTab.xaml">
+    <Page Include="view\tabs\FolderTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="view\FolderTab.xaml">
+    <Page Include="view\controls\Keypad.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="view\Keypad.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="view\LoadingDialog.xaml">
+    <Page Include="view\dialogs\LoadingDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -131,11 +124,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="view\PromptDialog.xaml">
+    <Page Include="view\dialogs\PromptDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="view\UpDown.xaml">
+    <Page Include="view\controls\UpDown.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

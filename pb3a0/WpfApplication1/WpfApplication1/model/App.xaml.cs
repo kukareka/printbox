@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Windows;
 using System.Windows.Xps.Packaging;
-using Microsoft.Win32;
 using Word = Microsoft.Office.Interop.Word;
 using System.IO;
 using System.Diagnostics;
@@ -20,8 +15,6 @@ namespace WpfApplication1
         private static string XPS_PRINTER_NAME = "Microsoft XPS Document Writer";
         public SessionInfo sessionInfo = new SessionInfo();
         public GuiManager guiManager = new GuiManager();
-        public XpsDocument xpsDocument = null;
-        object missing = Type.Missing;
 
         string[] supportedExtensions = new string[] { ".doc", ".docx", ".rtf" };
 
@@ -38,6 +31,7 @@ namespace WpfApplication1
             {
                 try
                 {
+                    object missing = Type.Missing;
                     Word.Application wordApp = new Word.Application();
 
                     try
@@ -97,23 +91,21 @@ namespace WpfApplication1
 
             return result;
         }
-
-
-
+        
         public bool LoadDocument(string documentPath)
         {
             sessionInfo.documentInfo.documentPath = documentPath;
 
-            if (xpsDocument != null)
+            if (sessionInfo.documentInfo.xpsDocument != null)
             {
-                xpsDocument.Close();
+                sessionInfo.documentInfo.xpsDocument.Close();
             }
 
             sessionInfo.documentInfo.xpsDocumentPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToBinary().ToString("x") + ".xps");
 
             if (ConvertToXPS(sessionInfo.documentInfo.documentPath, sessionInfo.documentInfo.xpsDocumentPath))
             {
-                xpsDocument = new XpsDocument(sessionInfo.documentInfo.xpsDocumentPath, System.IO.FileAccess.Read);
+                sessionInfo.documentInfo.xpsDocument = new XpsDocument(sessionInfo.documentInfo.xpsDocumentPath, System.IO.FileAccess.Read);
                 sessionInfo.documentInfo.CurrentPage = 0;
                 (MainWindow as MainWindow).LoadDocument();
                 return true;

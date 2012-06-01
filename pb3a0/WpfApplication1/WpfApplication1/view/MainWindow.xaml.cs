@@ -32,14 +32,7 @@ namespace WpfApplication1
             InitializeComponent();            
             openFileDlg.Filter = "Documents|*.doc;*.docx;*.rtf";
         }
-
-        private void LoadButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (openFileDlg.ShowDialog() == false) return;
-
-            app.LoadDocument(openFileDlg.FileName);
-        }
-
+        
         public void ShowTab(UserControl tab)
         {
             UserControl tts = null;
@@ -66,6 +59,14 @@ namespace WpfApplication1
             ShowTab(documentTab);
         }
 
+        #region Event handlers
+        private void LoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (openFileDlg.ShowDialog() == false) return;
+
+            app.LoadDocument(openFileDlg.FileName);
+        }
+
         private void PromptButton_Click(object sender, RoutedEventArgs e)
         {
             (App.Current as App).guiManager.Prompt("message", (FlowDocument)FindResource("commentEnterPhone"), new PhoneNumberConverter(), 10);
@@ -85,5 +86,6 @@ namespace WpfApplication1
         {
             (App.Current as App).guiManager.Loading(true);
         }
+        #endregion
     }
 }

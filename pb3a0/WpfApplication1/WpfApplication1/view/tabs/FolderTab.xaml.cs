@@ -17,6 +17,35 @@ using System.ComponentModel;
 
 namespace WpfApplication1
 {
+    /// <summary>
+    /// Interaction logic for FolderTab.xaml
+    /// </summary>
+    public partial class FolderTab : UserControl
+    {
+        FolderTabPresenter presenter;
+
+        public FolderTab()
+        {
+            InitializeComponent();
+            this.DataContext = presenter = new FolderTabPresenter(this, @"c:\");
+        }
+
+        #region Event handlers
+        private void Item_Click(object sender, MouseButtonEventArgs e)
+        {
+            FolderTabPresenter.FolderTabFileInfo f = (sender as FrameworkElement).DataContext as FolderTabPresenter.FolderTabFileInfo;
+            if (f.FileType == FolderTabPresenter.FolderTabFileInfo.TYPE_FOLDER) presenter.CurrentFolder = f.Path;
+            else if (f.FileType == FolderTabPresenter.FolderTabFileInfo.TYPE_FILE) (App.Current as App).LoadDocument(f.Path);
+        }
+
+        private void Button_Up(object sender, RoutedEventArgs e)
+        {
+            presenter.CurrentFolder = new DirectoryInfo(presenter.CurrentFolder).Parent.FullName;
+        }
+        #endregion
+    }
+
+    #region FolderTabPresenter
     public class FolderTabPresenter : DependencyObject
     {
         FolderTab tab;
@@ -44,18 +73,10 @@ namespace WpfApplication1
             this.CurrentFolder = folder;
         }
 
+        #region Properties
+        #region CurrentFolder
         public static DependencyProperty CurrentFolderProperty =
             DependencyProperty.Register("CurrentFolder", typeof(string), typeof(FolderTabPresenter));
-
-        public ObservableCollection<FolderTabFileInfo> folderContents = new ObservableCollection<FolderTabFileInfo>();
-
-        public ObservableCollection<FolderTabFileInfo> FolderContents
-        {
-            get
-            {
-                return folderContents;
-            }
-        }
 
         public string CurrentFolder
         {
@@ -66,7 +87,7 @@ namespace WpfApplication1
                 SetValue(CurrentFolderProperty, value);
                 folderContents.Clear();
                 if (DesignerProperties.GetIsInDesignMode(this)) return;
-                
+
                 try
                 {
                     DirectoryInfo dir = new DirectoryInfo(currentFolder);
@@ -94,31 +115,19 @@ namespace WpfApplication1
                 }
             }
         }
+        #endregion
+
+        #region FolderContents
+        public ObservableCollection<FolderTabFileInfo> folderContents = new ObservableCollection<FolderTabFileInfo>();
+
+        public ObservableCollection<FolderTabFileInfo> FolderContents
+        {
+            get
+            {
+                return folderContents;
+            }
+        }
+        #endregion
     }
-
-    /// <summary>
-    /// Interaction logic for FolderTab.xaml
-    /// </summary>
-    public partial class FolderTab : UserControl
-    {
-        FolderTabPresenter presenter;
-
-        public FolderTab()
-        {
-            InitializeComponent();
-            this.DataContext = presenter = new FolderTabPresenter(this, @"c:\");
-        }
-
-        private void Item_Click(object sender, MouseButtonEventArgs e)
-        {
-            FolderTabPresenter.FolderTabFileInfo f = (sender as FrameworkElement).DataContext as FolderTabPresenter.FolderTabFileInfo;
-            if (f.FileType == FolderTabPresenter.FolderTabFileInfo.TYPE_FOLDER) presenter.CurrentFolder = f.Path;
-            else if (f.FileType == FolderTabPresenter.FolderTabFileInfo.TYPE_FILE) (App.Current as App).LoadDocument(f.Path);
-        }
-
-        private void Button_Up(object sender, RoutedEventArgs e)
-        {
-            presenter.CurrentFolder = new DirectoryInfo(presenter.CurrentFolder).Parent.FullName;
-        }
-    }
+    #endregion
 }

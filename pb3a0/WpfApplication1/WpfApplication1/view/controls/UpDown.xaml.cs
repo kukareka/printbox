@@ -19,44 +19,56 @@ namespace WpfApplication1
     /// </summary>
     public partial class UpDown : UserControl
     {
-        public static DependencyProperty CurrentValueProperty =
-                    DependencyProperty.Register("CurrentValue", typeof(int), typeof(UpDown),
-                    new PropertyMetadata(0, new PropertyChangedCallback(CurrentValueChanged)));
-
-        public static DependencyProperty MinProperty =
-                    DependencyProperty.Register("Min", typeof(int), typeof(UpDown),
-                    new PropertyMetadata(0, new PropertyChangedCallback(MinChanged)));
-
-        public static DependencyProperty MaxProperty =
-                    DependencyProperty.Register("Max", typeof(int), typeof(UpDown),
-                    new PropertyMetadata(0, new PropertyChangedCallback(MaxChanged)));
-
-
+        #region Constructors
         public UpDown()
         {
             InitializeComponent();
             SetValue(CurrentValueProperty, 1);
             int i = (int)GetValue(CurrentValueProperty);
         }
+        #endregion
+
+        #region Properties
+
+        #region CurrentValue
+        public static DependencyProperty CurrentValueProperty =
+                    DependencyProperty.Register("CurrentValue", typeof(int), typeof(UpDown),
+                    new PropertyMetadata(0, new PropertyChangedCallback(CurrentValueChanged)));
 
         public int CurrentValue
-        {
-            get {return (int)GetValue(CurrentValueProperty);}
-            set {SetValue(CurrentValueProperty, value);}
-        }
+                {
+                    get {return (int)GetValue(CurrentValueProperty);}
+                    set {SetValue(CurrentValueProperty, value);}
+                }
+        #endregion
+
+        #region Min
+        public static DependencyProperty MinProperty =
+                    DependencyProperty.Register("Min", typeof(int), typeof(UpDown),
+                    new PropertyMetadata(0, new PropertyChangedCallback(MinChanged)));
 
         public int Min
         {
             get { return (int)GetValue(MinProperty); }
             set { SetValue(MinProperty, value); }
         }
+        #endregion
+
+        #region Max
+        public static DependencyProperty MaxProperty =
+                    DependencyProperty.Register("Max", typeof(int), typeof(UpDown),
+                    new PropertyMetadata(0, new PropertyChangedCallback(MaxChanged)));
 
         public int Max
         {
             get { return (int)GetValue(MaxProperty); }
             set { SetValue(MaxProperty, value); }
         }
+        #endregion
 
+        #endregion
+
+        #region Event handlers
         private void Up_Click(object sender, RoutedEventArgs e)
         {
             if (CurrentValue < Max) CurrentValue++;
@@ -84,5 +96,6 @@ namespace WpfApplication1
             UpDown o = d as UpDown;
             o.CurrentValueTextBox.Text = o.CurrentValue.ToString();
         }
+        #endregion
     }
 }

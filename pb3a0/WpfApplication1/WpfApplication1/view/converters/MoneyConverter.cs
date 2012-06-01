@@ -13,6 +13,7 @@ namespace WpfApplication1
         {
             return ((float)(int)value / 100).ToString("F2");
         }
+
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return (int)(float.Parse((string)value) * 100);
