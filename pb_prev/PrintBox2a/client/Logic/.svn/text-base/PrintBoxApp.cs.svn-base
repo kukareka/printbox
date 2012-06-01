@@ -1,0 +1,1138 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using Microsoft.Office.Interop.Word;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.IO;
+using CashCodeLib;
+using TermoPrinterLib;
+using System.Security.Cryptography;
+using System.Reflection;
+using System.Xml.Serialization;
+using System.Drawing;
+using Microsoft.Win32;
+using System.Diagnostics;
+using log4net;
+using log4net.Config;
+using Microsoft.Office.Core;
+
+namespace PrintBoxMain
+{
+    public class PrintBoxApp
+    {
+        ILog log = LogManager.GetLogger(typeof(PrintBoxApp));
+
+        #region Errors
+        public class Errors
+        {
+            public const uint ERROR_NONE = 0x0;
+            
+            public const uint ERROR_PRINTER_OFFLINE = 0x1;
+            public const uint ERROR_PRINTER_PAPER_JAM = 0x2;
+            public const uint ERROR_PRINTER_NO_PAPER = 0x4;
+            public const uint ERROR_PRINTER_DOOR_OPEN = 0x8;
+            public const uint ERROR_PRINTER_OTHER = 0x10;
+
+            public const uint ERROR_THERMAL_NO_PAPER = 0x20;
+            public const uint ERROR_THERMAL_OTHER = 0x40;
+
+            public const uint ERROR_BATTERY_POWER = 0x80;
+        }
+        #endregion
+
+        #region Singleton
+        static PrintBoxApp instance = new PrintBoxApp();
+
+        public static PrintBoxApp Instance
+        {
+            get
+            {                
+                return instance;
+            }
+        }
+        #endregion
+
+        #region Word
+        public Microsoft.Office.Interop.Word.Application wordApp = null;
+        #endregion
+
+        #region Forms
+        public AdsForm adsForm;
+        public DocumentChooseForm documentChooseForm;
+        public PrePrintForm prePrintForm;
+        public PrintForm printForm;
+        public ControlForm controlForm;
+        public InstructionForm instructionForm;
+        public MessageForm messageForm;
+        public LoadingForm loadingForm;
+        public MaintenanceForm maintenanceForm;
+        #endregion
+
+        #region Config
+        public class Config
+        {
+            private const string configFileName = "config.xml";
+
+            public int BoxID { get; set; }
+            public string Server { get; set; }
+            public int MaxPaper { get; set; }
+            public int PageCost { get; set; } //cents
+            public int PingInterval { get; set; } //seconds
+            public int TestInterval { get; set; } //seconds
+            public string CashCodePort { get; set; }
+            public string ThermoPort { get; set; }
+            public int WordTimeout { get; set; }
+            public int UsbTimeout { get; set; }
+            public int WordLeft { get; set; }
+            public int WordTop { get; set; }
+            public int WordRight { get; set; }
+            public int WordBottom { get; set; }
+            public string AdminCode { get; set; }
+
+            public static Config Load()
+            {
+                Config config;
+                string configFilePath = GetConfigFilePath();
+                XmlSerializer x = new XmlSerializer(typeof(Config));
+                TextReader t = new StreamReader(configFilePath);
+                config = (Config)x.Deserialize(t);
+                t.Close();
+                return config;
+            }
+
+            public static string GetConfigFilePath()
+            {
+                return System.AppDomain.CurrentDomain.BaseDirectory + configFileName;
+            }
+        }
+        public Config config = Config.Load();        
+
+        #endregion
+
+
+        #region State
+
+        public class State
+        {
+            private const string stateFileName = "state.xml";
+
+            private bool initialized = false;
+
+            private int _paperInside;
+            private int _banknotesInside;
+            private int _moneyInside;
+
+            public int PaperInside
+            {
+                get { return _paperInside; }
+                set { _paperInside = value; Save(); }
+            }
+
+            public int BanknotesInside
+            {
+                get { return _banknotesInside; }
+                set { _banknotesInside = value; Save(); }
+            }
+
+            public int MoneyInside
+            {
+                get { return _moneyInside; }
+                set { _moneyInside = value; Save(); }
+            }
+
+            public void Save()
+            {
+                if (initialized)
+                {
+                    XmlSerializer x = new XmlSerializer(typeof(State));
+                    TextWriter t = new StreamWriter(GetStateFilePath());
+                    x.Serialize(t, this);
+                    t.Close();
+                }
+            }
+
+            public static State Load()
+            {
+                State state;
+                string stateFilePath = GetStateFilePath();
+                if (File.Exists(stateFilePath))
+                {
+                    XmlSerializer x = new XmlSerializer(typeof(State));
+                    TextReader t = new StreamReader(stateFilePath);
+                    state = (State)x.Deserialize(t);
+                    t.Close();
+                }
+                else
+                {
+                    state = new State();
+                    state._paperInside = PrintBoxApp.Instance.config.MaxPaper;
+                    state._moneyInside = state._banknotesInside = 0;
+                }
+                state.initialized = true;
+                return state;                                
+            }
+
+            public static string GetStateFilePath()
+            {
+                return System.AppDomain.CurrentDomain.BaseDirectory + stateFileName;
+            }
+        };
+        public State state = new State();
+
+        
+
+        #endregion
+
+        #region Print
+
+        public class PrintOptions
+        {
+            public int copies = 0;
+            public int from = 0;
+            public int to = 0;
+            public int pagesPerSheet = 0;
+            public int pagesToPrint = 0;
+            public float printCost = 0;
+            public bool valid = false;
+        };
+        public PrintOptions printOptions = new PrintOptions();
+        #endregion
+
+        #region SessionInfo
+        public class SessionInfo
+        {
+            public string userPhone = null;
+            public string passwordMD5;
+            public float userMoney;
+            public int moneyInSession = 0;
+            public int banknotesInSession = 0;
+            public Microsoft.Office.Interop.Word.Document wordDoc;
+            public int pagesInDoc;
+            public string longDocPath;
+            public string shortDocPath;
+            public string docName;
+            private int currentPage = 1;
+            public int CurrentPage
+            {
+                get { return currentPage; }
+                set
+                {
+                    if ((value > 0) && (value <= pagesInDoc))
+                    {
+                        object missing = System.Reflection.Missing.Value;
+                        currentPage = value;
+                        Range wholeRange = wordDoc.Range(ref missing, ref missing);
+                        object what = WdGoToItem.wdGoToPage;
+                        object which = WdGoToDirection.wdGoToAbsolute;
+                        object count = currentPage;
+                        Range range = wholeRange.GoTo(ref what, ref which, ref count, ref missing);
+                        range.Select();
+                    }
+                }
+            }
+        }
+        public SessionInfo sessionInfo = null;
+        #endregion
+
+        private string currentDrive = null;
+        private bool deviceInProgress = false;
+        private char deviceInProgressLetter;
+        private DateTime deviceInProgressInsertTime;
+
+        private bool _fullScreenMode = true;
+        public bool FullScreen { get { return _fullScreenMode; } }
+
+        private bool _desktopMode = false;
+        private bool _throwUnhandledExceptions = false;
+        private bool _showCursor = false;
+        public bool ShowCursor { get { return _showCursor; } }
+        private bool _topMost = true;
+        public bool TopMost { get { return _topMost; } }
+
+        public Server server;
+        public Printer printer = new Printer();
+
+        private System.Windows.Forms.Timer appTimer = new System.Windows.Forms.Timer();
+        private bool _cashCodeEnabled = false;
+        public bool CashCodeEnabled
+        {
+            get { return _cashCodeEnabled; }
+            set
+            {
+                if (!_desktopMode)
+                {
+                    if (value) cashCode.Enable();
+                    else cashCode.Disable();
+                }
+                else
+                {
+                    controlForm.CashCodeEnabled = value;
+                }
+                _cashCodeEnabled = value;
+            }
+        }
+
+        private bool _maintenanceInProgress = false;
+        public bool MaintenanceInProgress
+        {
+            get { lock (this) { return _maintenanceInProgress; } }
+            set { lock (this) { _maintenanceInProgress = value; } }
+        }
+
+        private bool printInProgress = false;
+        private bool flashEjectedWhilePrinting = false;
+
+        public CashCode cashCode;
+
+        public TermoPrinter thermalPrinter;
+
+        MD5CryptoServiceProvider _md5 = new MD5CryptoServiceProvider();
+
+        public string MD5(string data)
+        {
+            byte[] bs = System.Text.Encoding.UTF8.GetBytes(data);
+            byte[] hash = _md5.ComputeHash(bs);
+            System.Text.StringBuilder s = new System.Text.StringBuilder();
+            foreach (byte b in hash) s.Append(b.ToString("x2").ToLower());
+            string ret = s.ToString();
+            return ret;
+        }
+
+        private static void UnhandledExceptionFilter(object sender, UnhandledExceptionEventArgs e)
+        {
+            PrintBoxApp.Instance.log.Fatal("Unhandled exception");
+            PrintBoxApp.Instance.log.Fatal((Exception)e.ExceptionObject);
+            Environment.Exit(0);
+        }
+
+
+        private static IntPtr RegisterDeviceNotification(IntPtr formHandle)
+        {
+            WinApi.DEV_BROADCAST_DEVICEINTERFACE filter = new WinApi.DEV_BROADCAST_DEVICEINTERFACE();
+            filter.dbcc_size = Marshal.SizeOf(filter);
+            filter.dbcc_devicetype = WinApi.DBT_DEVTYP_DEVICEINTERFACE;
+            IntPtr buffer = Marshal.AllocHGlobal((int)filter.dbcc_size);
+            Marshal.StructureToPtr(filter, buffer, false);
+            return WinApi.RegisterDeviceNotification(formHandle, buffer,
+                WinApi.DEVICE_NOTIFY_WINDOW_HANDLE | WinApi.DEVICE_NOTIFY_ALL_INTERFACE_CLASSES);
+
+        }
+
+        public void Run(string[] commandLine)
+        {
+            XmlConfigurator.Configure(new System.IO.FileInfo("log4net.config"));
+            log.Info("Run");
+            #region Parse command line
+            log.Debug("Parse command line");
+            for (uint i = 0; i < commandLine.Length; ++i)
+            {
+                if (commandLine[i].Equals("/nofullscreen",
+                    StringComparison.InvariantCultureIgnoreCase))
+                {
+                    _fullScreenMode = false;
+                }
+                else if (commandLine[i].Equals("/desktop",
+                    StringComparison.InvariantCultureIgnoreCase))
+                {
+                    _desktopMode = true;
+                }
+                else if (commandLine[i].Equals("/exceptions",
+                    StringComparison.InvariantCultureIgnoreCase))
+                {
+                    _throwUnhandledExceptions = true;
+                }
+                else if (commandLine[i].Equals("/cursor",
+                    StringComparison.InvariantCultureIgnoreCase))
+                {
+                    _showCursor = true;
+                }
+                else if (commandLine[i].Equals("/notopmost",
+                    StringComparison.InvariantCultureIgnoreCase))
+                {
+                    _topMost = false;
+                }
+            }
+            log.Debug("End parse command line");
+            #endregion
+
+            #region Start
+            if (!_throwUnhandledExceptions)
+            {
+                log.Debug("Setting exception filter");
+                System.Windows.Forms.Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
+                AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledExceptionFilter);
+            }
+
+            if (!_showCursor)
+            {
+                log.Debug("Hiding cursor");
+                Cursor.Hide();
+            }
+
+            if (!_desktopMode)
+            {
+                log.Debug("Initializing cashcode");
+                cashCode = new CashCode(config.CashCodePort);
+                cashCode.BillStacked += new BillStackedEventHandler(cashCode_BillStacked);
+                cashCode.Reset();
+                
+                log.Debug("Initializing thermal printer");
+                thermalPrinter = new TermoPrinter(config.ThermoPort);
+            }
+
+            log.Debug("Initializing state");
+            state = State.Load();
+            log.Debug("Initializing server");
+            server = new Server();
+            log.Debug("Initializing forms");
+            adsForm = new AdsForm();
+            documentChooseForm = new DocumentChooseForm();
+            if (_desktopMode) controlForm = new ControlForm();
+            prePrintForm = new PrePrintForm();
+            printForm = new PrintForm();
+            instructionForm = new InstructionForm();
+            messageForm = new MessageForm();
+            loadingForm = new LoadingForm();
+            maintenanceForm = new MaintenanceForm();
+            loadingForm.Show();
+            //messageForm.Show();
+            InitForm(adsForm);
+            InitForm(documentChooseForm);
+            InitForm(prePrintForm);
+            InitForm(printForm);
+            InitForm(instructionForm);
+            InitForm(maintenanceForm);
+
+            log.Debug("Initializing timer");
+            appTimer.Tick += new EventHandler(appTimer_Tick);
+            appTimer.Interval = 100;
+
+            appTimer.Enabled = true;
+
+            log.Debug("Registering device notification");
+            IntPtr notifyHandle = RegisterDeviceNotification(adsForm.Handle);
+            #endregion
+
+            adsForm.Activate();
+            log.Debug("Up and running");
+            System.Windows.Forms.Application.Run(_desktopMode ? (Form)controlForm : (Form)adsForm);
+
+            #region Stop
+            log.Debug("Unregistering notification");
+            WinApi.UnregisterDeviceNotification(notifyHandle);
+            log.Debug("Stopping server");
+            server.Stop();
+            #endregion
+        }
+
+        void appTimer_Tick(object sender, EventArgs e)
+        {
+            if (!_desktopMode && CashCodeEnabled)
+            {
+                cashCode.Poll();
+            }
+
+            if (deviceInProgress)
+            {
+                TimeSpan timeToWait = new TimeSpan(0, 0, config.UsbTimeout);
+                if (DateTime.Now - deviceInProgressInsertTime >= timeToWait)
+                {
+                    string drivePath = String.Format(@"{0}:\", this.deviceInProgressLetter);
+                    deviceInProgress = false;
+                    if (Directory.Exists(drivePath))
+                    {
+                        DriveIn(drivePath);
+                    }
+                    else
+                    {
+                        adsForm.Activate();
+                    }
+                }
+            }
+        }
+        
+        void cashCode_BillStacked(object sender, BillStackedEventArgs e)
+        {
+            MoneyIn(e.denomination);            
+        }
+        
+        private void InitForm(Form form)
+        {
+            if (FullScreen)
+            {
+                form.FormBorderStyle = FormBorderStyle.None;
+                form.ControlBox = form.MinimizeBox = false;
+                form.TopMost = _topMost;
+                form.Width = 1280;
+                form.Height = 1024;
+                form.Top = form.Left = 0; 
+            }
+            form.Show();
+        }
+
+        public void TerminateWord()
+        {
+            log.Debug("Terminate word");
+            foreach (Process proc in Process.GetProcessesByName("winword"))
+            {
+                proc.Kill();
+                proc.WaitForExit(500);
+            }
+
+            try
+            {
+                Registry.CurrentUser.DeleteSubKeyTree(@"Software\Microsoft\Office\10.0\Word\Resiliency\DocumentRecovery");
+            }
+            catch { }
+            try
+            {
+                Registry.CurrentUser.DeleteSubKeyTree(@"Software\Microsoft\Office\11.0\Word\Resiliency\DocumentRecovery");
+            }
+            catch { }
+            try
+            {
+                Registry.CurrentUser.DeleteSubKeyTree(@"Software\Microsoft\Office\12.0\Word\Resiliency\DocumentRecovery");
+            }
+            catch { }
+        }
+
+        private void LoadDocumentAsync()
+        {
+            try
+            {
+                log.Debug("load doc async");
+
+                TerminateWord();
+
+                object dontsaveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
+                object missing = System.Reflection.Missing.Value;
+
+                log.Debug("Init wordApp");
+                wordApp = new Microsoft.Office.Interop.Word.Application();
+                log.Debug("Close word docs");
+                if (wordApp.Documents.Count > 0) wordApp.Documents.Close(ref dontsaveChanges, ref missing, ref missing);
+                log.Debug("Set parent");
+                int wordWnd = WinApi.FindWindow("Opusapp", null);
+                prePrintForm.Invoke(prePrintForm.ExecEmbedWordWindow, wordWnd);
+
+                wordApp.DisplayAlerts = WdAlertLevel.wdAlertsNone;
+                wordApp.Options.CheckGrammarAsYouType = wordApp.Options.CheckGrammarWithSpelling = wordApp.Options.CheckSpellingAsYouType =
+                    wordApp.DisplayScrollBars = wordApp.DisplayDocumentInformationPanel = false;
+                foreach (CommandBar cb in wordApp.CommandBars)
+                {
+                    try
+                    {
+                        cb.Enabled = false;
+                        cb.Visible = false;
+                    }
+                    catch { }
+                }
+
+                object fileName = sessionInfo.longDocPath;
+                object newTemplate = false;
+                //object docType = 0;
+                object readOnly = true;
+                object isVisible = true;
+                object securelyStoredPassword = 0;
+                object confirmConversions = false;
+                //object format = WdOpenFormat.wdOpenFormatDocument;
+                sessionInfo.wordDoc = wordApp.Documents.Open(ref fileName, ref confirmConversions, ref readOnly, ref missing, ref missing,
+                    ref missing, ref missing, ref missing, ref missing,
+                    ref missing, ref missing, ref isVisible, ref missing, ref missing, ref missing, ref missing);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);                
+            }
+        }
+        
+        public void LoadDocument(string filePath)
+        {
+            log.DebugFormat("Load document {0}", filePath);
+            if (!File.Exists(filePath)) return;          
+            ShowLoadingForm(true);
+            System.Windows.Forms.Application.DoEvents();
+            StringBuilder shortFileName = new StringBuilder(255);
+            WinApi.GetShortPathName(filePath, shortFileName, shortFileName.Capacity);
+            if (shortFileName.Length == 0)
+            {
+                ShowError(documentChooseForm, ResourcesMessages.msgTooLongFileName);
+            }
+            else if (WinApi.GetFileType(shortFileName.ToString()) == SupportedFileTypes.UNSUPPORTED)
+            {
+                ShowError(documentChooseForm, ResourcesMessages.msgUnsupportedFileType);
+            }
+            else
+            {
+                log.Debug("Creating session");
+                sessionInfo = new SessionInfo();
+                sessionInfo.shortDocPath = shortFileName.ToString();
+                sessionInfo.longDocPath = filePath;
+                sessionInfo.docName = Path.GetFileName(filePath);
+                
+
+                try
+                {
+                    //CloseDocument();
+ 
+                    log.Debug("opening doc");
+                    sessionInfo.wordDoc = null;                    
+                    TimeSpan timeToWait = new TimeSpan(0, 0, config.WordTimeout);
+                    DateTime endTime = DateTime.Now + timeToWait;
+                    Thread asyncLoadThread = new Thread(new ThreadStart(LoadDocumentAsync));
+                    asyncLoadThread.Start();
+                    do
+                    {
+                        Thread.Sleep(200);
+                        System.Windows.Forms.Application.DoEvents();
+                    }
+                    while (asyncLoadThread.IsAlive && (DateTime.Now < endTime));
+                    if (asyncLoadThread.IsAlive && (sessionInfo.wordDoc == null))
+                    {
+                        log.Error("asyncLoadThread hangs");
+                        asyncLoadThread.Abort();
+                    }
+
+                    object missing = System.Reflection.Missing.Value;
+                    sessionInfo.pagesInDoc = sessionInfo.wordDoc.ComputeStatistics(Microsoft.Office.Interop.Word.WdStatistic.wdStatisticPages, ref missing);
+                    log.DebugFormat("loaded {0} pages", sessionInfo.pagesInDoc);
+                    wordApp.DisplayStatusBar = false;
+
+                    wordApp.ActiveWindow.ActivePane.View.Type = WdViewType.wdPrintPreview;
+                    wordApp.ActiveWindow.ActivePane.View.Zoom.PageFit = WdPageFit.wdPageFitFullPage;
+
+
+                    log.Debug("set window pos");
+
+                    prePrintForm.pnlWordInner.Left = config.WordLeft;
+                    prePrintForm.pnlWordInner.Top = config.WordTop;
+                    prePrintForm.pnlWordInner.Width = prePrintForm.pnlWord.Width - config.WordLeft + config.WordRight;
+                    prePrintForm.pnlWordInner.Height = prePrintForm.pnlWord.Height - config.WordTop + config.WordBottom;
+
+                    wordApp.ActiveWindow.WindowState = WdWindowState.wdWindowStateMaximize;
+                                        
+                    prePrintForm.LoadDocument();
+                    wordApp.Visible = true;
+
+
+                    for (int i = 0; i < 5; ++i)
+                    {
+                        System.Windows.Forms.Application.DoEvents();
+                        prePrintForm.Activate();
+                        wordApp.Activate();                        
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex);
+                    documentChooseForm.Activate();
+                }
+            }            
+        }
+
+        public void CloseDocument()
+        {
+            log.Debug("Close document");
+#pragma warning disable 0467
+            if (wordApp != null)
+            {
+                object missing = System.Reflection.Missing.Value;
+                object dontsaveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
+                if (sessionInfo.wordDoc != null)
+                {                 
+                    try
+                    {
+                        sessionInfo.wordDoc.Close(ref dontsaveChanges, ref missing, ref missing);
+                    }
+                    catch (Exception e) { Console.WriteLine(e.StackTrace); }
+                    sessionInfo.wordDoc = null;
+                }
+                try
+                {
+                    wordApp.Quit(ref dontsaveChanges, ref missing, ref missing);
+                }
+                catch (Exception e) { Console.WriteLine(e.StackTrace); }
+                wordApp = null;
+            }
+#pragma warning restore 0467
+        }
+
+        internal bool IsPrinterReady()
+        {
+            return true;
+        }
+
+        public void ShowMessage(Form owner, Color color, string msg, params string[] list)
+        {
+            if (!messageForm.Visible)
+            {
+                owner.Activate();
+                System.Windows.Forms.Application.DoEvents();
+                messageForm.SetMessage(color, String.Format(msg, list));
+                messageForm.ShowDialog(owner);
+                System.Windows.Forms.Application.DoEvents();
+                owner.Activate();
+            }
+        }
+
+        public void ShowMessage(Form owner, string msg, params string [] list)
+        {
+            log.DebugFormat(msg, list);
+            ShowMessage(owner, Color.Black, msg, list);
+        }
+
+        public void ShowError(Form owner, string msg, params string[] list)
+        {
+            log.ErrorFormat(msg, list);
+            ShowMessage(owner, Color.Red, msg, list);
+        }
+
+        public bool IsExistingUser(string phoneNumber)
+        {
+            log.DebugFormat("checking user {0}", phoneNumber);
+            string passwordHash = "";
+            bool newUser = false;
+            float balance = 0;
+            for (int i = 0;; ++i)
+            {
+                try
+                {
+                    log.DebugFormat("receive auth data");
+                    server.ReceiveAuthData(phoneNumber, ref passwordHash, ref newUser, ref balance);
+                    break;
+                }
+                catch
+                {
+                    if (i > 5) throw;
+                }
+            }
+            log.DebugFormat("got user info: new={0}, balance={1}", newUser, balance);
+            sessionInfo.userPhone = phoneNumber;
+            sessionInfo.passwordMD5 = passwordHash;
+            sessionInfo.userMoney = balance;
+            return !newUser;                        
+        }
+
+        public bool AuthorizeUser(string phone, string password)
+        {
+            bool ok = (MD5(password) == sessionInfo.passwordMD5);
+            log.DebugFormat("authorizing user {0}:{1}", phone, ok);
+            return ok;
+        }
+
+        public void MoneyIn(int money)
+        {
+            log.DebugFormat("Money in: {0}", money);
+            ShowLoadingForm(true);
+            if (sessionInfo != null)
+            {
+                sessionInfo.userMoney += money;
+                sessionInfo.moneyInSession += money;
+                sessionInfo.banknotesInSession++;
+                server.SendMoneyIn(sessionInfo.userPhone, money);
+            }
+            state.MoneyInside += money;
+            state.BanknotesInside++;
+            prePrintForm.RefreshMoney();
+            prePrintForm.Activate();
+        }
+
+        public void PrintDoc()
+        {
+            log.Debug("Print started");
+            printForm.StartPrint();
+            printInProgress = true;
+            flashEjectedWhilePrinting = false;
+
+            object missing = System.Reflection.Missing.Value;
+            object Background = false;
+            object Range = Microsoft.Office.Interop.Word.WdPrintOutRange.wdPrintFromTo;
+            object Copies = printOptions.copies.ToString();
+            object Item = WdPrintOutItem.wdPrintDocumentContent;
+            object PageType = WdPrintOutPages.wdPrintAllPages;
+            object OutputFileName = missing;
+            object PrintToFile = false;
+            object Collate = false;
+            object ActivePrinterMacGX = missing;
+            object ManualDuplexPrint = false;
+            object PrintZoomColumn = 1;
+            object PrintZoomRow = 1;
+            object what = WdGoToItem.wdGoToPage;
+            object which = WdGoToDirection.wdGoToAbsolute;
+
+            if (printOptions.pagesPerSheet == 2)
+            {   
+                PrintZoomColumn = 2;
+                PrintZoomRow = 1;
+            }
+            else if (printOptions.pagesPerSheet == 4)
+            {
+                PrintZoomColumn = 2;
+                PrintZoomRow = 2;
+            }
+
+
+
+            printer.UpdatePages();
+            string userId = sessionInfo.userPhone;
+            int pagesInPrinterBeforePrint = printer.PagesPrinted;
+            log.DebugFormat("Printer counter: {0}", pagesInPrinterBeforePrint);
+            int pagesToPrint = printOptions.pagesToPrint;
+            log.DebugFormat("Pages to print: {0}", pagesToPrint);
+            int moneyInSession = sessionInfo.moneyInSession;
+            log.DebugFormat("Money in session: {0}", moneyInSession);
+            int banknotesInSession = sessionInfo.banknotesInSession;
+            log.DebugFormat("Banknotes in session: {0}", banknotesInSession);
+            int pagesPrinted = 0;
+            bool success = false;
+            log.DebugFormat("Paper inside: {0}", state.PaperInside);
+            log.DebugFormat("Print range: {0}-{1}x{2}", printOptions.from, printOptions.to, printOptions.copies);            
+
+            try
+            {
+                if (!printer.OK()) throw new Exception(printer.StatusText);
+                log.DebugFormat("printer OK");
+
+                state.PaperInside -= pagesToPrint;
+
+                if ((printOptions.from == 1) && (printOptions.to == sessionInfo.pagesInDoc))
+                {
+                    Range = Microsoft.Office.Interop.Word.WdPrintOutRange.wdPrintAllDocument;
+                    sessionInfo.wordDoc.PrintOut(ref Background, ref missing, ref Range, ref OutputFileName,
+                        ref missing, ref missing, ref Item, ref Copies,
+                        ref missing, ref PageType, ref PrintToFile, ref Collate,
+                        ref missing, ref ManualDuplexPrint, ref PrintZoomColumn,
+                        ref PrintZoomRow, ref missing, ref missing);
+                }
+                else
+                {
+                    Range wholeRange = sessionInfo.wordDoc.Range(ref missing, ref missing);
+                    Copies = 1;
+                    for (int copy = 0; copy < printOptions.copies; ++copy)
+                        for (int i = printOptions.from; i <= printOptions.to; i++)
+                        {
+                            object pageNumber = i;
+                            Range rng = wholeRange.GoTo(ref what, ref which, ref pageNumber, ref missing);
+                            rng.Select();
+                            Range = Microsoft.Office.Interop.Word.WdPrintOutRange.wdPrintCurrentPage;
+                            sessionInfo.wordDoc.PrintOut(ref Background, ref missing, ref Range, ref OutputFileName,
+                                ref missing, ref missing, ref Item, ref Copies,
+                                ref missing, ref PageType, ref PrintToFile, ref Collate,
+                                ref missing, ref ManualDuplexPrint, ref PrintZoomColumn,
+                                ref PrintZoomRow, ref missing, ref missing);
+                        }
+                }
+
+                DateTime printStartTime = DateTime.Now;
+                for (;;)
+                {
+                    Thread.Sleep(200);
+                    System.Windows.Forms.Application.DoEvents();
+                    printer.Update();                    
+                    if (printer.PagesPrinted >= pagesInPrinterBeforePrint + pagesToPrint)
+                    {
+                        break;
+                    }
+                    if (!printer.OK())
+                    {
+                        throw new Exception(printer.StatusText);
+                    }
+                    if (printStartTime.AddMinutes(2).AddSeconds(10 * pagesToPrint) < DateTime.Now) // макс. 2 минуты на прогрев + 10 сек на страницу
+                    {
+                        throw new Exception("timeout");
+                    }
+                }
+                pagesPrinted = pagesToPrint;
+                log.Debug("print ok");
+                success = true;                
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                PrintErrorCheck();                
+            }
+
+            log.Debug("Print done");
+            printForm.PrintDone(success, flashEjectedWhilePrinting);
+            log.DebugFormat("Send session {0} {1} {2} {3}", userId, pagesPrinted, moneyInSession, banknotesInSession);
+            server.SendSession(userId, pagesPrinted, moneyInSession, banknotesInSession);
+            EndSession();
+            printInProgress = false;
+            flashEjectedWhilePrinting = false;
+        }
+
+        public void PrintErrorLine(string line)
+        {
+            if (thermalPrinter != null) thermalPrinter.WriteLine(line);
+            else Console.WriteLine(line);
+        }
+
+        public uint CalculateErrorCode(string userPhone, string dateString, string boxId, string errors, string moneyIn, string moneyTotal)
+        {
+            string dataToHash = String.Format("{0}|{1}|{2}|{3}|{4}|{5}|Hjsmx;!lksjl12", 
+                dateString, boxId, userPhone, errors, moneyIn, moneyTotal);
+            string hash = this.MD5(dataToHash).Substring(0, 4);
+            uint code = Convert.ToUInt32(hash, 16);
+            return code;
+        }
+
+        public void PrintErrorCheck()
+        {
+
+            if (thermalPrinter != null)
+            {
+                thermalPrinter.Align = TextAlign.Center;
+                thermalPrinter.Bold = true;
+                thermalPrinter.Font = 1;
+            }
+            
+            PrintErrorLine("PRINTBOX");
+            PrintErrorLine("Повідомлення про помилку");
+            PrintErrorLine("");
+            if (thermalPrinter != null)
+            {
+                thermalPrinter.Bold = false;
+                thermalPrinter.Align = TextAlign.Left;
+            }
+
+            string dateString = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string boxId = config.BoxID.ToString();
+            string errors = DetectErrors().ToString();
+            string moneyIn = sessionInfo.moneyInSession.ToString();
+            string moneyTotal = sessionInfo.userMoney.ToString("F2");
+
+            uint code = CalculateErrorCode(sessionInfo.userPhone, dateString, boxId, errors, moneyIn, moneyTotal);
+
+            PrintErrorLine("Час: " + dateString);
+            PrintErrorLine("Термінал: " + boxId);
+            PrintErrorLine("Код помилки: " + errors);
+            PrintErrorLine("Внесено: " + moneyIn + "грн");
+            PrintErrorLine("Баланс: " + moneyTotal + "грн");
+            PrintErrorLine("Код: " + code.ToString());
+            PrintErrorLine("");
+            if (thermalPrinter != null)
+            {
+                thermalPrinter.Align = TextAlign.Center;
+            }
+            PrintErrorLine("Внесені кошти повернуто на Ваш рахунок.");
+            PrintErrorLine("Ви можете скористатись ними в");
+            PrintErrorLine("іншому терміналі PrintBox.");
+            PrintErrorLine("Приносимо щирі вибачення.");
+            PrintErrorLine("");
+            PrintErrorLine("");
+            if (thermalPrinter != null)
+            {
+                thermalPrinter.Cut();
+            }
+
+        }
+
+        public void EndSession()
+        {
+            log.Debug("End session");
+            if (!printInProgress) adsForm.Activate();
+            CloseDocument();
+            prePrintForm.InvalidateUser();
+            sessionInfo = null;                        
+        }
+
+        public void OpenFileList(string path)
+        {
+            log.DebugFormat("Open file list {0}", path);
+            if (path == null)
+            {
+                if (currentDrive != null) path = currentDrive;
+                else return;
+            }
+
+            if (Directory.Exists(path))
+            {
+                try
+                {
+                    if (documentChooseForm.ShowFoldersAndFilesList(path)) documentChooseForm.Activate();
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex);                    
+                }
+            }
+        }
+
+        public void ShowInstruction(Form owner)
+        {
+            log.DebugFormat("Show instruction");
+            instructionForm.Owner = owner;
+            instructionForm.Show();
+            instructionForm.Activate();
+        }
+
+        private static char GetDriveLetter(uint unitmask)
+        {
+            char driveLetter = 'A';
+            for (; driveLetter <= 'Z'; ++driveLetter, unitmask = unitmask >> 1)
+                if ((unitmask & 0x1) == 1) return driveLetter;
+            return '-'; 
+        }
+
+        public void ProcessMessage(Message m)
+        {
+            if (m.Msg == WinApi.WM_DEVICECHANGE)
+            {
+                if (m.WParam.ToInt32() == WinApi.DBT_DEVICEARRIVAL)
+                {
+                    WinApi.DEV_BROADCAST_HDR hdr = (WinApi.DEV_BROADCAST_HDR)Marshal.PtrToStructure(m.LParam, typeof(WinApi.DEV_BROADCAST_HDR));
+                    if (hdr.dbch_devicetype == WinApi.DBT_DEVTYP_VOLUME)
+                    {
+                        WinApi.DEV_BROADCAST_VOLUME vol = (WinApi.DEV_BROADCAST_VOLUME)Marshal.PtrToStructure(m.LParam, typeof(WinApi.DEV_BROADCAST_VOLUME));
+                        char driveLetter = GetDriveLetter(vol.dbcv_unitmask);
+                        if (driveLetter != '-')
+                        {
+                            log.DebugFormat("Reported drive in: {0}", driveLetter);
+                            this.deviceInProgressLetter = driveLetter;
+                            this.deviceInProgressInsertTime = DateTime.Now;
+                            if (!deviceInProgress)
+                            {
+                                ShowLoadingForm(false);
+                                deviceInProgress = true;                                
+                            }
+                        }
+                    }
+                }
+                else if (!deviceInProgress && (m.WParam.ToInt32() == WinApi.DBT_DEVICEREMOVECOMPLETE))
+                {
+                    log.DebugFormat("Drive out");
+                    DriveOut();
+                }
+            }
+        }
+
+        public void ShowLoadingForm(bool fullScreen)
+        {
+            loadingForm.Activate();                        
+        }
+
+        public void DriveIn(string driveLetter)
+        {
+            log.DebugFormat("Drive in: {0}", driveLetter);
+            if (printInProgress) return;
+            if (state.PaperInside <= 0)
+            {
+                ShowError(adsForm, ResourcesMessages.msgNoPaper);
+                return;
+            }
+            if (!_desktopMode)
+            {
+                if (0 != DetectErrors())
+                {
+                    ShowError(adsForm, ResourcesMessages.msgTerminalIsNotWorking);
+                    return;
+                }
+            }
+            EndSession();
+            currentDrive = driveLetter;
+            OpenFileList(driveLetter);
+        }
+
+        public void DriveOut()
+        {
+            if (currentDrive != null)
+            {
+                currentDrive = null;
+                if (printInProgress)
+                {
+                    flashEjectedWhilePrinting = true;
+                }
+                else
+                {
+                    adsForm.Activate();
+                    EndSession();
+                }
+            }
+        }
+
+        public void BeginMaintenance()
+        {
+            maintenanceForm.Login();
+        }
+
+        public void EndMaintenance()
+        {
+            PrintBoxApp.Instance.MaintenanceInProgress = false;
+            adsForm.Activate();
+        }
+
+        public string[] DecodeErrors(uint errors)
+        {
+            LinkedList<string> ret = new LinkedList<string>();
+            Type errorTypes = typeof(Errors);
+            FieldInfo [] fields = errorTypes.GetFields();
+            foreach (FieldInfo fi in fields)
+            {
+                string name = fi.Name;
+                uint value = (uint)fi.GetValue(null);
+                if ((errors & value) != 0)
+                {
+                    ret.AddLast(name);
+                    errors ^= value;
+                }
+            }
+            if (errors != 0) ret.AddLast("Інші помилки");
+            return ret.ToArray();
+        }
+
+
+        public uint DetectErrors()
+        {
+            uint errors = 0;
+            printer.UpdateStatus();
+            switch (printer.Status)
+            {
+                case PrinterStatus.Ready:
+                case PrinterStatus.Sleeping:
+                case PrinterStatus.WarmingUp:
+                case PrinterStatus.Printing:
+                case PrinterStatus.LowPaper:
+                case PrinterStatus.LowToner:
+                case PrinterStatus.OutputBinNearFull:
+                    break;
+                case PrinterStatus.Offline:
+                    errors |= Errors.ERROR_PRINTER_OFFLINE; break;
+                case PrinterStatus.PaperJammed:
+                    errors |= Errors.ERROR_PRINTER_PAPER_JAM; break;
+                case PrinterStatus.InputTrayEmpty:
+                    errors |= Errors.ERROR_PRINTER_NO_PAPER; break;
+                case PrinterStatus.DoorOpen:
+                    errors |= Errors.ERROR_PRINTER_DOOR_OPEN; break;
+                default:
+                    errors |= Errors.ERROR_PRINTER_OTHER;
+                    break;
+            }
+
+            if (!_desktopMode)
+            {
+                PPU700Status thermalStatus = thermalPrinter.GetPaperStatus();
+
+                switch (thermalStatus)
+                {
+                    case PPU700Status.Paper_Not_Found_By_Paperend_Sensor:
+                    case PPU700Status.Paper_Not_Found_By_Paper_Nearend_1_Sensor:
+                    case PPU700Status.Paper_Not_Found_By_Paper_Nearend_2_Sensor:
+                        errors |= Errors.ERROR_THERMAL_NO_PAPER;
+                        break;
+                }
+
+                thermalStatus = thermalPrinter.GetErrorStatus();
+                if (thermalStatus != PPU700Status.Ok) errors |= Errors.ERROR_THERMAL_OTHER;
+            }
+
+            if (PowerSource.IsOnBattery()) errors |= Errors.ERROR_BATTERY_POWER;
+
+            return errors;
+
+        }
+    }
+}

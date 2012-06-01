@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls
+END
+DocView.resx
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls/DocView.resx
+END
+AdsView.resx
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls/AdsView.resx
+END
+PrintView.Designer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls/PrintView.Designer.cs
+END
+PrintView.cs
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls/PrintView.cs
+END
+UsrKeyboard.Designer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls/UsrKeyboard.Designer.cs
+END
+UsrKeyboard.cs
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls/UsrKeyboard.cs
+END
+OpenFileView.Designer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls/OpenFileView.Designer.cs
+END
+OpenFileView.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls/OpenFileView.cs
+END
+DocView.Designer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/root/!svn/ver/204/PrintBox2/trunk/client/UserControls/DocView.Designer.cs
+END
+DocView.cs
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/root/!svn/ver/204/PrintBox2/trunk/client/UserControls/DocView.cs
+END
+AdsView.Designer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls/AdsView.Designer.cs
+END
+AdsView.cs
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls/AdsView.cs
+END
+PrintView.resx
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls/PrintView.resx
+END
+UsrKeyboard.resx
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls/UsrKeyboard.resx
+END
+OpenFileView.resx
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/root/!svn/ver/201/PrintBox2/trunk/client/UserControls/OpenFileView.resx
+END

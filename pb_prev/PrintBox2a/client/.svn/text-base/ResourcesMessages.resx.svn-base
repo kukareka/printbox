@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="msgMoreThan150PagesForPrint" xml:space="preserve">
+    <value>Не можна надрукувати більше 150 сторніок за один сеанс.</value>
+  </data>
+  <data name="txtPrinting" xml:space="preserve">
+    <value>Надруковано &lt;!--pages_printed_now--&gt; із &lt;!--pages_to_print--&gt; стор.</value>
+  </data>
+  <data name="txtPrintSuccess" xml:space="preserve">
+    <value>Друк успішно завершено.</value>
+  </data>
+  <data name="msgServerUnavailable" xml:space="preserve">
+    <value>Вибачте, не вдалося з'єднатися з сервером. Будь-ласка, спробуйте пізніше.</value>
+  </data>
+  <data name="msgWrongCode" xml:space="preserve">
+    <value>Невірний код поповнення.</value>
+  </data>
+  <data name="txtCopyNumber" xml:space="preserve">
+    <value>Копій: &lt;!--copyNumber--&gt;</value>
+  </data>
+  <data name="txtPagesTotal" xml:space="preserve">
+    <value>Усього друкувати сторінок: &lt;!--pagesTotal--&gt;</value>
+  </data>
+  <data name="txtPrintPagesFromTo" xml:space="preserve">
+    <value>Друкувати сторінки з &lt;!--pageFrom--&gt; по &lt;!--pageTo--&gt;</value>
+  </data>
+  <data name="msgInvalidPrintRange" xml:space="preserve">
+    <value>Невірний діапазон сторінок.</value>
+  </data>
+  <data name="txtCurrentPageInfo" xml:space="preserve">
+    <value>Сторінка &lt;!--currentPage--&gt; з &lt;!--totalPagesInDocument--&gt;</value>
+  </data>
+  <data name="txtPagesPerSheet" xml:space="preserve">
+    <value>Сторінок на аркуші: &lt;!--pagesPerSheet--&gt;</value>
+  </data>
+  <data name="txtCleanPaperLeft" xml:space="preserve">
+    <value>Сторінок у лотку: &lt;!--paperLeft--&gt;</value>
+  </data>
+  <data name="txtBoxID" xml:space="preserve">
+    <value>ID термінала: &lt;!--BoxID--&gt;</value>
+  </data>
+  <data name="msgTerminalIsNotWorking" xml:space="preserve">
+    <value>Вибачте, термінал не працює.</value>
+  </data>
+  <data name="txtIsEncashmentOk" xml:space="preserve">
+    <value>Інкасація проведена успішно?</value>
+  </data>
+  <data name="txtIsMaintenanceOk" xml:space="preserve">
+    <value>Обслуговування проведено успішно?</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="four_sheets_on_page_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\four_sheets_on_page_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="four_sheets_on_page_selected_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\four_sheets_on_page_selected_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="one_sheet_on_page_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\one_sheet_on_page_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="one_sheet_on_page_selected_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\one_sheet_on_page_selected_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="two_sheets_on_page_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\two_sheets_on_page_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="two_sheets_on_page_selected_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\two_sheets_on_page_selected_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="arrow_down_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\arrow_down_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="arrow_up_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\arrow_up_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_back_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\keyboard_back_disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_button_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\keyboard_button_disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="msgNotEnoughMoney" xml:space="preserve">
+    <value>Недостатньо коштів для друку.</value>
+  </data>
+  <data name="preprint_cancel_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\preprint_cancel_disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="preprint_next_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\preprint_next_disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="scroll_button_down_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\scroll_button_down_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="scroll_button_up_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\scroll_button_up_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="msgNotEnoughPagesForPrint" xml:space="preserve">
+    <value>Недостатньо паперу для друку. В терміналі залишилось {0} сторінок.</value>
+  </data>
+  <data name="msgPrinterIsNotReady" xml:space="preserve">
+    <value>Вибачте, виникла помилка принтера.</value>
+  </data>
+  <data name="txtPrintError" xml:space="preserve">
+    <value>Вибачте, під час друку трапилась помилка.</value>
+  </data>
+  <data name="txtThanksForUsingPrintBox" xml:space="preserve">
+    <value>Дякуємо за користування терміналом.</value>
+  </data>
+  <data name="button_backspace_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\button_backspace_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="code_button_cancel_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\code_button_cancel_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="code_button_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\code_button_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="code_button_ok_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\code_button_ok_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="maintenance_minimize_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\maintenance_minimize_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="maintenance_no_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\maintenance_no_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="maintenance_yes_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\maintenance_yes_disabled.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="msgTooLongFileName" xml:space="preserve">
+    <value>Вибачте, занадто довге ім'я файлу.</value>
+  </data>
+  <data name="msgUnsupportedFileType" xml:space="preserve">
+    <value>Невірний формат файлу. Підтримуються формати .doc/.docx.</value>
+  </data>
+  <data name="txtPrintingWarning" xml:space="preserve">
+    <value>Іде друк. Не витягуйте флешку.</value>
+  </data>
+  <data name="msgErrorHappened" xml:space="preserve">
+    <value>Вибачте,виникла помилка обробки даних.</value>
+  </data>
+  <data name="txtA4Format" xml:space="preserve">
+    <value>Формат A4</value>
+  </data>
+  <data name="txtPrint" xml:space="preserve">
+    <value>Друк формату А4</value>
+  </data>
+  <data name="txtPrintPrice" xml:space="preserve">
+    <value>50 коп./стор.</value>
+  </data>
+  <data name="keyboard_back" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\keyboard_back.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_back_clicked" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\keyboard_back_clicked.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\keyboard_button.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_button_clicked" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\keyboard_button_clicked.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_cancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\keyboard_cancel.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_ok" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\keyboard_ok.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_panel_fon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\keyboard_panel_fon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="txt_document" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\txt_document.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_cancel_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\keyboard_cancel_disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="keyboard_ok_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\keyboard_ok_disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="msgSmsWithPassSent" xml:space="preserve">
+    <value>На номер {0} відправлено SMS із паролем для доступу до рахунку.</value>
+  </data>
+  <data name="code_button_cancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\code_button_cancel.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="msgWrongPassword" xml:space="preserve">
+    <value>Невірний пароль.</value>
+  </data>
+  <data name="maintenance_no" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\maintenance_no.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="maintenance_yes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\maintenance_yes.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="message_fon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\message_fon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="preprint_back" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\preprint_back.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="preprint_back_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\preprint_back_disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="preprint_cancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\preprint_cancel.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="preprint_next" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\preprint_next.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="preprint_print" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\preprint_print.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="preprint_print_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\preprint_print_disabled.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="scroll_button_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\scroll_button_down.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="scroll_button_down_clicked" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\scroll_button_down_clicked.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="scroll_button_up" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\scroll_button_up.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="scroll_button_up_clicked" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\scroll_button_up_clicked.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="msgUnsupportedMobileOperator" xml:space="preserve">
+    <value>Мобільний оператор з кодом {0} не підтримується.</value>
+  </data>
+  <data name="txtMoneyReturnedToBalance" xml:space="preserve">
+    <value>Внесені гроші повернуто на рахунок.</value>
+  </data>
+  <data name="msgErrorHappenedWhileSendingSms" xml:space="preserve">
+    <value>Вибачте,виникла помилка відправки SMS. Зверніться до служби підтримки.</value>
+  </data>
+  <data name="txtPhoneTooltip" xml:space="preserve">
+    <value>Введіть номер Вашого телефону. На нього буде віправлено SMS-повідомлення із паролем для доступу до особистого рахунку.</value>
+  </data>
+  <data name="money_params_info_fon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>images\money_params_info_fon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="txtAttentionGeneral" xml:space="preserve">
+    <value>Увага! Для відновлення пароля зверніться до служби підтримки.</value>
+  </data>
+  <data name="txtAttentionPhone" xml:space="preserve">
+    <value>Увага! Повідомлення відправляється тільки один раз при першому вводі номера. Для відновлення пароля зверніться до служби підтримки.</value>
+  </data>
+  <data name="txtPasswordFirstTimeTooltip" xml:space="preserve">
+    <value>Введіть пароль, отриманий у SMS-повідомленні.</value>
+  </data>
+  <data name="txtPasswordGeneralTooltip" xml:space="preserve">
+    <value>Введіть Ваш пароль.</value>
+  </data>
+  <data name="txtStartWorkMessage" xml:space="preserve">
+    <value>Для початку роботи вставте флешку.</value>
+  </data>
+  <data name="msgErrorHappenedWhileOpeningFile" xml:space="preserve">
+    <value>Вибачте,виникла помилка відкриття файлу.</value>
+  </data>
+  <data name="msgInvalidPrintParams" xml:space="preserve">
+    <value>Невірні параметри друку.</value>
+  </data>
+  <data name="instructionHTML" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\instruction.html;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="msgNoPaper" xml:space="preserve">
+    <value>Вибачте, в цьому терміналі скінчився папір. Ми спробуємо виправити це найближчим часом.</value>
+  </data>
+</root>

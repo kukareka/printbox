@@ -1,0 +1,444 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0DB3762B-3F8B-47A4-97BD-5CCF2088BEC6}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PrintBoxMain</RootNamespace>
+    <AssemblyName>client</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="HtmlRichTextBox, Version=1.0.4032.24682, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\HtmlRichTextBox.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageButton, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\ImageButton.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.1.1.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GUI\Forms\AdsForm.cs">
+      <SubType>Form</SubType>
+    </None>
+    <None Include="GUI\Forms\AdsForm.designer.cs">
+      <DependentUpon>AdsForm.cs</DependentUpon>
+    </None>
+    <None Include="GUI\Forms\DocumentChooseForm.cs">
+      <SubType>Form</SubType>
+    </None>
+    <None Include="GUI\Forms\DocumentChooseForm.designer.cs">
+      <DependentUpon>DocumentChooseForm.cs</DependentUpon>
+    </None>
+    <Compile Include="GUI\Forms\InstructionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\InstructionForm.designer.cs">
+      <DependentUpon>InstructionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\LoadingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\LoadingForm.designer.cs">
+      <DependentUpon>LoadingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\MaintenanceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\MaintenanceForm.designer.cs">
+      <DependentUpon>MaintenanceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\MessageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\MessageForm.designer.cs">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\PB_MainFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\PB_MainFrm.Designer.cs">
+      <DependentUpon>PB_MainFrm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\GUIManager.cs" />
+    <Compile Include="Logic\Config.cs" />
+    <Compile Include="Logic\Errors.cs" />
+    <Compile Include="Logic\ExceptionHandler.cs" />
+    <Compile Include="Logic\PrintOptions.cs" />
+    <Compile Include="Logic\RunOptions.cs" />
+    <Compile Include="Logic\SessionInfo.cs" />
+    <Compile Include="Logic\State.cs" />
+    <Compile Include="Logic\Tools.cs" />
+    <Compile Include="Logic\Wrappers\CashCodeWrapper.cs" />
+    <Compile Include="Logic\FormatManager.cs" />
+    <Compile Include="Logic\Wrappers\IDocumentWrapper.cs" />
+    <Compile Include="Logic\Wrappers\PdfWrapper.cs" />
+    <Compile Include="Logic\Wrappers\PowerSource.cs" />
+    <None Include="GUI\Forms\PrePrintForm.cs">
+      <SubType>Form</SubType>
+    </None>
+    <None Include="GUI\Forms\PrePrintForm.designer.cs">
+      <DependentUpon>PrePrintForm.cs</DependentUpon>
+    </None>
+    <Compile Include="Logic\Wrappers\ThermalWrapper.cs" />
+    <Compile Include="Logic\Wrappers\UsbWrapper.cs" />
+    <Compile Include="Logic\Wrappers\WordWrapper.cs" />
+    <Compile Include="PrintBoxApp.cs" />
+    <Compile Include="GUI\Forms\ControlForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\ControlForm.Designer.cs">
+      <DependentUpon>ControlForm.cs</DependentUpon>
+    </Compile>
+    <None Include="GUI\Forms\PrintForm.cs">
+      <SubType>Form</SubType>
+    </None>
+    <None Include="GUI\Forms\PrintForm.designer.cs">
+      <DependentUpon>PrintForm.cs</DependentUpon>
+    </None>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="GUI\Forms\AdsForm.resx">
+      <DependentUpon>AdsForm.cs</DependentUpon>
+    </None>
+    <EmbeddedResource Include="GUI\Forms\ControlForm.resx">
+      <DependentUpon>ControlForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="GUI\Forms\DocumentChooseForm.resx">
+      <DependentUpon>DocumentChooseForm.cs</DependentUpon>
+    </None>
+    <EmbeddedResource Include="GUI\Forms\InstructionForm.resx">
+      <DependentUpon>InstructionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\LoadingForm.resx">
+      <DependentUpon>LoadingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\MaintenanceForm.resx">
+      <DependentUpon>MaintenanceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\MessageForm.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\PB_MainFrm.resx">
+      <DependentUpon>PB_MainFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="GUI\Forms\PrePrintForm.resx">
+      <DependentUpon>PrePrintForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="GUI\Forms\PrintForm.resx">
+      <DependentUpon>PrintForm.cs</DependentUpon>
+    </None>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResourcesMessages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>ResourcesMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\UsrKeyboard.resx">
+      <DependentUpon>UsrKeyboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\AdsView.resx">
+      <DependentUpon>AdsView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\DocView.resx">
+      <DependentUpon>DocView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\OpenFileView.resx">
+      <DependentUpon>OpenFileView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\PrintView.resx">
+      <DependentUpon>PrintView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UsrKeyboard.resx">
+      <DependentUpon>UsrKeyboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="cert\ca.crt" />
+    <None Include="cert\client.pfx" />
+    <None Include="images\App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Logic\Server.cs" />
+    <Compile Include="GUI\Controls\UsrKeyboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\UsrKeyboard.designer.cs">
+      <DependentUpon>UsrKeyboard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Wrappers\WinApi.cs" />
+    <Compile Include="Logic\Wrappers\PrinterWrapper.cs" />
+    <Compile Include="ResourcesMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourcesMessages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\AdsView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\AdsView.Designer.cs">
+      <DependentUpon>AdsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DocView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\DocView.Designer.cs">
+      <DependentUpon>DocView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\OpenFileView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\OpenFileView.Designer.cs">
+      <DependentUpon>OpenFileView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PrintView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\PrintView.Designer.cs">
+      <DependentUpon>PrintView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UsrKeyboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UsrKeyboard.Designer.cs">
+      <DependentUpon>UsrKeyboard.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="GUI\Resources\instruction.html" />
+    <Content Include="images\acrobat.png" />
+    <Content Include="images\arrow-down.png" />
+    <Content Include="images\arrow-up.png" />
+    <Content Include="images\arrow_down.jpg" />
+    <Content Include="images\arrow_down_clicked.jpg" />
+    <Content Include="images\arrow_down_disabled.jpg" />
+    <Content Include="images\arrow_up.jpg" />
+    <Content Include="images\arrow_up_clicked.jpg" />
+    <Content Include="images\arrow_up_disabled.jpg" />
+    <Content Include="images\backspace.png" />
+    <Content Include="images\button_backspace.jpg" />
+    <Content Include="images\button_backspace_clicked.jpg" />
+    <Content Include="images\button_backspace_disabled.jpg" />
+    <Content Include="images\cancelIcon.png" />
+    <Content Include="images\circle\circle1.jpg" />
+    <Content Include="images\circle\circle1.png" />
+    <Content Include="images\circle\circle10.png" />
+    <Content Include="images\circle\circle11.png" />
+    <Content Include="images\circle\circle12.png" />
+    <Content Include="images\circle\circle2.jpg" />
+    <Content Include="images\circle\circle2.png" />
+    <Content Include="images\circle\circle3.png" />
+    <Content Include="images\circle\circle4.png" />
+    <Content Include="images\circle\circle5.png" />
+    <Content Include="images\circle\circle6.png" />
+    <Content Include="images\circle\circle7.png" />
+    <Content Include="images\circle\circle8.png" />
+    <Content Include="images\circle\circle9.png" />
+    <Content Include="images\code_button.jpg" />
+    <Content Include="images\code_button_cancel.jpg" />
+    <Content Include="images\code_button_cancel_disabled.jpg" />
+    <Content Include="images\code_button_clicked.jpg" />
+    <Content Include="images\code_button_disabled.jpg" />
+    <Content Include="images\code_button_ok.jpg" />
+    <Content Include="images\code_button_ok_disabled.jpg" />
+    <Content Include="images\document_choose_btnup.jpg" />
+    <Content Include="images\document_choose_listbox.jpg" />
+    <Content Include="images\document_choose_pathlabel.jpg" />
+    <Content Include="images\folder_open.png" />
+    <Content Include="images\fon.png" />
+    <Content Include="images\four_sheets_on_page.jpg" />
+    <Content Include="images\four_sheets_on_page_disabled.jpg" />
+    <Content Include="images\four_sheets_on_page_selected.jpg" />
+    <Content Include="images\four_sheets_on_page_selected_disabled.jpg" />
+    <Content Include="images\instruction.jpg" />
+    <Content Include="images\instruction_fon.png" />
+    <Content Include="images\keyboard_back.png" />
+    <Content Include="images\keyboard_back_clicked.png" />
+    <Content Include="images\keyboard_back_disabled.png" />
+    <Content Include="images\keyboard_button.png" />
+    <Content Include="images\keyboard_button_clicked.png" />
+    <Content Include="images\keyboard_button_disabled.png" />
+    <Content Include="images\keyboard_cancel.png" />
+    <Content Include="images\keyboard_cancel_disabled.png" />
+    <Content Include="images\keyboard_ok.png" />
+    <Content Include="images\keyboard_ok_disabled.png" />
+    <Content Include="images\keyboard_panel_fon.png" />
+    <Content Include="images\line.jpg" />
+    <Content Include="images\loading.gif" />
+    <Content Include="images\maintenance_minimize.jpg" />
+    <Content Include="images\maintenance_minimize_disabled.jpg" />
+    <Content Include="images\maintenance_no.jpg" />
+    <Content Include="images\maintenance_no_disabled.jpg" />
+    <Content Include="images\maintenance_yes.jpg" />
+    <Content Include="images\maintenance_yes_disabled.jpg" />
+    <Content Include="images\main_fon.png" />
+    <Content Include="images\message_box_ok - Copy.png" />
+    <Content Include="images\message_box_ok.png" />
+    <Content Include="images\message_fon.png" />
+    <Content Include="images\money_input_buttons_05.png" />
+    <Content Include="images\money_params_info_fon.png" />
+    <Content Include="images\money_params_use_code_button.png" />
+    <Content Include="images\one_sheet_on_page.jpg" />
+    <Content Include="images\one_sheet_on_page_disabled.jpg" />
+    <Content Include="images\one_sheet_on_page_selected.jpg" />
+    <Content Include="images\one_sheet_on_page_selected_disabled.jpg" />
+    <Content Include="images\preprint_back.png" />
+    <Content Include="images\preprint_back_disabled.png" />
+    <Content Include="images\preprint_back_old.png" />
+    <Content Include="images\preprint_cancel.png" />
+    <Content Include="images\preprint_cancel_disabled.png" />
+    <Content Include="images\preprint_fon.jpg" />
+    <Content Include="images\preprint_fon_new.jpg" />
+    <Content Include="images\preprint_next.png" />
+    <Content Include="images\preprint_next_disabled.png" />
+    <Content Include="images\preprint_print.png" />
+    <Content Include="images\preprint_print_disabled.png" />
+    <Content Include="images\prinboxlogo_large.png" />
+    <Content Include="images\printboxlogo.png" />
+    <Content Include="images\printboxlogo_small.jpg" />
+    <Content Include="images\printIcon.png" />
+    <Content Include="images\print_finished_cancel.png" />
+    <Content Include="images\print_finished_print_more.png" />
+    <Content Include="images\progress_bar.png" />
+    <Content Include="images\question.png" />
+    <Content Include="images\scroll_button_down.jpg" />
+    <Content Include="images\scroll_button_down_clicked.jpg" />
+    <Content Include="images\scroll_button_down_disabled.jpg" />
+    <Content Include="images\scroll_button_up.jpg" />
+    <Content Include="images\scroll_button_up_clicked.jpg" />
+    <Content Include="images\scroll_button_up_disabled.jpg" />
+    <Content Include="images\two_sheets_on_page.jpg" />
+    <Content Include="images\two_sheets_on_page_disabled.jpg" />
+    <Content Include="images\two_sheets_on_page_selected.jpg" />
+    <Content Include="images\two_sheets_on_page_selected_disabled.jpg" />
+    <Content Include="images\txt_code_input.png" />
+    <Content Include="images\txt_document.jpg" />
+    <Content Include="images\txt_numbers.jpg" />
+    <Content Include="images\txt_pages_total.jpg" />
+    <Content Include="images\txt_pages_total_for_print.jpg" />
+    <Content Include="images\up_folder.png" />
+    <Content Include="images\up_folder_h.png" />
+    <Content Include="images\word.ico" />
+    <Content Include="lib\HtmlRichTextBox.dll" />
+    <Content Include="lib\ImageButton.dll" />
+    <Content Include="lib\itextsharp.dll" />
+    <Content Include="lib\log4net.dll" />
+    <Content Include="lib\log4net.xml" />
+    <Content Include="Resources\btnScrollDown.NormalImageDisabled.jpg" />
+    <Content Include="Resources\instruction.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CashCodeLib\CashCodeLib.csproj">
+      <Project>{FD3E437D-9679-444D-9F15-E8850AD99444}</Project>
+      <Name>CashCodeLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TermoPrinterLib\TermoPrinterLib.csproj">
+      <Project>{9FA66B70-EDD3-45A0-B8C1-D5340D0012C4}</Project>
+      <Name>TermoPrinterLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="AcroPDFLib">
+      <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="AxAcroPDFLib">
+      <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

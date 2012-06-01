@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/root/!svn/ver/153/PrintBox2/trunk/CashCodeLib/Messages
+END
+PollMessage.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/root/!svn/ver/153/PrintBox2/trunk/CashCodeLib/Messages/PollMessage.cs
+END
+IllegalCommandMessage.cs
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/root/!svn/ver/153/PrintBox2/trunk/CashCodeLib/Messages/IllegalCommandMessage.cs
+END
+IdentificationMessage.cs
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/root/!svn/ver/153/PrintBox2/trunk/CashCodeLib/Messages/IdentificationMessage.cs
+END
+NAKMessage.cs
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/root/!svn/ver/153/PrintBox2/trunk/CashCodeLib/Messages/NAKMessage.cs
+END
+GetBillTableMessage.cs
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/root/!svn/ver/153/PrintBox2/trunk/CashCodeLib/Messages/GetBillTableMessage.cs
+END
+ACKMessage.cs
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/root/!svn/ver/153/PrintBox2/trunk/CashCodeLib/Messages/ACKMessage.cs
+END
+EnableBillTypesMessage.cs
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/root/!svn/ver/153/PrintBox2/trunk/CashCodeLib/Messages/EnableBillTypesMessage.cs
+END
+BasicMessage.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/root/!svn/ver/153/PrintBox2/trunk/CashCodeLib/Messages/BasicMessage.cs
+END
+ResetMessage.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/root/!svn/ver/153/PrintBox2/trunk/CashCodeLib/Messages/ResetMessage.cs
+END
+GetStatusMessage.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/root/!svn/ver/153/PrintBox2/trunk/CashCodeLib/Messages/GetStatusMessage.cs
+END
+SetSecurityMessage.cs
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/root/!svn/ver/153/PrintBox2/trunk/CashCodeLib/Messages/SetSecurityMessage.cs
+END

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/root/!svn/ver/187/PrintBox2/trunk/client/lib
+END
+HtmlRichTextBox.dll
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/root/!svn/ver/187/PrintBox2/trunk/client/lib/HtmlRichTextBox.dll
+END
+itextsharp.dll
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/root/!svn/ver/187/PrintBox2/trunk/client/lib/itextsharp.dll
+END
+log4net.dll
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/root/!svn/ver/187/PrintBox2/trunk/client/lib/log4net.dll
+END
+ImageButton.dll
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/root/!svn/ver/187/PrintBox2/trunk/client/lib/ImageButton.dll
+END
+log4net.xml
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/root/!svn/ver/187/PrintBox2/trunk/client/lib/log4net.xml
+END

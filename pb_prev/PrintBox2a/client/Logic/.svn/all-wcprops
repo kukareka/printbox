@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/root/!svn/ver/200/PrintBox2/trunk/client/Logic
+END
+Errors.cs
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/root/!svn/ver/186/PrintBox2/trunk/client/Logic/Errors.cs
+END
+ExceptionHandler.cs
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/root/!svn/ver/179/PrintBox2/trunk/client/Logic/ExceptionHandler.cs
+END
+SessionInfo.cs
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/root/!svn/ver/186/PrintBox2/trunk/client/Logic/SessionInfo.cs
+END
+RunOptions.cs
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/root/!svn/ver/179/PrintBox2/trunk/client/Logic/RunOptions.cs
+END
+State.cs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/root/!svn/ver/204/PrintBox2/trunk/client/Logic/State.cs
+END
+Tools.cs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/root/!svn/ver/179/PrintBox2/trunk/client/Logic/Tools.cs
+END
+FormatManager.cs
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/root/!svn/ver/186/PrintBox2/trunk/client/Logic/FormatManager.cs
+END
+Config.cs
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/root/!svn/ver/198/PrintBox2/trunk/client/Logic/Config.cs
+END
+Server.cs
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/root/!svn/ver/187/PrintBox2/trunk/client/Logic/Server.cs
+END
+PrintOptions.cs
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/root/!svn/ver/179/PrintBox2/trunk/client/Logic/PrintOptions.cs
+END

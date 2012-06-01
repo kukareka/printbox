@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/root/!svn/ver/200/PrintBox2/trunk/client/Logic/Wrappers
+END
+WordWrapper.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/root/!svn/ver/200/PrintBox2/trunk/client/Logic/Wrappers/WordWrapper.cs
+END
+PowerSource.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/root/!svn/ver/179/PrintBox2/trunk/client/Logic/Wrappers/PowerSource.cs
+END
+ThermalWrapper.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/root/!svn/ver/179/PrintBox2/trunk/client/Logic/Wrappers/ThermalWrapper.cs
+END
+PrinterWrapper.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/root/!svn/ver/200/PrintBox2/trunk/client/Logic/Wrappers/PrinterWrapper.cs
+END
+WinApi.cs
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/root/!svn/ver/179/PrintBox2/trunk/client/Logic/Wrappers/WinApi.cs
+END
+IDocumentWrapper.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/root/!svn/ver/198/PrintBox2/trunk/client/Logic/Wrappers/IDocumentWrapper.cs
+END
+CashCodeWrapper.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/root/!svn/ver/179/PrintBox2/trunk/client/Logic/Wrappers/CashCodeWrapper.cs
+END
+UsbWrapper.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/root/!svn/ver/200/PrintBox2/trunk/client/Logic/Wrappers/UsbWrapper.cs
+END
+PdfWrapper.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/root/!svn/ver/198/PrintBox2/trunk/client/Logic/Wrappers/PdfWrapper.cs
+END

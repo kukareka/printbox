@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/root/!svn/ver/187/PrintBox2/trunk/client/cert
+END
+ca.crt
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/root/!svn/ver/187/PrintBox2/trunk/client/cert/ca.crt
+END
+client.pfx
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/root/!svn/ver/187/PrintBox2/trunk/client/cert/client.pfx
+END
