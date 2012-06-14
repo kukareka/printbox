@@ -42,6 +42,7 @@
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -59,9 +60,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="model\ITicker.cs" />
+    <Compile Include="model\remote\RemoteControlServer.cs" />
+    <Compile Include="model\wrappers\cashcode\ICashcodeWrapper.cs" />
+    <Compile Include="model\wrappers\cashcode\TestCashCodeWrapper.cs" />
+    <Compile Include="model\wrappers\printer\IPrinterWrapper.cs" />
+    <Compile Include="model\wrappers\printer\TestPrinterWrapper.cs" />
+    <Compile Include="model\wrappers\receipt\IReceiptWrapper.cs" />
+    <Compile Include="model\wrappers\receipt\TestReceiptWrapper.cs" />
+    <Compile Include="model\wrappers\XpsWrapper.cs" />
     <Compile Include="presenters\PrintOptions.cs" />
+    <Compile Include="presenters\PrintProgress.cs" />
     <Compile Include="presenters\SessionInfo.cs" />
     <Compile Include="presenters\UserInfo.cs" />
+    <Compile Include="view\controls\loading\Block.xaml.cs">
+      <DependentUpon>Block.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\controls\loading\LoadingAnimation.xaml.cs">
+      <DependentUpon>LoadingAnimation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="view\dialogs\ControlDialog.xaml.cs">
       <DependentUpon>ControlDialog.xaml</DependentUpon>
     </Compile>
@@ -70,11 +87,17 @@
     </Compile>
     <Compile Include="view\converters\PasswordConverter.cs" />
     <Compile Include="view\converters\PhoneNumberConverter.cs" />
+    <Compile Include="view\dialogs\InstructionDialog.xaml.cs">
+      <DependentUpon>InstructionDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="view\dialogs\MoneyDialog.xaml.cs">
       <DependentUpon>MoneyDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\dialogs\PrintingDialog.xaml.cs">
       <DependentUpon>PrintingDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\dialogs\ServiceDialog.xaml.cs">
+      <DependentUpon>ServiceDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\tabs\DocumentTab.xaml.cs">
       <DependentUpon>DocumentTab.xaml</DependentUpon>
@@ -99,11 +122,35 @@
     <Compile Include="view\tabs\WelcomeTab.xaml.cs">
       <DependentUpon>WelcomeTab.xaml</DependentUpon>
     </Compile>
+    <Resource Include="res\styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="res\WhistlerBlue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Page Include="view\controls\loading\Block.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="view\controls\loading\LoadingAnimation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="view\dialogs\InstructionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="view\dialogs\MoneyDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="view\dialogs\PrintingDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\dialogs\ServiceDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

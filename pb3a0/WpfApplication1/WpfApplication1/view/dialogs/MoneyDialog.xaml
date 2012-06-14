@@ -13,8 +13,8 @@
     <Window.Background>
         <SolidColorBrush />
     </Window.Background>
-    
-    <Border CornerRadius="15" BorderThickness="2" BorderBrush="Gray" Background="White" Padding="10">
+
+    <Border Style="{StaticResource windowBorder}">
         <StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="31">
                 <TextBlock VerticalAlignment="Center" Text="Користувач "/>
@@ -23,7 +23,6 @@
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="31">
                 <TextBlock VerticalAlignment="Center" Text="Баланс "/>
                 <TextBlock VerticalAlignment="Center" Text="{Binding userInfo.Balance, Converter={StaticResource moneyConverter}}"/>
-                <Button Click="Add10ButtonClick">+10</Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="31">
                 <TextBlock VerticalAlignment="Center" Text="Вартість друку "/>

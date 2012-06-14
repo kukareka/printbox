@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="PrintBox2">
+</Property><Property Name="Solution File" Value="D:\git\printbox\pb_prev\PrintBox2a\PrintBox2.sln">
+</Property><Property Name="Date" Value="6 червня 2012 р.">
+</Property><Property Name="Time" Value="14:28">
+</Property></Properties><Event ErrorLevel="0" Project="PrintBox" Source="client\PrintBox.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="PrintBox" Source="client\PrintBox.csproj" Description="Converted">
+</Event><Event ErrorLevel="1" Project="CashCodeLib" Source="CashCodeLib\CashCodeLib.csproj" Description="Your project is targeting .NET Framework 2.0 or 3.0. If your project uses assemblies requiring a newer .NET Framework, your project will fail to build. You can change the .NET Framework version by clicking Properties on the project menu and then selecting a new version in the '.NET Framework' dropdown box. (In Visual Basic, this is located on the Compile tab by clicking the 'Advanced Compiler Options...' button.)">
+</Event><Event ErrorLevel="0" Project="CashCodeLib" Source="CashCodeLib\CashCodeLib.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="CashCodeLib" Source="CashCodeLib\CashCodeLib.csproj" Description="Converted">
+</Event><Event ErrorLevel="1" Project="TermoPrinterLib" Source="TermoPrinterLib\TermoPrinterLib.csproj" Description="Your project is targeting .NET Framework 2.0 or 3.0. If your project uses assemblies requiring a newer .NET Framework, your project will fail to build. You can change the .NET Framework version by clicking Properties on the project menu and then selecting a new version in the '.NET Framework' dropdown box. (In Visual Basic, this is located on the Compile tab by clicking the 'Advanced Compiler Options...' button.)">
+</Event><Event ErrorLevel="0" Project="TermoPrinterLib" Source="TermoPrinterLib\TermoPrinterLib.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="TermoPrinterLib" Source="TermoPrinterLib\TermoPrinterLib.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="WordViewDemo" Source="WordViewDemo\WordViewDemo.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="WordViewDemo" Source="WordViewDemo\WordViewDemo.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="WordViewWrapper" Source="WordViewWrapper\WordViewWrapper.vcproj" Description="Converting project file 'D:\git\printbox\pb_prev\PrintBox2a\WordViewWrapper\WordViewWrapper.vcproj'.">
+</Event><Event ErrorLevel="1" Project="WordViewWrapper" Source="WordViewWrapper\WordViewWrapper.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="WordViewWrapper" Source="WordViewWrapper\WordViewWrapper.vcproj" Description="Done converting to new project file 'D:\git\printbox\pb_prev\PrintBox2a\WordViewWrapper\WordViewWrapper.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="WordViewWrapper" Source="WordViewWrapper\WordViewWrapper.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="PrintBox2.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="PrintBox2.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="PrintBox" Source="client\PrintBox.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="CashCodeLib" Source="CashCodeLib\CashCodeLib.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="TermoPrinterLib" Source="TermoPrinterLib\TermoPrinterLib.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="WordViewDemo" Source="WordViewDemo\WordViewDemo.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

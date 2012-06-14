@@ -3,14 +3,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ControlDialog" Height="234" Width="476">
     
-    <Grid>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="30" VerticalAlignment="Top">
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0">Remoting URL:</TextBlock>
+            <TextBox x:Name="remotingUrl" Grid.Column="1" Text="tcp://localhost:8088/pb_test"/>
+            <Button Content="Connect" HorizontalAlignment="Right" Grid.Column="2" Click="RemotingConnect_Click" />
+        </Grid>
+        <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top">
             <Button Click="LoadButton_Click">Load</Button>
             <Button Click="PromptButton_Click">Prompt</Button>
             <Button Click="PasswordButton_Click">Password</Button>
             <Button Click="AlertButton_Click">Alert</Button>
             <ToggleButton Click="LoadingButton_Click">Loading</ToggleButton>
             <Button Click="OpenFolderButton_Click">Open C:</Button>
+            <Button Click="PrintReceipt_Click">Receipt</Button>
         </StackPanel>
-    </Grid>
+        <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top">
+            <Button Click="RemoteAdd10_Click">+10</Button>
+        </StackPanel>
+    </StackPanel>
 </Window>

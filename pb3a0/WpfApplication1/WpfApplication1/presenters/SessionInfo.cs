@@ -7,6 +7,7 @@ namespace WpfApplication1
         public DocumentInfo documentInfo { get; set; }
         public PrintOptions printOptions { get; set; }
         public UserInfo userInfo { get; set; }
+        public PrintProgress printProgress { get; set; }
 
         #region CanPrint
         public static DependencyProperty CanPrintProperty =
@@ -24,6 +25,7 @@ namespace WpfApplication1
             documentInfo = new DocumentInfo();
             printOptions = new PrintOptions();
             userInfo = new UserInfo();
+            printProgress = new PrintProgress();
         }
 
         public static void CanPrintChanges(DependencyObject d, DependencyPropertyChangedEventArgs e)

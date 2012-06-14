@@ -105,7 +105,7 @@ namespace WpfApplication1
                         }
                         foreach (FileInfo fi in dir.GetFiles())
                         {
-                            if ((App.Current as App).IsSupportedExtension(fi.Extension))
+                            if ((App.Current as App).xpsWrapper.IsSupportedExtension(fi.Extension))
                                 folderContents.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FILE,
                                     fi.Name, fi.FullName, (ImageSource)tab.FindResource("documentIcon")));
                         }

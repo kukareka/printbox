@@ -25,11 +25,6 @@ namespace WpfApplication1
             InitializeComponent();            
         }
 
-        private void Add10ButtonClick(object sender, RoutedEventArgs e)
-        {                   
-            app.sessionInfo.userInfo.Balance += 1000;
-        }
-
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;

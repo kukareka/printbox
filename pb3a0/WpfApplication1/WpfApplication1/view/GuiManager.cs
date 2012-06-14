@@ -11,7 +11,7 @@ namespace WpfApplication1
     public class GuiManager
     {
         LoadingDialog loadingDialog = null;
-
+        
         public string Prompt(string message, FlowDocument comment, IValueConverter converter, int length)
         {
             PromptDialog pd = new PromptDialog(message, comment, converter, length);
@@ -33,17 +33,33 @@ namespace WpfApplication1
         {         
             if (loading)
             {
-                this.loadingDialog = new LoadingDialog();
+                if (loadingDialog == null) loadingDialog = new LoadingDialog();
                 loadingDialog.Owner = App.Current.MainWindow;
                 App.Current.MainWindow.IsEnabled = false;
                 loadingDialog.Show();
             }
             else
             {
-                loadingDialog.Close();
-                loadingDialog = null;
+                loadingDialog.Hide();
                 App.Current.MainWindow.IsEnabled = true;
             }
+        }
+
+        public void OpenServiceDialog()
+        {
+            if ("555555".Equals(Prompt("Password", new FlowDocument(), new PasswordConverter(), 6)))
+            {
+                ServiceDialog sd = new ServiceDialog();
+                sd.Owner = App.Current.MainWindow;
+                sd.ShowDialog();
+            }
+        }
+
+        public void ShowInstruction()
+        {
+            InstructionDialog instructionDialog = new InstructionDialog();
+            instructionDialog.Owner = App.Current.MainWindow;
+            instructionDialog.ShowDialog();            
         }
     }
 }

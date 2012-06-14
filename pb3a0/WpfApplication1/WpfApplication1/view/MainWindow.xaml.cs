@@ -47,6 +47,11 @@ namespace WpfApplication1
             if (tts != null) tts.Visibility = Visibility.Visible;
         }
 
+        public void ShowWelcomeTab()
+        {
+            ShowTab(welcomeTab);
+        }
+
         public void ShowFolder(string folder = null)
         {
             if (folder != null) (folderTab.DataContext as FolderTab.Presenter).CurrentFolder = folder;
@@ -57,6 +62,16 @@ namespace WpfApplication1
         {
             documentTab.LoadDocument();
             ShowTab(documentTab);
+        }
+
+        private void Service_Click(object sender, MouseButtonEventArgs e)
+        {
+            app.guiManager.OpenServiceDialog();
+        }
+
+        private void Instruction_Click(object sender, RoutedEventArgs e)
+        {
+            app.guiManager.ShowInstruction();
         }
 
         #region Event handlers

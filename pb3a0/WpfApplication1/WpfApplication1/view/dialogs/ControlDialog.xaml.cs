@@ -12,6 +12,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using System.Windows.Controls.Primitives;
+using System.Runtime.Remoting.Channels.Tcp;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Serialization.Formatters;
+using System.Runtime.Remoting;
+using System.Collections;
+using System.Diagnostics;
 
 namespace WpfApplication1
 {
@@ -22,6 +28,7 @@ namespace WpfApplication1
     {
         OpenFileDialog openFileDlg = new OpenFileDialog();
         App app = Application.Current as App;
+        RemoteControlServer rc = null;
 
         public ControlDialog()
         {
@@ -30,6 +37,28 @@ namespace WpfApplication1
         }
 
         #region Event handlers
+        private void RemotingConnect_Click(object sender, RoutedEventArgs e)
+        {
+            BinaryServerFormatterSinkProvider serverProv = new BinaryServerFormatterSinkProvider();
+            serverProv.TypeFilterLevel = TypeFilterLevel.Full;
+            if (RemotingConfiguration.CustomErrorsMode != CustomErrorsModes.Off) RemotingConfiguration.CustomErrorsMode = CustomErrorsModes.Off;
+            
+            IDictionary propBag = new Hashtable();            
+            bool isSecure = false;
+            propBag["typeFilterLevel"] = TypeFilterLevel.Full;
+            propBag["name"] = "pb_test_client";  // here enter unique channel name
+            if (isSecure)  // if you want remoting comm to be secure and encrypted
+            {
+                propBag["secure"] = isSecure;
+                propBag["impersonate"] = false;  // change to true to do impersonation
+            }
+
+            TcpChannel chan = new TcpChannel(propBag, null, serverProv);
+            ChannelServices.RegisterChannel(chan, isSecure);
+            rc = (RemoteControlServer)Activator.GetObject(typeof(RemoteControlServer), remotingUrl.Text);
+            Debug.WriteLine("Connected to remote host {0}", rc.Version, "");            
+        }
+
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
             if (openFileDlg.ShowDialog() == false) return;
@@ -39,12 +68,12 @@ namespace WpfApplication1
 
         private void PromptButton_Click(object sender, RoutedEventArgs e)
         {
-            app.guiManager.Prompt("message", (FlowDocument)app.FindResource("commentEnterPhone"), new PhoneNumberConverter(), 10);
+            app.guiManager.Prompt("message", (FlowDocument)FindResource("commentEnterPhone"), new PhoneNumberConverter(), 10);
         }
 
         private void PasswordButton_Click(object sender, RoutedEventArgs e)
         {
-            app.guiManager.Prompt("message", (FlowDocument)app.FindResource("commentEnterPassword"), new PasswordConverter(), 10);
+            app.guiManager.Prompt("message", (FlowDocument)FindResource("commentEnterPassword"), new PasswordConverter(), 10);
         }
 
         private void AlertButton_Click(object sender, RoutedEventArgs e)
@@ -62,5 +91,17 @@ namespace WpfApplication1
             app.OpenFolder(@"c:\"); 
         }
         #endregion        
+
+        private void RemoteAdd10_Click(object sender, RoutedEventArgs e)
+        {
+            rc.MoneyIn(1000);
+        }
+
+
+
+        private void PrintReceipt_Click(object sender, RoutedEventArgs e)
+        {
+            (app.receiptWrapper as TestReceiptWrapper).WriteLine("receipt");
+        }
     }
 }

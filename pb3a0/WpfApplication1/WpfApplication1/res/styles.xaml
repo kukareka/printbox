@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="foreColor">#FF5482A1</Color>
+    <SolidColorBrush x:Key="foreColorBrush" Color="{StaticResource foreColor}"></SolidColorBrush>
+    <Style x:Key="pbWindow" TargetType="{x:Type Window}">
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="Foreground" Value="{StaticResource foreColorBrush}"/>
+        <Setter Property="FontFamily" Value="Verdana"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="ResizeMode" Value="NoResize" />
+    </Style>
+    <Style x:Key="pbDialog" TargetType="{x:Type Window}" BasedOn="{StaticResource pbWindow}">
+        <Setter Property="ShowInTaskbar" Value="False" />
+        <Setter Property="Opacity" Value="1"/>        
+        <Setter Property="AllowsTransparency" Value="True"/>
+        <Setter Property="SizeToContent" Value="WidthAndHeight"/>
+        <Setter Property="Background" Value="Transparent"/>        
+    </Style>
+    <Style x:Key="windowBorder" TargetType="{x:Type Border}">
+        <Setter Property="CornerRadius" Value="15"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="{StaticResource foreColorBrush}"/>            
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Margin" Value="10"  />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="{StaticResource foreColor}" BlurRadius="14" Opacity=".75" ShadowDepth="0" Direction="100" />
+            </Setter.Value>
+        </Setter>
+    </Style>    
+</ResourceDictionary>

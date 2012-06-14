@@ -8,10 +8,13 @@ namespace WpfApplication1
 {
     public class UserInfo : DependencyObject
     {
+        public bool isNewUser;
+        public bool isValidPassword;
+
         #region Properties
         #region Phone
         public static DependencyProperty PhoneProperty =
-            DependencyProperty.Register("Phone", typeof(string), typeof(UserInfo));
+            DependencyProperty.Register("Phone", typeof(string), typeof(UserInfo), new PropertyMetadata(PhoneChanged));
 
         public string Phone
         {
@@ -22,7 +25,7 @@ namespace WpfApplication1
 
         #region Password
         public static DependencyProperty PasswordProperty =
-            DependencyProperty.Register("Password", typeof(string), typeof(UserInfo));
+            DependencyProperty.Register("Password", typeof(string), typeof(UserInfo), new PropertyMetadata(PasswordChanged));
 
         public string Password
         {
@@ -41,6 +44,22 @@ namespace WpfApplication1
             set { SetValue(BalanceProperty, value); }
         }
         #endregion
+
+        #endregion
+
+        #region Event handlers
+        public static void PhoneChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            UserInfo u = d as UserInfo;
+            u.isNewUser = true;            
+        }
+
+        public static void PasswordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            UserInfo u = d as UserInfo;
+            u.isValidPassword = true;
+            u.Balance = 1000;
+        }
 
         #endregion
 

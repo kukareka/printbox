@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Xps.Packaging;
-using Word = Microsoft.Office.Interop.Word;
 using System.IO;
 using System.Diagnostics;
 using System.Windows.Documents;
+using System.Windows.Threading;
 
 namespace WpfApplication1
 {
@@ -13,86 +13,35 @@ namespace WpfApplication1
     /// </summary>
     public partial class App : Application
     {
-        private static string XPS_PRINTER_NAME = "Microsoft XPS Document Writer";
         public SessionInfo sessionInfo = new SessionInfo();
-        public GuiManager guiManager = new GuiManager();
-
-        string[] supportedExtensions = new string[] { ".doc", ".docx", ".rtf" };
-
-        public bool IsSupportedExtension(string ext)
-        {
-            return Array.IndexOf(supportedExtensions, ext) != -1;
-        }
-
-        public bool ConvertToXPS(string srcDocPath, string dstDocPath)
-        {
-            bool result = false;
-
-            if (IsSupportedExtension(Path.GetExtension(srcDocPath)))
-            {
-                try
-                {
-                    object missing = Type.Missing;
-                    Word.Application wordApp = new Word.Application();
-
-                    try
-                    {
-                        wordApp.Visible = false;
-
-                        object docPath = srcDocPath, confirmConversions = false, readOnly = true,
-                            addToRecent = false, passwordDocument = missing, passwordTemplate = missing, revert = true,
-                            writePasswordDocument = missing, writePasswordTemplate = missing, format = Word.WdOpenFormat.wdOpenFormatAuto,
-                            encoding = missing, visible = true, openAndRepair = false, documentDirection = missing, noEncodingDialog = true,
-                            xmlTransform = missing;
-                        Word.Document wordDoc = wordApp.Documents.OpenNoRepairDialog(ref docPath, ref confirmConversions, ref readOnly, ref addToRecent,
-                            ref passwordDocument, ref passwordTemplate, ref revert, ref writePasswordDocument, ref writePasswordTemplate, ref format, ref encoding,
-                            ref visible, ref openAndRepair, ref documentDirection, ref noEncodingDialog, ref xmlTransform);
-
-                        try
-                        {
-                            this.sessionInfo.documentInfo.PageCount = wordDoc.ComputeStatistics(Word.WdStatistic.wdStatisticPages);
-                            object background = false, range = Word.WdPrintOutRange.wdPrintAllDocument, outputFileName = dstDocPath,
-                                copies = 1, pageType = Word.WdPrintOutPages.wdPrintAllPages, printToFile = true, collate = false,
-                                manualDuplexPrint = false, printZoomColumn = 1, printZoomRow = 1;
-                            wordApp.ActivePrinter = XPS_PRINTER_NAME;
-                            wordDoc.PrintOut(ref background, ref missing, ref range, ref outputFileName,
-                                ref missing, ref missing, ref missing, ref copies,
-                                ref missing, ref pageType, ref printToFile, ref collate,
-                                ref missing, ref manualDuplexPrint, ref printZoomColumn,
-                                ref printZoomRow, ref missing, ref missing);
-
-                            result = true;
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.WriteLine(e.StackTrace);
-                        }
-
-                        {
-                            object saveChanges = Word.WdSaveOptions.wdDoNotSaveChanges;
-                            wordDoc.Close(ref saveChanges);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e.StackTrace);
-                    }
-
-                    {
-                        object saveChanges = Word.WdSaveOptions.wdDoNotSaveChanges;
-                        wordApp.Quit(ref saveChanges, ref missing, ref missing);
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.StackTrace);
-                }
-            }
-
-            return result;
-        }
+        public GuiManager guiManager;
         
+        public IPrinterWrapper printerWrapper = new TestPrinterWrapper();
+        public ICashcodeWrapper cashcodeWrapper = new TestCashCodeWrapper();
+        public IReceiptWrapper receiptWrapper = new TestReceiptWrapper();
+
+        public XpsWrapper xpsWrapper = new XpsWrapper();
+        public ITicker[] tickers;
+        public DispatcherTimer dispatcherTimer;
+        public RemoteControlServer remoteControlServer = new RemoteControlServer();
+
+        public App()
+        {
+            InitializeComponent();
+            guiManager = new GuiManager();
+            tickers = new ITicker[] { printerWrapper, cashcodeWrapper };
+
+            cashcodeWrapper.OnMoneyIn += Cashcode_MoneyIn;
+
+            remoteControlServer.Start();
+            dispatcherTimer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Background, new EventHandler(Tick), App.Current.Dispatcher);
+        }
+
+        public void Tick(Object sender, EventArgs e)
+        {
+            foreach (ITicker t in tickers) t.Tick();
+        }
+
         public bool LoadDocument(string documentPath)
         {
             sessionInfo.documentInfo.documentPath = documentPath;
@@ -102,9 +51,7 @@ namespace WpfApplication1
                 sessionInfo.documentInfo.xpsDocument.Close();
             }
 
-            sessionInfo.documentInfo.xpsDocumentPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToBinary().ToString("x") + ".xps");
-
-            if (ConvertToXPS(sessionInfo.documentInfo.documentPath, sessionInfo.documentInfo.xpsDocumentPath))
+            if (xpsWrapper.ConvertToXPS(sessionInfo.documentInfo.documentPath))
             {
                 sessionInfo.documentInfo.xpsDocument = new XpsDocument(sessionInfo.documentInfo.xpsDocumentPath, System.IO.FileAccess.Read);
                 sessionInfo.documentInfo.CurrentPage = 0;
@@ -128,15 +75,20 @@ namespace WpfApplication1
         {
             if (null != (sessionInfo.userInfo.Phone = guiManager.Prompt("Телефон", (FlowDocument)FindResource("commentEnterPhone"), new PhoneNumberConverter(), 10)))
             {
+                if (sessionInfo.userInfo.isNewUser) guiManager.Alert("New user");
                 if (null != (sessionInfo.userInfo.Password = guiManager.Prompt("Пароль", (FlowDocument)FindResource("commentEnterPassword"), new PasswordConverter(), 8)))
                 {
-                    MoneyDialog d = new MoneyDialog();
-                    d.Owner = MainWindow;
-                    if ((bool)d.ShowDialog())
+                    if (!sessionInfo.userInfo.isValidPassword) guiManager.Alert("Invalid password");
+                    else
                     {
-                        Print();
+                        MoneyDialog d = new MoneyDialog();
+                        d.Owner = MainWindow;
+                        if ((bool)d.ShowDialog())
+                        {
+                            Print();
+                        }
+                        d.Close();
                     }
-                    d.Close();
                 }
             }
             return false;
@@ -145,7 +97,19 @@ namespace WpfApplication1
         public void Print()
         {
             if (!sessionInfo.CanPrint) return;
-            
+            PrintingDialog d = new PrintingDialog();
+            d.Owner = MainWindow;
+            printerWrapper.Print();
+            bool r = (bool)d.ShowDialog();
+            d.Close();
+            if (r) (MainWindow as MainWindow).ShowWelcomeTab();
+            else (MainWindow as MainWindow).ShowFolder();
+        }
+
+        public void Cashcode_MoneyIn(object sender, EventArgs e)
+        {
+            MoneyInEventArgs m = e as MoneyInEventArgs;
+            sessionInfo.userInfo.Balance += m.balance;
         }
     }
 }
