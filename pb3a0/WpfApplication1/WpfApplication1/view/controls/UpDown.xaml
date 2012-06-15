@@ -4,15 +4,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="100">
-    <Grid>
+             d:DesignHeight="36" d:DesignWidth="100">
+    <Grid Height="36">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="30"/>
-            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="36"/>
+            <ColumnDefinition Width="36"/>
         </Grid.ColumnDefinitions>
         <TextBox x:Name="CurrentValueTextBox" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Stretch" VerticalContentAlignment="Center" TextAlignment="Right" FontSize="22" />
-        <Button Grid.Column="1" Content="+" Click="Up_Click" />
-        <Button Grid.Column="2" Content="-" Click="Down_Click" />
+        <Button Grid.Column="1"
+                Click="Up_Click">
+            <Button.Content>
+                <Path VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                      Data="M 5 0 L 5 5 L 0 5 L 0 13 L 5 13 L 5 18 L 13 18 L 13 13 L 18 13 L 18 5 L 13 5 L 13 0 Z"/>
+            </Button.Content>
+        </Button>
+        <Button Grid.Column="2"                
+                Click="Down_Click">
+            <Button.Content>
+                <Path VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                      Data="M 0 0 L 18 0 L 18 9 L 0 9 Z" />
+            </Button.Content>
+        </Button>
     </Grid>
 </UserControl>

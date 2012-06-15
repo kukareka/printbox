@@ -14,8 +14,10 @@
 
    
         <!-- Color Palette -->
-    <SolidColorBrush x:Key="OutsideFontColor" Color="#FF375162"/>
-    <SolidColorBrush x:Key="ButtonFontColor" Color="#FF375162"/>
+    <SolidColorBrush x:Key="OutsideFontColor"
+                     Color="#FF5482A1"/>
+    <SolidColorBrush x:Key="ButtonFontColor"
+                     Color="#FF5482A1"/>
         <Color x:Key="Focus">#FF04CCFF</Color>
         <Color x:Key="HyperlinkFocus">#FF2B54BA</Color>
         <Color x:Key="Calendar">#FF0066CC</Color>
@@ -499,7 +501,7 @@
                                 <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}"/>
                                 <Setter Property="Visibility" TargetName="DisabledVisualElement" Value="Visible"/>
                                 <Setter Property="Visibility" TargetName="DisabledOverlay" Value="Visible"/>
-                                <Setter Property="Visibility" TargetName="contentPresenter" Value="Collapsed"/>
+                                <!--<Setter Property="Visibility" TargetName="contentPresenter" Value="Collapsed"/>-->
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -1036,11 +1038,12 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ScrollBar}">
-                        <Grid x:Name="GridRoot" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
+                        <Grid x:Name="GridRoot" Width="36" Margin="-20 0 0 0">
+                        <!-- {DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}} --> 
                             <Grid.RowDefinitions>
-                                <RowDefinition MaxHeight="18"/>
+                                <RowDefinition MaxHeight="36"/>
                                 <RowDefinition Height="0.00001*"/>
-                                <RowDefinition MaxHeight="18"/>
+                                <RowDefinition MaxHeight="36"/>
                             </Grid.RowDefinitions>
                             <Rectangle Grid.RowSpan="5" RadiusX="0" RadiusY="0" StrokeThickness="1" Stroke="#FFF0F0F0" Fill="#FFEFEFEF"/>
                             <RepeatButton x:Name="DecreaseRepeat" Style="{DynamicResource NuclearRepeatButton}" Command="ScrollBar.LineUpCommand">
@@ -2299,7 +2302,9 @@
             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             <Setter Property="Padding" Value="4"/>
             <Setter Property="BorderThickness" Value="1"/>
-<Setter Property="Template" Value="{DynamicResource TextBoxTemplate}" />
+            <Setter Property="Foreground"
+                Value="{StaticResource OutsideFontColor}" />
+            <Setter Property="Template" Value="{DynamicResource TextBoxTemplate}" />
         </Style>
     
     <ControlTemplate x:Key="TextBoxTemplate" TargetType="{x:Type TextBox}">
