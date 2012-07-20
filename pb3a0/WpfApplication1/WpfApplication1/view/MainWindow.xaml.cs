@@ -28,7 +28,8 @@ namespace WpfApplication1
         public MainWindow()
         {
             DataContext = app.sessionInfo;
-            InitializeComponent();   
+            InitializeComponent();
+            WindowState = System.Windows.WindowState.Maximized;
             (new ControlDialog()).Show();
         }
         

@@ -33,6 +33,15 @@
                 </Grid.ColumnDefinitions>
                 <Grid Margin="10"
                       Grid.Column="0">
+                    <ScrollBar Orientation="Vertical"
+                               SmallChange="1"
+                               LargeChange="1"
+                               Maximum="{Binding documentInfo.PageCount, Mode=OneWay, Converter={StaticResource incrementalConverter}, ConverterParameter=-1}"
+                               Value="{Binding documentInfo.CurrentPage, Mode=TwoWay}"
+                               ViewportSize="1">
+                        
+                    </ScrollBar>
+                    <!--
                     <Button VerticalAlignment="Top"
                             Height="48"
                             Width="48"
@@ -45,6 +54,7 @@
                             Click="PageDownButton_Click"
                             Content="{StaticResource arrowDownPath}">                        
                     </Button>
+                    -->
                 </Grid>
                 <DockPanel Grid.Column="1"
                            Margin="10">
@@ -258,11 +268,19 @@
                     </TextBlock.Text>
                 </TextBlock>
             </StackPanel>
-            <Viewbox Margin="10">
-                <DocumentPageView x:Name="pageView"
-                                  PageNumber="{Binding documentInfo.CurrentPage}"></DocumentPageView>
+            <Viewbox Margin="10" >
+                <Border>
+                    <Border.Effect>
+                        <DropShadowEffect Color="LightGray"
+                                            BlurRadius="14"
+                                            Opacity=".75"
+                                            ShadowDepth="0"
+                                            Direction="100" />
+                    </Border.Effect>
+                    <DocumentPageView x:Name="pageView"
+                                PageNumber="{Binding documentInfo.CurrentPage}"></DocumentPageView>
+                </Border>
             </Viewbox>
         </DockPanel>
-
     </Grid>
 </UserControl>
