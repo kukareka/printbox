@@ -191,7 +191,7 @@ namespace WpfApplication1
             return SendRequest(url);
         }
 
-        public void ReceiveAuthData(string user, ref string passwordHash, ref bool newUser, ref float balance)
+        public void ReceiveAuthData(string user, ref string passwordHash, ref bool newUser, ref int balance)
         {
             string url = String.Format(SCRIPT_AUTH, serverUrl, boxId, user);
             WebRequest request = CreateRequest(url);
@@ -203,7 +203,7 @@ namespace WpfApplication1
             string[] data = responseText.Split(new char[] { '\n' });
             passwordHash = data[0];
             newUser = GetBool(data[1]);
-            balance = Convert.ToSingle(data[2], new CultureInfo("en-US"));
+            balance = Convert.ToInt32(data[2]);
             MarkPing();
         }
 

@@ -60,6 +60,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="model\Config.cs" />
+    <Compile Include="model\ErrorManager.cs" />
     <Compile Include="model\ITicker.cs" />
     <Compile Include="model\remote\RemoteControlServer.cs" />
     <Compile Include="model\Server.cs" />

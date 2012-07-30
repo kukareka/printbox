@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using log4net;
+using System.Security.Cryptography;
 
 namespace WpfApplication1
 {
     public class UserInfo : DependencyObject
     {
+        ILog log = LogManager.GetLogger(typeof(UserInfo));
         public bool isNewUser;
-        public bool isValidPassword;
+        public int totalMoneyIn = 0, totalBanknotesIn = 0;
 
         #region Properties
         #region Phone
@@ -25,7 +28,7 @@ namespace WpfApplication1
 
         #region Password
         public static DependencyProperty PasswordProperty =
-            DependencyProperty.Register("Password", typeof(string), typeof(UserInfo), new PropertyMetadata(PasswordChanged));
+            DependencyProperty.Register("Password", typeof(string), typeof(UserInfo));
 
         public string Password
         {
@@ -51,17 +54,34 @@ namespace WpfApplication1
         public static void PhoneChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             UserInfo u = d as UserInfo;
-            u.isNewUser = true;            
-        }
-
-        public static void PasswordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            UserInfo u = d as UserInfo;
-            u.isValidPassword = true;
-            u.Balance = 1000;
+            string pwd = "";
+            bool newUser = false;
+            int balance = 0;
+            try
+            {
+                (App.Current as App).server.ReceiveAuthData(u.Phone, ref pwd, ref newUser, ref balance);
+                u.Password = pwd;
+                u.isNewUser = newUser;
+                u.Balance = balance;
+            }
+            catch (Exception ex)
+            {
+                u.log.Error("Failed to receive auth data", ex);
+            }
         }
 
         #endregion
 
+
+        public bool IsValidPassword(string pwd)
+        {
+            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            byte[] bs = System.Text.Encoding.UTF8.GetBytes(pwd);
+            byte[] hash = md5.ComputeHash(bs);
+            System.Text.StringBuilder s = new System.Text.StringBuilder();
+            foreach (byte b in hash) s.Append(b.ToString("x2").ToLower());
+            string ret = s.ToString();
+            return ret.Equals(Password);
+        }
     }
 }

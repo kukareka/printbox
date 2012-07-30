@@ -35,5 +35,10 @@ namespace WpfApplication1
                 }
             }
         }
+
+        public uint DetectErrors()
+        {
+            return 0;
+        }
     }
 }

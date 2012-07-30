@@ -43,7 +43,8 @@ namespace WpfApplication1
             guiManager = new GuiManager();
             tickers = new ITicker[] { printerWrapper, cashcodeWrapper };
 
-            cashcodeWrapper.OnMoneyIn += Cashcode_MoneyIn;
+            cashcodeWrapper.OnMoneyIn += new EventHandler(Cashcode_MoneyIn);
+            printerWrapper.OnPrintDone += new EventHandler(printerWrapper_OnPrintDone);
 
             remoteControlServer.Start();
             dispatcherTimer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Background, new EventHandler(Tick), App.Current.Dispatcher);
@@ -56,6 +57,8 @@ namespace WpfApplication1
 
         public bool LoadDocument(string documentPath)
         {
+            sessionInfo = new SessionInfo();
+
             sessionInfo.documentInfo.documentPath = documentPath;
 
             if (sessionInfo.documentInfo.xpsDocument != null)
@@ -88,9 +91,10 @@ namespace WpfApplication1
             if (null != (sessionInfo.userInfo.Phone = guiManager.Prompt("Телефон", (FlowDocument)FindResource("commentEnterPhone"), new PhoneNumberConverter(), 10)))
             {
                 if (sessionInfo.userInfo.isNewUser) guiManager.Alert("New user");
-                if (null != (sessionInfo.userInfo.Password = guiManager.Prompt("Пароль", (FlowDocument)FindResource("commentEnterPassword"), new PasswordConverter(), 8)))
+                string pwd;
+                if (null != (pwd = guiManager.Prompt("Пароль", (FlowDocument)FindResource("commentEnterPassword"), new PasswordConverter(), 7)))
                 {
-                    if (!sessionInfo.userInfo.isValidPassword) guiManager.Alert("Invalid password");
+                    if (!sessionInfo.userInfo.IsValidPassword(pwd)) guiManager.Alert("Invalid password");
                     else
                     {
                         MoneyDialog d = new MoneyDialog();
@@ -121,13 +125,29 @@ namespace WpfApplication1
         public void Cashcode_MoneyIn(object sender, EventArgs e)
         {
             MoneyInEventArgs m = e as MoneyInEventArgs;
-            sessionInfo.userInfo.Balance += m.balance;
+            sessionInfo.userInfo.Balance += m.balance * 100;
+            sessionInfo.userInfo.totalMoneyIn += m.balance;
+            state.MoneyInside += m.balance;
+            ++state.BanknotesInside;
+            ++sessionInfo.userInfo.totalBanknotesIn;
             server.SendMoneyIn(sessionInfo.userInfo.Phone, m.balance);
+        }
+
+        public void printerWrapper_OnPrintDone(object sender, EventArgs e)
+        {
+            if (sessionInfo.printProgress.Status == PrintProgress.PrintingStatus.Done)
+            {
+                sessionInfo.userInfo.Balance -= sessionInfo.printOptions.PrintCost;
+            }
+            server.SendSession(sessionInfo.userInfo.Phone, 
+                sessionInfo.printProgress.Status == PrintProgress.PrintingStatus.Done ? 
+                sessionInfo.printOptions.PagesToPrint : 0, 
+                sessionInfo.userInfo.totalMoneyIn, sessionInfo.userInfo.totalBanknotesIn);
         }
 
         public uint DetectErrors()
         {
-            throw new NotImplementedException();
+            return 0;
         }
     }
 }

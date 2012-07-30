@@ -43,14 +43,15 @@ namespace WpfApplication1
                 TextWriter t = new StreamWriter(stateFilePath);
                 x.Serialize(t, this);
                 t.Close();
-                OnStateChanged();
+                //OnStateChanged();
             }
         }
 
-
+        /*
         public delegate void OnStateChangedEvent();
         [field: NonSerializedAttribute()]
         public event OnStateChangedEvent OnStateChanged;
+        */
 
         public static State Load()
         {

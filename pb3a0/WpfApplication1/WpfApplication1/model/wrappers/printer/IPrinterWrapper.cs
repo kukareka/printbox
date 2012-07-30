@@ -11,5 +11,6 @@ namespace WpfApplication1
         void Print();
         void UpdateTonerRemaining();
         int TonerRemaining { get; }
+        uint DetectErrors();
     }
 }

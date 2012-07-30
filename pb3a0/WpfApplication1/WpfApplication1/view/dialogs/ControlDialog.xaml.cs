@@ -94,10 +94,8 @@ namespace WpfApplication1
 
         private void RemoteAdd10_Click(object sender, RoutedEventArgs e)
         {
-            rc.MoneyIn(1000);
+            (app.cashcodeWrapper as TestCashCodeWrapper).MoneyIn(10);
         }
-
-
 
         private void PrintReceipt_Click(object sender, RoutedEventArgs e)
         {
