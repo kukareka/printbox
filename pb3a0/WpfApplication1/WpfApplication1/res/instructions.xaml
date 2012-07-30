@@ -1,4 +1,5 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:pb="clr-namespace:WpfApplication1;assembly=WpfApplication1">
     <FlowDocument x:Key="commentEnterPhone" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               ColumnWidth="400" FontSize="14" FontFamily="Georgia">
         <Paragraph>
@@ -15,6 +16,9 @@
               ColumnWidth="400" FontSize="14" FontFamily="Georgia">
         <Paragraph>
             Вкажіть <Bold>пароль</Bold> доступу
+        </Paragraph>
+        <Paragraph>
+            <Hyperlink Command="{x:Static pb:PromptDialog.remindPasswordCmd}">Нагадати пароль</Hyperlink>
         </Paragraph>
     </FlowDocument>
 </ResourceDictionary>

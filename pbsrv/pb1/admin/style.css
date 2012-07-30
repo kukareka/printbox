@@ -1,0 +1,11 @@
+body { font: 62.5% sans-serif; margin: 24px;}
+#content { text-align:center; }
+#filters { font-size: 110%; padding-top: 24px; }
+#dataTable { padding: 24px; font-size: 130%; }
+#dataTable thead { background: #d0d0d0; font-weight: bold;}
+#dataTable tbody tr:nth-child(even) {background: #f0f0f0;}
+#dataTable tbody tr:nth-child(odd) {background: #ffffff;}
+#dataTable td {padding: 8px 18px 8px 18px;}			
+#dataTable tfoot {background: #ffffff; font-weight: bold;}
+.ok {color:green; font-weight: bold; font-size: 90%;}
+.err {color:red; font-weight: bold; font-size: 90%;}

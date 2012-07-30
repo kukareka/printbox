@@ -5,6 +5,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Windows.Documents;
 using System.Windows.Threading;
+using System.Windows.Input;
 
 namespace WpfApplication1
 {
@@ -15,7 +16,11 @@ namespace WpfApplication1
     {
         public SessionInfo sessionInfo = new SessionInfo();
         public GuiManager guiManager;
-        
+
+        public Config config;
+        public State state;
+        public Server server;
+
         public IPrinterWrapper printerWrapper = new TestPrinterWrapper();
         public ICashcodeWrapper cashcodeWrapper = new TestCashCodeWrapper();
         public IReceiptWrapper receiptWrapper = new TestReceiptWrapper();
@@ -25,9 +30,16 @@ namespace WpfApplication1
         public DispatcherTimer dispatcherTimer;
         public RemoteControlServer remoteControlServer = new RemoteControlServer();
 
+        public bool MaintenanceInProgress { get; set; }
+
         public App()
         {
             InitializeComponent();
+
+            config = Config.Load();
+            state = State.Load();
+            server = new Server();
+
             guiManager = new GuiManager();
             tickers = new ITicker[] { printerWrapper, cashcodeWrapper };
 
@@ -110,6 +122,12 @@ namespace WpfApplication1
         {
             MoneyInEventArgs m = e as MoneyInEventArgs;
             sessionInfo.userInfo.Balance += m.balance;
+            server.SendMoneyIn(sessionInfo.userInfo.Phone, m.balance);
+        }
+
+        public uint DetectErrors()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -9,5 +9,7 @@ namespace WpfApplication1
     {
         event EventHandler OnPrintDone;
         void Print();
+        void UpdateTonerRemaining();
+        int TonerRemaining { get; }
     }
 }

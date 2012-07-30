@@ -128,12 +128,12 @@ namespace WpfApplication1
             PagesToPrint = 1 + PrintRangeTo - PrintRangeFrom;
             SheetsToPrint = (PagesToPrint + PagesPerSheet - 1) / PagesPerSheet * Copies;
             PrintCost = PageCost * SheetsToPrint;
-            Debug.WriteLine("Copies: {0}", Copies);
-            Debug.WriteLine("Range: {0}-{1}", PrintRangeFrom, PrintRangeTo);
-            Debug.WriteLine("Pages per sheet: {0}", PagesPerSheet);
-            Debug.WriteLine("Duplex: {0}", Duplex);
-            Debug.WriteLine("Sheets: {0}", SheetsToPrint);
-            Debug.WriteLine("Cost: {0}", PrintCost);
+            Debug.WriteLine(String.Format("Copies: {0}", Copies));
+            Debug.WriteLine(String.Format("Range: {0}-{1}", PrintRangeFrom, PrintRangeTo));
+            Debug.WriteLine(String.Format("Pages per sheet: {0}", PagesPerSheet));
+            Debug.WriteLine(String.Format("Duplex: {0}", Duplex));
+            Debug.WriteLine(String.Format("Sheets: {0}", SheetsToPrint));
+            Debug.WriteLine(String.Format("Cost: {0}", PrintCost));
         }
         #endregion
         #endregion

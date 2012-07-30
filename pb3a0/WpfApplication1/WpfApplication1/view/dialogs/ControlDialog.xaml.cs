@@ -56,7 +56,7 @@ namespace WpfApplication1
             TcpChannel chan = new TcpChannel(propBag, null, serverProv);
             ChannelServices.RegisterChannel(chan, isSecure);
             rc = (RemoteControlServer)Activator.GetObject(typeof(RemoteControlServer), remotingUrl.Text);
-            Debug.WriteLine("Connected to remote host {0}", rc.Version, "");            
+            Debug.WriteLine(String.Format("Connected to remote host {0}", rc.Version));
         }
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)

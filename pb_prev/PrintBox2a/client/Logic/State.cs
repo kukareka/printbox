@@ -79,5 +79,5 @@ namespace PrintBox.Logic
         {
             return System.AppDomain.CurrentDomain.BaseDirectory + stateFileName;
         }
-    };
+    }
 }

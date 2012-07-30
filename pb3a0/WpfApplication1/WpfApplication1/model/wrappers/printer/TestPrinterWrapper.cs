@@ -17,6 +17,12 @@ namespace WpfApplication1
             app.sessionInfo.printProgress.Status = PrintProgress.PrintingStatus.InProgress;
         }
 
+        public void UpdateTonerRemaining()
+        {
+        }
+
+        public int TonerRemaining { get { return 20; } }
+
         public void Tick()
         {
             App app = App.Current as App;

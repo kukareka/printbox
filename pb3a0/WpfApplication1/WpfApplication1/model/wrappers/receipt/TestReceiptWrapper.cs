@@ -10,7 +10,7 @@ namespace WpfApplication1
     {
         public void WriteLine(string s)
         {
-            Debug.WriteLine("Receipt: {0}", s, 0);
+            Debug.WriteLine(String.Format("Receipt: {0}", s, 0));
         }
     }
 }
