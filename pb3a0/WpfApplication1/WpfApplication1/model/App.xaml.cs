@@ -17,8 +17,8 @@ namespace WpfApplication1
         public SessionInfo sessionInfo = new SessionInfo();
         public GuiManager guiManager;
 
-        public Config config;
-        public State state;
+        public Config config { get; set; }
+        public State state { get; set; }
         public Server server;
 
         public IPrinterWrapper printerWrapper = new TestPrinterWrapper();
@@ -29,8 +29,9 @@ namespace WpfApplication1
         public ITicker[] tickers;
         public DispatcherTimer dispatcherTimer;
         public RemoteControlServer remoteControlServer = new RemoteControlServer();
+        public ErrorManager errorManager = new ErrorManager();
 
-        public bool MaintenanceInProgress { get; set; }
+        public bool onService { get; set; }
 
         public App()
         {
@@ -58,6 +59,7 @@ namespace WpfApplication1
         public bool LoadDocument(string documentPath)
         {
             sessionInfo = new SessionInfo();
+            MainWindow.DataContext = sessionInfo;
 
             sessionInfo.documentInfo.documentPath = documentPath;
 
@@ -145,9 +147,17 @@ namespace WpfApplication1
                 sessionInfo.userInfo.totalMoneyIn, sessionInfo.userInfo.totalBanknotesIn);
         }
 
-        public uint DetectErrors()
+        public void DoService()
         {
-            return 0;
+            if (config.AdminCode.Equals(guiManager.Prompt("Password", new FlowDocument(), new PasswordConverter(), 6)))
+            {
+                onService = true;
+                ServiceDialog sd = new ServiceDialog();
+                sd.Owner = MainWindow;
+                sd.ShowDialog();
+                server.SendMaintenance();
+                onService = false;
+            }
         }
     }
 }

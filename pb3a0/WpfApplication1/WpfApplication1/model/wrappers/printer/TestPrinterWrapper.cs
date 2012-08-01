@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace WpfApplication1
 {
-    public class TestPrinterWrapper : IPrinterWrapper
+    public class TestPrinterWrapper : PrinterBase, IPrinterWrapper
     {
         public event EventHandler OnPrintDone;
 

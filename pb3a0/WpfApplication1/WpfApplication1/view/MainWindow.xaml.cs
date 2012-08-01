@@ -67,7 +67,7 @@ namespace WpfApplication1
 
         private void Service_Click(object sender, MouseButtonEventArgs e)
         {
-            app.guiManager.OpenServiceDialog();
+            app.DoService();
         }
 
         private void Instruction_Click(object sender, RoutedEventArgs e)

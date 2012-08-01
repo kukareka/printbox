@@ -45,16 +45,6 @@ namespace WpfApplication1
             }
         }
 
-        public void OpenServiceDialog()
-        {
-            if ("555555".Equals(Prompt("Password", new FlowDocument(), new PasswordConverter(), 6)))
-            {
-                ServiceDialog sd = new ServiceDialog();
-                sd.Owner = App.Current.MainWindow;
-                sd.ShowDialog();
-            }
-        }
-
         public void ShowInstruction()
         {
             InstructionDialog instructionDialog = new InstructionDialog();

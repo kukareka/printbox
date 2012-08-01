@@ -10,7 +10,13 @@
     </Window.Resources>
     <DockPanel>
         <Grid DockPanel.Dock="Bottom" Margin="15 0 15 10">
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="4">Термінал 2020</TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="4">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="Термінал {0}. Сторінок у лотку: {1}.">
+                        <Binding Path="app.config.BoxID" />
+                        <Binding Path="app.state.PaperInside" />
+                    </MultiBinding>
+                </TextBlock.Text></TextBlock>
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4" MouseDown="Service_Click">В разі виникнення проблем зателефонуйте (067) 238-24-96</TextBlock>
             <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="4" Click="Instruction_Click">Інструкція</Button>
         </Grid>

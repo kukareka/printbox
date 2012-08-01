@@ -5,11 +5,35 @@
         WindowStartupLocation="CenterOwner" Style="{StaticResource pbDialog}">
     <Border Style="{StaticResource windowBorder}">
         <StackPanel Width="300">
-            <Button Content="Папір" />
-            <Button Content="Гроші" />
-            <Button Content="Черга" />
-            <Button Content="Тест" />
-            <Button Content="Вихід" Click="Close_Click" />
+            <Button Content="Папір"
+                    Height="60"
+                    Margin="5"
+                    Click="Paper_Click" />
+            <Button Content="Гроші"
+                    Height="60"
+                    Margin="5"
+                    Click="Money_Click" />
+            <Button Content="Черга"
+                    Height="60"
+                    Margin="5"
+                    Click="PrintQueue_Click" />
+            <Button Content="Тест"
+                    Height="60"
+                    Margin="5"
+                    Click="Test_Click" />
+            <Button Content="Вихід"
+                    Click="Close_Click"
+                    Height="60"
+                    Margin="5" />
+            <TextBlock HorizontalAlignment="Center"
+                       Margin="10">
+                <TextBlock.Text> 
+                    <MultiBinding StringFormat="В терміналі {0} грн. (банкнот - {1} шт.)">
+                        <Binding Path="MoneyInside" />
+                        <Binding Path="BanknotesInside" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
         </StackPanel>
     </Border>
 </Window>

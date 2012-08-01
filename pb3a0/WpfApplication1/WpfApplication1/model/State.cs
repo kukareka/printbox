@@ -4,36 +4,48 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using System.IO;
+using System.Windows;
 
 namespace WpfApplication1
 {
-    public class State
+    public class State : DependencyObject
     {
         private static string stateFilePath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "state.xml");
 
-        private bool initialized = false;
-
-        private int _paperInside;
-        private int _banknotesInside;
-        private int _moneyInside;
+        #region PaperInside
+        public static DependencyProperty PaperInsideProperty =
+           DependencyProperty.Register("PaperInside", typeof(int), typeof(State), new PropertyMetadata(new PropertyChangedCallback(PropertyChanged)));
 
         public int PaperInside
         {
-            get { return _paperInside; }
-            set { _paperInside = value; Save(); }
+            get { return (int)GetValue(PaperInsideProperty); }
+            set { SetValue(PaperInsideProperty, value); }
         }
+        #endregion
+
+        private bool initialized = false;
+
+        #region BanknotesInside
+        public static DependencyProperty BanknotesInsideProperty =
+           DependencyProperty.Register("BanknotesInside", typeof(int), typeof(State), new PropertyMetadata(new PropertyChangedCallback(PropertyChanged)));
 
         public int BanknotesInside
         {
-            get { return _banknotesInside; }
-            set { _banknotesInside = value; Save(); }
+            get { return (int)GetValue(BanknotesInsideProperty); }
+            set { SetValue(BanknotesInsideProperty, value); }
         }
+        #endregion
+
+        #region MoneyInside
+        public static DependencyProperty MoneyInsideProperty =
+           DependencyProperty.Register("MoneyInside", typeof(int), typeof(State), new PropertyMetadata(new PropertyChangedCallback(PropertyChanged)));
 
         public int MoneyInside
         {
-            get { return _moneyInside; }
-            set { _moneyInside = value; Save(); }
+            get { return (int)GetValue(MoneyInsideProperty); }
+            set { SetValue(MoneyInsideProperty, value); }
         }
+        #endregion
 
         public void Save()
         {
@@ -43,15 +55,8 @@ namespace WpfApplication1
                 TextWriter t = new StreamWriter(stateFilePath);
                 x.Serialize(t, this);
                 t.Close();
-                //OnStateChanged();
             }
         }
-
-        /*
-        public delegate void OnStateChangedEvent();
-        [field: NonSerializedAttribute()]
-        public event OnStateChangedEvent OnStateChanged;
-        */
 
         public static State Load()
         {
@@ -67,11 +72,16 @@ namespace WpfApplication1
             else
             {
                 state = new State();
-                state._paperInside = (App.Current as App).config.MaxPaper;
-                state._moneyInside = state._banknotesInside = 0;
+                state.PaperInside = (App.Current as App).config.MaxPaper;
+                state.MoneyInside = state.BanknotesInside = 0;
             }
             state.initialized = true;
             return state;
+        }
+
+        public static void PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as State).Save();
         }
     };
 }

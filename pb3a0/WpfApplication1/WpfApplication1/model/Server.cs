@@ -63,9 +63,9 @@ namespace WpfApplication1
         {
             DateTime now = DateTime.Now;
             DateTime nextTestTime = lastTestTime.AddSeconds(testInterval);
-            if (!(App.Current as App).MaintenanceInProgress && (nextTestTime.CompareTo(now) <= 0))
+            if (!(App.Current as App).onService && (nextTestTime.CompareTo(now) <= 0))
             {
-                uint errors = (App.Current as App).DetectErrors();
+                uint errors = (App.Current as App).errorManager.DetectErrors();
 
                 if (errors != lastErrors)
                 {
@@ -133,7 +133,7 @@ namespace WpfApplication1
             int banknotes = (App.Current as App).state.BanknotesInside;
             (App.Current as App).printerWrapper.UpdateTonerRemaining();
             int toner = (App.Current as App).printerWrapper.TonerRemaining;
-            uint errors = (App.Current as App).MaintenanceInProgress ? lastErrors : (App.Current as App).DetectErrors();
+            uint errors = (App.Current as App).onService ? lastErrors : (App.Current as App).errorManager.DetectErrors();
             string url = String.Format(SCRIPT_PING, serverUrl, boxId, paper, money, banknotes, toner, errors);
             if (SendRequest(url))
             {
@@ -148,7 +148,7 @@ namespace WpfApplication1
 
         public bool SendSession(string user, int pages, int money, int banknotes)
         {
-            uint errors = (App.Current as App).DetectErrors();
+            uint errors = (App.Current as App).errorManager.DetectErrors();
             string url = String.Format(SCRIPT_SESSION, serverUrl, boxId, user, pages, money, banknotes, errors,
                         (App.Current as App).config.PageCost);
             if (SendRequest(url))
@@ -212,7 +212,7 @@ namespace WpfApplication1
             int paper = (App.Current as App).state.PaperInside;
             int money = (App.Current as App).state.MoneyInside;
             int banknotes = (App.Current as App).state.BanknotesInside;
-            uint errors = (App.Current as App).DetectErrors();
+            uint errors = (App.Current as App).errorManager.DetectErrors();
             string url = String.Format(SCRIPT_MAINTENANCE, serverUrl, boxId, paper, money, banknotes, errors);
             if (SendRequest(url))
             {
@@ -239,9 +239,9 @@ namespace WpfApplication1
             DateTime nextTestTime = lastTestTime.AddSeconds(testInterval);
             DateTime nextPingTime = lastPingTime.AddSeconds(pingInterval);
 
-            if (!(App.Current as App).MaintenanceInProgress && (nextTestTime.CompareTo(now) <= 0))
+            if (!(App.Current as App).onService && (nextTestTime.CompareTo(now) <= 0))
             {
-                uint errors = (App.Current as App).DetectErrors();
+                uint errors = (App.Current as App).errorManager.DetectErrors();
 
                 if (errors != lastErrors)
                 {

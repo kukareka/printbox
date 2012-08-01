@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 
-namespace WpfApplication1.model
+namespace WpfApplication1
 {
     public class ErrorManager
     {
