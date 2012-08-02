@@ -35,7 +35,8 @@ namespace WpfApplication1
         {
             Presenter.FolderTabFileInfo f = (sender as FrameworkElement).DataContext as Presenter.FolderTabFileInfo;
             if (f.FileType == Presenter.FolderTabFileInfo.TYPE_FOLDER) presenter.CurrentFolder = f.Path;
-            else if (f.FileType == Presenter.FolderTabFileInfo.TYPE_FILE) (App.Current as App).LoadDocument(f.Path);
+            else if (f.FileType == Presenter.FolderTabFileInfo.TYPE_FILE_SUPPORTED) (App.Current as App).LoadDocument(f.Path);
+            else (App.Current as App).guiManager.Alert("Нажаль, цей тип файлів не підтримується. Проте, його можна перетворити у формат XPS (див. інструкцію).");
         }
 
         private void Button_Up(object sender, RoutedEventArgs e)
@@ -51,7 +52,9 @@ namespace WpfApplication1
             public class FolderTabFileInfo
             {
                 public const int TYPE_FOLDER = 1;
-                public const int TYPE_FILE = 2;
+                public const int TYPE_FILE_SUPPORTED = 2;
+                public const int TYPE_FILE_UNSUPPORTED = 3;
+
 
                 public FolderTabFileInfo(int type, string name, string path, ImageSource icon)
                 {
@@ -101,14 +104,21 @@ namespace WpfApplication1
                             }
                             catch (Exception)
                             {
-                            }
+                            }                        
                         }
+
+                        List<FolderTabFileInfo> unsupportedFiles = new List<FolderTabFileInfo>();
+
                         foreach (FileInfo fi in dir.GetFiles())
                         {
                             if ((App.Current as App).xpsWrapper.IsSupportedExtension(fi.Extension))
-                                folderContents.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FILE,
-                                    fi.Name, fi.FullName, (ImageSource)tab.FindResource("documentIcon")));
+                                folderContents.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FILE_SUPPORTED,
+                                    fi.Name, fi.FullName, (ImageSource)tab.FindResource("documentSupportedIcon")));
+                            else unsupportedFiles.Add(new FolderTabFileInfo(FolderTabFileInfo.TYPE_FILE_UNSUPPORTED,
+                                    fi.Name, fi.FullName, (ImageSource)tab.FindResource("documentUnsupportedIcon")));
                         }
+
+                        foreach (FolderTabFileInfo f in unsupportedFiles) folderContents.Add(f);
                     }
                     catch (Exception)
                     {

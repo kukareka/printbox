@@ -14,6 +14,8 @@ namespace WpfApplication1
     /// </summary>
     public partial class App : Application
     {
+        public static RoutedCommand RemindPassword = new RoutedCommand();
+
         public SessionInfo sessionInfo = new SessionInfo();
         public GuiManager guiManager;
 
@@ -56,10 +58,12 @@ namespace WpfApplication1
             foreach (ITicker t in tickers) t.Tick();
         }
 
-        public bool LoadDocument(string documentPath)
+        public void LoadDocument(string documentPath)
         {
             sessionInfo = new SessionInfo();
             MainWindow.DataContext = sessionInfo;
+
+            guiManager.Loading(true);
 
             sessionInfo.documentInfo.documentPath = documentPath;
 
@@ -73,9 +77,9 @@ namespace WpfApplication1
                 sessionInfo.documentInfo.xpsDocument = new XpsDocument(sessionInfo.documentInfo.xpsDocumentPath, System.IO.FileAccess.Read);
                 sessionInfo.documentInfo.CurrentPage = 0;
                 (MainWindow as MainWindow).LoadDocument();
-                return true;
             }
-            else return false;
+
+            guiManager.Loading(false);
         }
 
         public void OpenFolder(string folder)
@@ -158,6 +162,11 @@ namespace WpfApplication1
                 server.SendMaintenance();
                 onService = false;
             }
+        }
+
+        public void RemindPassword_Exec()
+        {
+            (Current as App).guiManager.Alert("Password SMS sent");
         }
     }
 }

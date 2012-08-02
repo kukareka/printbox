@@ -10,9 +10,10 @@
         <ResourceDictionary>
             <BitmapImage x:Key="folderIcon"
                          UriSource="../../res/img/folder.png" />
-            <BitmapImage x:Key="documentIcon"
-                         UriSource="../../res/img/document.png" />
-
+            <BitmapImage x:Key="documentSupportedIcon"
+                         UriSource="../../res/img/doc_supported.png" />
+            <BitmapImage x:Key="documentUnsupportedIcon"
+                         UriSource="../../res/img/doc_unsupported.png" />
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel>

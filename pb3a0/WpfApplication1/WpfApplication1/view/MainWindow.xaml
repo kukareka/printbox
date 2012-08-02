@@ -9,7 +9,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <DockPanel>
-        <Grid DockPanel.Dock="Bottom" Margin="15 0 15 10">
+        <Grid DockPanel.Dock="Bottom" Margin="15 0 15 10" Height="50">
             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="4">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="Термінал {0}. Сторінок у лотку: {1}.">
@@ -18,7 +18,23 @@
                     </MultiBinding>
                 </TextBlock.Text></TextBlock>
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4" MouseDown="Service_Click">В разі виникнення проблем зателефонуйте (067) 238-24-96</TextBlock>
-            <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="4" Click="Instruction_Click">Інструкція</Button>
+            <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="4" Click="Instruction_Click" Height="40" Padding="10 4 10 4">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Border CornerRadius="10"
+                        Height="20"
+                        Width="20"
+                        BorderThickness="2"
+                        BorderBrush="Red">
+                        <TextBlock VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   FontFamily="Arial"
+                                   FontWeight="Bold"
+                                   Foreground="Red"
+                                   FontSize="14">?</TextBlock>
+                </Border>
+                    <TextBlock VerticalAlignment="Center" Margin="5 0 0 0">Інструкція</TextBlock>
+                </StackPanel>
+            </Button>
         </Grid>
         <Border Style="{StaticResource windowBorder}" Padding="10 20 10 20">                
             <Grid x:Name="tabs" Grid.Row="1">

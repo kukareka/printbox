@@ -19,8 +19,6 @@ namespace WpfApplication1
     /// </summary>
     public partial class PromptDialog : Window
     {
-        public static RoutedCommand remindPasswordCmd = new RoutedCommand();
-
         public PromptDialog(string message, FlowDocument comment, IValueConverter converter, int length)
         {
             InitializeComponent();
@@ -50,14 +48,9 @@ namespace WpfApplication1
             Comment.Document = new FlowDocument();
         }
 
-        private void remindPasswordCmd_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void RemindPassword(object sender, ExecutedRoutedEventArgs e)
         {
-            (App.Current as App).guiManager.Alert("Password SMS sent");
-        }
-
-        private void remindPasswordCmd_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {            
-            e.CanExecute = true;
+            (App.Current as App).RemindPassword_Exec();
         }
     }
 }

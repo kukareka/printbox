@@ -3,9 +3,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             xmlns:sys="clr-namespace:System;assembly=System"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style x:Key="redCenter" TargetType="{x:Type TextBlock}">
+            <Setter Property="TextAlignment"
+                    Value="Center" />
+            <Setter Property="Foreground"
+                    Value="#e31e24" />
+            <Setter Property="FontSize"
+                    Value="22" />
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+            <Setter Property="Margin"
+                    Value="10" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="PrintBox" FontSize="22" FontWeight="Bold" />
+        <Image HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Width="695"
+               Height="358"
+               Stretch="Fill"
+               Source="/WpfApplication1;component/res/img/logo1.png" />
+        <StackPanel Orientation="Vertical"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Margin="0 540 0 0">
+                <TextBlock Style="{StaticResource redCenter}">Друк формату А4</TextBlock>
+                <TextBlock Style="{StaticResource redCenter}">
+                    <TextBlock.Text>
+                        <Binding StringFormat="{}Вартість {0} коп./стор."
+                                 Path="app.config.PageCost" />
+                    </TextBlock.Text>
+                </TextBlock>
+                <TextBlock Style="{StaticResource redCenter}">Формати файлів DOC, DOCX, RTF, XPS</TextBlock>
+            </StackPanel>
+       
     </Grid>
 </UserControl>

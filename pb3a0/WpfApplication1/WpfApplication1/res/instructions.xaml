@@ -17,8 +17,8 @@
         <Paragraph>
             Вкажіть <Bold>пароль</Bold> доступу
         </Paragraph>
-        <Paragraph>
-            <Hyperlink Command="{x:Static pb:PromptDialog.remindPasswordCmd}">Нагадати пароль</Hyperlink>
-        </Paragraph>
+        <BlockUIContainer>
+            <Button Command="{x:Static pb:App.RemindPassword}">Нагадати пароль</Button>
+        </BlockUIContainer>
     </FlowDocument>
 </ResourceDictionary>

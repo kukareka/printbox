@@ -73,6 +73,7 @@
     <Compile Include="model\wrappers\printer\TestPrinterWrapper.cs" />
     <Compile Include="model\wrappers\receipt\IReceiptWrapper.cs" />
     <Compile Include="model\wrappers\receipt\TestReceiptWrapper.cs" />
+    <Compile Include="model\wrappers\UsbWrapper.cs" />
     <Compile Include="model\wrappers\XpsWrapper.cs" />
     <Compile Include="presenters\PrintOptions.cs" />
     <Compile Include="presenters\PrintProgress.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="view\tabs\WelcomeTab.xaml.cs">
       <DependentUpon>WelcomeTab.xaml</DependentUpon>
     </Compile>
+    <Resource Include="res\img\logo1.png" />
     <Resource Include="res\styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -240,12 +242,12 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="res\img\document.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="res\img\folder.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="res\img\doc_supported.png" />
+    <Resource Include="res\img\doc_unsupported.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

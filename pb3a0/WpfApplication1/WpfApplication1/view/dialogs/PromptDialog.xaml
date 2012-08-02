@@ -6,9 +6,8 @@
         WindowStartupLocation="CenterOwner"
         Closed="Window_Closed">
     <Window.CommandBindings>
-        <CommandBinding Command="{x:Static pb:PromptDialog.remindPasswordCmd}"
-                        Executed="remindPasswordCmd_Executed"
-                        CanExecute="remindPasswordCmd_CanExecute"/>
+        <CommandBinding Command="{x:Static pb:App.RemindPassword}"
+                        Executed="RemindPassword"/>
     </Window.CommandBindings>
     <Window.Background>
         <SolidColorBrush />
