@@ -27,7 +27,7 @@ namespace WpfApplication1
         public FolderTab()
         {
             InitializeComponent();
-            this.DataContext = presenter = new Presenter(this, @"c:\");
+            this.DataContext = presenter = new Presenter(this, null);
         }
 
         #region Event handlers
@@ -36,7 +36,7 @@ namespace WpfApplication1
             Presenter.FolderTabFileInfo f = (sender as FrameworkElement).DataContext as Presenter.FolderTabFileInfo;
             if (f.FileType == Presenter.FolderTabFileInfo.TYPE_FOLDER) presenter.CurrentFolder = f.Path;
             else if (f.FileType == Presenter.FolderTabFileInfo.TYPE_FILE_SUPPORTED) (App.Current as App).LoadDocument(f.Path);
-            else (App.Current as App).guiManager.Alert("Нажаль, цей тип файлів не підтримується. Проте, його можна перетворити у формат XPS (див. інструкцію).");
+            else (App.Current as App).guiManager.Alert("Вибачте, цей тип файлів не підтримується. Його потрібно перетворити у формат DOC, DOCX, RTF або XPS (див. інструкцію).");
         }
 
         private void Button_Up(object sender, RoutedEventArgs e)

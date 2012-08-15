@@ -19,8 +19,9 @@ namespace WpfApplication1
     public partial class PrintingDialog : Window
     {
         App app = App.Current as App;
-        public PrintingDialog()
+        public PrintingDialog(Window owner)
         {
+            this.Owner = owner;
             DataContext = app.sessionInfo;
             InitializeComponent();
             app.printerWrapper.OnPrintDone += new EventHandler(PrintDone);
@@ -35,6 +36,7 @@ namespace WpfApplication1
             }
             else
             {
+                btnPrintMore.IsEnabled = !app.sessionInfo.printProgress.DriveEjected;
                 doneGrid.Visibility = System.Windows.Visibility.Visible;
             }
         }

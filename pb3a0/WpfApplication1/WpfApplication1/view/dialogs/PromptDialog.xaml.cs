@@ -19,9 +19,10 @@ namespace WpfApplication1
     /// </summary>
     public partial class PromptDialog : Window
     {
-        public PromptDialog(string message, FlowDocument comment, IValueConverter converter, int length)
+        public PromptDialog(Window owner, string message, FlowDocument comment, IValueConverter converter, int length)
         {
             InitializeComponent();
+            this.Owner = owner;
             Message.Text = message;
             Comment.Document = comment;
             this.Keypad.DesiredTextLength = length;

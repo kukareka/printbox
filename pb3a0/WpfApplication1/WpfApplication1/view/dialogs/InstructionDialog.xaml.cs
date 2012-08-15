@@ -18,9 +18,10 @@ namespace WpfApplication1
     /// </summary>
     public partial class InstructionDialog : Window
     {
-        public InstructionDialog()
+        public InstructionDialog(Window owner)
         {
             InitializeComponent();
+            this.Owner = owner;
         }
 
         private void OK_Click(object sender, RoutedEventArgs e)

@@ -35,6 +35,7 @@ namespace WpfApplication1
         
         public void ShowTab(UserControl tab)
         {
+            app.guiManager.HideDialogs();
             UserControl tts = null;
             foreach (UIElement e in tabs.Children)
             {

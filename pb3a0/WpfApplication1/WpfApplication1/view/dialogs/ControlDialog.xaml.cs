@@ -88,7 +88,7 @@ namespace WpfApplication1
 
         private void OpenFolderButton_Click(object sender, RoutedEventArgs e)
         {
-            app.OpenFolder(@"c:\"); 
+            app.Usb_DriveIn(null, new UsbWrapper.DriveEventArgs("C:")); 
         }
         #endregion        
 

@@ -59,5 +59,15 @@ namespace RemoteControl
         {
             rc.MoneyIn(10);
         }
+
+        private void DriveIn_Click(object sender, RoutedEventArgs e)
+        {
+            rc.DriveIn("c:");
+        }
+
+        private void DriveOut_Click(object sender, RoutedEventArgs e)
+        {
+            rc.DriveOut();
+        }
     }
 }

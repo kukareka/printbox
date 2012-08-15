@@ -3,104 +3,60 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using log4net;
+using System.Management;
 
 namespace WpfApplication1
 {
     public class UsbWrapper
     {
+        public class DriveEventArgs : EventArgs
+        {
+            public string driveLetter;
+            public DriveEventArgs(string driveLetter)
+            {
+                this.driveLetter = driveLetter;
+            }
+        }
+
         ILog log = LogManager.GetLogger(typeof(UsbWrapper));
-        IntPtr notifyHandle;
-        private bool deviceInProgress = false;
-        private char deviceInProgressLetter;
-        private DateTime deviceInProgressInsertTime;
 
         public string currentDrive = null;
 
+        public event EventHandler OnDriveIn = null, OnDriveOut = null;
+
         public UsbWrapper()
         {
-            log.Debug("Initializing usbWrapper");
-            notifyHandle = RegisterDeviceNotification(App.Current.MainWindow);
+            WqlEventQuery q = new WqlEventQuery("__InstanceOperationEvent", "TargetInstance ISA 'Win32_LogicalDisk'");
+            q.WithinInterval = TimeSpan.FromSeconds(1);
+            ManagementEventWatcher w = new ManagementEventWatcher(q);
+            w.EventArrived += new EventArrivedEventHandler(OnUsbEvent);
+            w.Start();
         }
 
-        public void Stop()
+        public void OnUsbEvent(object sender, EventArrivedEventArgs e)
         {
-            log.Debug("Stopping UsbWrapper");
-            WinApi.UnregisterDeviceNotification(notifyHandle);
-        }
-
-        public void Tick()
-        {
-            if (deviceInProgress)
+            if (e.NewEvent.ClassPath.ClassName.Contains("__InstanceCreationEvent"))
             {
-                TimeSpan timeToWait = new TimeSpan(0, 0, PrintBoxApp.instance.config.UsbTimeout);
-                if (DateTime.Now - deviceInProgressInsertTime >= timeToWait)
-                {
-                    string drivePath = String.Format(@"{0}:\", this.deviceInProgressLetter);
-                    deviceInProgress = false;
-                    if (!Directory.Exists(drivePath))
-                    {
-                        PrintBoxApp.instance.DriveOut();
-                    }
-                }
+                ManagementBaseObject o = e.NewEvent["TargetInstance"] as ManagementBaseObject;
+                string letter = o.GetPropertyValue("Name").ToString();
+                App.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                    new Action(() => DriveIn(letter)));
+            }
+            else if (e.NewEvent.ClassPath.ClassName.Contains("__InstanceDeletionEvent"))
+            {
+                App.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                    new Action(() => DriveOut()));
             }
         }
 
-        public void ProcessMessage(Message m)
+        public void DriveIn(string driveLetter)
         {
-            if ((m.Msg == WinApi.WM_DEVICECHANGE) && !deviceInProgress)
-            {
-                if (m.WParam.ToInt32() == WinApi.DBT_DEVICEARRIVAL)
-                {
-                    WinApi.DEV_BROADCAST_HDR hdr = (WinApi.DEV_BROADCAST_HDR)Marshal.PtrToStructure(m.LParam, typeof(WinApi.DEV_BROADCAST_HDR));
-                    if (hdr.dbch_devicetype == WinApi.DBT_DEVTYP_VOLUME)
-                    {
-                        WinApi.DEV_BROADCAST_VOLUME vol = (WinApi.DEV_BROADCAST_VOLUME)Marshal.PtrToStructure(m.LParam, typeof(WinApi.DEV_BROADCAST_VOLUME));
-                        char driveLetter = GetDriveLetter(vol.dbcv_unitmask);
-                        if (driveLetter != '-')
-                        {
-                            log.DebugFormat("Reported drive in: {0}", driveLetter);
-                            string drivePath = String.Format(@"{0}:\", driveLetter);
-                            if (Directory.Exists(drivePath))
-                            {
-                                deviceInProgress = true;
-                                this.deviceInProgressLetter = driveLetter;
-                                this.deviceInProgressInsertTime = DateTime.Now;
-                                PrintBoxApp.instance.DriveIn(drivePath);
-                            }
-                        }
-                    }
-                }
-                else if (m.WParam.ToInt32() == WinApi.DBT_DEVICEREMOVECOMPLETE)
-                {
-                    log.DebugFormat("Drive out");
-                    if (currentDrive != null)
-                    {
-                        currentDrive = null;
-                        PrintBoxApp.instance.DriveOut();
-                    }
-                }
-            }
+            if (OnDriveIn != null) OnDriveIn(this, new DriveEventArgs(driveLetter));
         }
 
-        private static IntPtr RegisterDeviceNotification(IntPtr formHandle)
+        public void DriveOut()
         {
-            /*
-            WinApi.DEV_BROADCAST_DEVICEINTERFACE filter = new WinApi.DEV_BROADCAST_DEVICEINTERFACE();
-            filter.dbcc_size = Marshal.SizeOf(filter);
-            filter.dbcc_devicetype = WinApi.DBT_DEVTYP_DEVICEINTERFACE;
-            IntPtr buffer = Marshal.AllocHGlobal((int)filter.dbcc_size);
-            Marshal.StructureToPtr(filter, buffer, false);
-            return WinApi.RegisterDeviceNotification(formHandle, buffer,
-                WinApi.DEVICE_NOTIFY_WINDOW_HANDLE | WinApi.DEVICE_NOTIFY_ALL_INTERFACE_CLASSES);
-            */
-        }
-
-        private static char GetDriveLetter(uint unitmask)
-        {
-            char driveLetter = 'A';
-            for (; driveLetter <= 'Z'; ++driveLetter, unitmask = unitmask >> 1)
-                if ((unitmask & 0x1) == 1) return driveLetter;
-            return '-';
+            if (OnDriveOut != null) OnDriveOut(this, null);
         }
     }
 }

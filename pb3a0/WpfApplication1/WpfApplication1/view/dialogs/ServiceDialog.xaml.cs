@@ -18,9 +18,10 @@ namespace WpfApplication1
     /// </summary>
     public partial class ServiceDialog : Window
     {
-        public ServiceDialog()
+        public ServiceDialog(Window owner)
         {
             InitializeComponent();
+            this.Owner = owner;
             DataContext = (App.Current as App).state;
         }
 

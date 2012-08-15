@@ -99,8 +99,8 @@ namespace WpfApplication1
 
         public int SheetsToPrint
         {
-            get { return (int)GetValue(PagesToPrintProperty); }
-            set { SetValue(PagesToPrintProperty, value); }
+            get { return (int)GetValue(SheetsToPrintProperty); }
+            set { SetValue(SheetsToPrintProperty, value); }
         }
         #endregion
 

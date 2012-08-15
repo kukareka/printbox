@@ -19,8 +19,9 @@ namespace WpfApplication1
     public partial class MoneyDialog : Window
     {
         App app = App.Current as App;
-        public MoneyDialog()
+        public MoneyDialog(Window owner)
         {
+            this.Owner = owner;
             DataContext = (App.Current as App).sessionInfo;
             InitializeComponent();            
         }

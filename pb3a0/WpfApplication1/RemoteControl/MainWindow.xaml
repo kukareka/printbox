@@ -21,7 +21,11 @@
         <StackPanel Orientation="Horizontal"
                     Height="30"
                     VerticalAlignment="Top">
-            <Button Click="RemoteAdd10_Click">+10</Button>
+            <Button Click="RemoteAdd10_Click" Width="70">+10</Button>
+            <Button Width="70"
+                    Click="DriveIn_Click">DriveIn</Button>
+            <Button Width="70"
+                    Click="DriveOut_Click">DriveOut</Button>
         </StackPanel>
     </StackPanel>
 </Window>

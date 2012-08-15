@@ -43,5 +43,17 @@ namespace WpfApplication1
             app.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                 new Action(() => (app.cashcodeWrapper as TestCashCodeWrapper).MoneyIn(balance)));
         }
+
+        public void DriveIn(string driveLetter)
+        {
+            app.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                new Action(() => app.usbWrapper.DriveIn(driveLetter)));
+        }
+
+        public void DriveOut()
+        {
+            app.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                new Action(() => app.usbWrapper.DriveOut()));
+        }
     }
 }

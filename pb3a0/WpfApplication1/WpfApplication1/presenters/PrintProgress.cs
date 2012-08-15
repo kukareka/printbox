@@ -32,6 +32,17 @@ namespace WpfApplication1
         }
         #endregion
 
+        #region DriveEjected
+        public static DependencyProperty DriveEjectedProperty =
+            DependencyProperty.Register("DriveEjected", typeof(bool), typeof(PrintProgress),
+            new PropertyMetadata(false));
+
+        public bool DriveEjected
+        {
+            get { return (bool)GetValue(DriveEjectedProperty); }
+            set { SetValue(DriveEjectedProperty, value); }
+        }
+        #endregion
 
         #endregion
     }
