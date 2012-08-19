@@ -29,16 +29,12 @@ namespace WpfApplication1
 
         private void PrintDone(object sender, EventArgs e)
         {
-            if (app.sessionInfo.printProgress.Status == PrintProgress.PrintingStatus.Error)
-            {
-                app.guiManager.Alert("Printing error");
-                DialogResult = true;
-            }
-            else
+            if (app.sessionInfo.printProgress.Status != PrintProgress.PrintingStatus.Error)
             {
                 btnPrintMore.IsEnabled = !app.sessionInfo.printProgress.DriveEjected;
                 doneGrid.Visibility = System.Windows.Visibility.Visible;
             }
+            else DialogResult = true;
         }
 
         private void OK_Click(object sender, RoutedEventArgs e)

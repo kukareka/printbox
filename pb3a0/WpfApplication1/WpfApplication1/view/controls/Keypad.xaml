@@ -39,9 +39,15 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
-            <Button Content="OK" x:Name="OKButton" Click="OKButton_Click" />
-            <Button Content="« Видалити" Grid.Row="1" Click="Del_Click" />
-            <Button Content="Відміна" Grid.Row="2" Click="CancelButton_Click" />
+            <Button Content="OK" x:Name="OKButton" Click="OKButton_Click"
+                    Foreground="Green"
+                    FontWeight="Bold" />
+            <Button Content="« Видалити" Grid.Row="1" Click="Del_Click"
+                    Foreground="Red"
+                    FontWeight="Normal" />
+            <Button Content="Відміна" Grid.Row="2" Click="CancelButton_Click"
+                    Foreground="Red"
+                    FontWeight="Bold" />
         </Grid>
     </StackPanel>
 </UserControl>

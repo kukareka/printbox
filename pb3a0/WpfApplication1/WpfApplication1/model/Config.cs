@@ -14,6 +14,7 @@ namespace WpfApplication1
         public int BoxID { get; set; }
         public string Server { get; set; }
         public int MaxPaper { get; set; }
+        public int MaxPrint { get; set; }
         public int PageCost { get; set; } //cents
         public int PingInterval { get; set; } //seconds
         public int TestInterval { get; set; } //seconds

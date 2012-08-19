@@ -8,6 +8,9 @@
         <ResourceDictionary>
             <pb:PhoneNumberConverter x:Key="phoneNumberConverter" />
             <pb:MoneyConverter x:Key="moneyConverter" />
+            <pb:MoneyDialogConverterText x:Key="mcText" />
+            <pb:MoneyDialogConverterColor x:Key="mcColor" />
+            <pb:MoneyDialogConverterBool x:Key="mcBool" />
         </ResourceDictionary>
     </Window.Resources>
     <Window.Background>
@@ -15,9 +18,43 @@
     </Window.Background>
 
     <Border Style="{StaticResource windowBorder}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="180" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock VerticalAlignment="Center"
+                       Text="{Binding userInfo.Phone, Converter={StaticResource phoneNumberConverter}, StringFormat=Користувач{0}}" >
+
+            <Rectangle  Grid.RowSpan="4"
+                        Width="2"
+                        Margin="0 20 0 20"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Center"
+                        Stroke="{StaticResource foreColorBrush}"
+                        Fill="Transparent"
+                        Grid.Column="1">
+            </Rectangle>
+            <RichTextBox
+                         VerticalAlignment="Stretch"
+                         HorizontalAlignment="Stretch"
+                         BorderThickness="0"
+                         IsDocumentEnabled="True"
+                         IsReadOnly="True"
+                         Grid.Column="2"
+                         Grid.RowSpan="4" />
+        </Grid>
         <StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="31">
-                <TextBlock VerticalAlignment="Center" Text="Користувач "/>
+                <TextBlock VerticalAlignment="Center" Text="Користувач "
+                           Foreground="Black" />
                 <TextBlock VerticalAlignment="Center" Text="{Binding userInfo.Phone, Converter={StaticResource phoneNumberConverter}}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="31">
@@ -28,8 +65,18 @@
                 <TextBlock VerticalAlignment="Center" Text="Вартість друку "/>
                 <TextBlock VerticalAlignment="Center" Text="{Binding printOptions.PrintCost, Converter={StaticResource moneyConverter}}"/>
             </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Top"
+                        Height="31">
+                <TextBlock VerticalAlignment="Center"
+                           Text="{Binding userInfo.BalanceAfterPrint, Converter={StaticResource mcText}}"
+                           Foreground="{Binding userInfo.BalanceAfterPrint, Converter={StaticResource mcColor}}"/>
+            </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="OK" Height="23" Width="75" IsEnabled="{Binding CanPrint}" Click="OKButton_Click" />
+                <Button Content="OK"
+                        Height="23"
+                        Width="75"
+                        IsEnabled="{Binding userInfo.BalanceAfterPrint, Converter={StaticResource mcBool}}" Click="OKButton_Click" />
                 <Button Content="Відміна" Height="23" Width="75" Click="CancelButton_Click" />
             </StackPanel>
         </StackPanel>

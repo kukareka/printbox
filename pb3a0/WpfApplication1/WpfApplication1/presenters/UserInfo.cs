@@ -39,12 +39,23 @@ namespace WpfApplication1
 
         #region Balance
         public static DependencyProperty BalanceProperty =
-            DependencyProperty.Register("Balance", typeof(int), typeof(UserInfo), new PropertyMetadata(SessionInfo.CanPrintChanges));
+            DependencyProperty.Register("Balance", typeof(int), typeof(UserInfo), new PropertyMetadata(UpdateBalance));
 
         public int Balance
         {
             get { return (int)GetValue(BalanceProperty); }
             set { SetValue(BalanceProperty, value); }
+        }
+        #endregion
+
+        #region BalanceAfterPrint
+        public static DependencyProperty BalanceAfterPrintProperty =
+            DependencyProperty.Register("BalanceAfterPrint", typeof(int), typeof(SessionInfo));
+
+        public int BalanceAfterPrint
+        {
+            get { return (int)GetValue(BalanceAfterPrintProperty); }
+            set { SetValue(BalanceAfterPrintProperty, value); }
         }
         #endregion
 
@@ -54,6 +65,7 @@ namespace WpfApplication1
         public static void PhoneChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             UserInfo u = d as UserInfo;
+            if (u.Phone == null) return;
             string pwd = "";
             bool newUser = false;
             int balance = 0;
@@ -82,6 +94,12 @@ namespace WpfApplication1
             foreach (byte b in hash) s.Append(b.ToString("x2").ToLower());
             string ret = s.ToString();
             return ret.Equals(Password);
+        }
+
+        public static void UpdateBalance(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            UserInfo u = (App.Current as App).sessionInfo.userInfo;
+            u.BalanceAfterPrint = u.Balance - (App.Current as App).sessionInfo.printOptions.PrintCost;
         }
     }
 }

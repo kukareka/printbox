@@ -70,18 +70,6 @@ namespace WpfApplication1
         }
         #endregion
 
-        #region PageCost
-        public static DependencyProperty PageCostProperty =
-            DependencyProperty.Register("PageCost", typeof(int), typeof(PrintOptions),
-            new PropertyMetadata(40, new PropertyChangedCallback(PrintOptionsChanged)));
-
-        public int PageCost
-        {
-            get { return (int)GetValue(PageCostProperty); }
-            set { SetValue(PageCostProperty, value); }
-        }
-        #endregion
-
         #region PagesToPrint
         public static DependencyProperty PagesToPrintProperty =
             DependencyProperty.Register("PagesToPrint", typeof(int), typeof(PrintOptions));
@@ -106,7 +94,7 @@ namespace WpfApplication1
 
         #region PrintCost
         public static DependencyProperty PrintCostProperty =
-            DependencyProperty.Register("PrintCost", typeof(int), typeof(PrintOptions), new PropertyMetadata(SessionInfo.CanPrintChanges));
+            DependencyProperty.Register("PrintCost", typeof(int), typeof(PrintOptions), new PropertyMetadata(UserInfo.UpdateBalance));
 
         public int PrintCost
         {
@@ -127,7 +115,7 @@ namespace WpfApplication1
         {
             PagesToPrint = 1 + PrintRangeTo - PrintRangeFrom;
             SheetsToPrint = (PagesToPrint + PagesPerSheet - 1) / PagesPerSheet * Copies;
-            PrintCost = PageCost * SheetsToPrint;
+            PrintCost = (App.Current as App).config.PageCost * SheetsToPrint;
             Debug.WriteLine(String.Format("Copies: {0}", Copies));
             Debug.WriteLine(String.Format("Range: {0}-{1}", PrintRangeFrom, PrintRangeTo));
             Debug.WriteLine(String.Format("Pages per sheet: {0}", PagesPerSheet));

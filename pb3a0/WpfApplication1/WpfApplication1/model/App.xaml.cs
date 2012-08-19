@@ -26,7 +26,7 @@ namespace WpfApplication1
         public IPrinterWrapper printerWrapper = new TestPrinterWrapper();
         public ICashcodeWrapper cashcodeWrapper = new TestCashCodeWrapper();
         public IReceiptWrapper receiptWrapper = new TestReceiptWrapper();
-        public UsbWrapper usbWrapper = new UsbWrapper();
+        public UsbWrapper usbWrapper;
 
         public XpsWrapper xpsWrapper = new XpsWrapper();
         public ITicker[] tickers;
@@ -43,6 +43,7 @@ namespace WpfApplication1
             config = Config.Load();
             state = State.Load();
             server = new Server();
+            usbWrapper = new UsbWrapper();
 
             guiManager = new GuiManager();
             tickers = new ITicker[] { printerWrapper, cashcodeWrapper };
@@ -98,13 +99,15 @@ namespace WpfApplication1
         public bool Auth()
         {
             string ph;
-            if (null != (ph = guiManager.Prompt("Телефон", (FlowDocument)FindResource("commentEnterPhone"), new PhoneNumberConverter(), 10)))
+            sessionInfo.userInfo.Phone = null;
+            if (null != (ph = guiManager.Prompt("Мобільний телефон", (FlowDocument)FindResource("commentEnterPhone"), new PhoneNumberConverter(), 10)))
             {
                 guiManager.Loading(true);
                 sessionInfo.userInfo.Phone = ph;
-                if (sessionInfo.userInfo.isNewUser) guiManager.Alert("New user");
+                if (sessionInfo.userInfo.isNewUser) guiManager.Alert("На вказаний номер було відправлено SMS із кодом доступу до особистого рахунку." + 
+                    " Збережіть його в надійному місці. Цей код знадобиться Вам при кожному наступному користуванні PrintBox.");
                 string pwd;
-                while (null != (pwd = guiManager.Prompt("Пароль", (FlowDocument)FindResource("commentEnterPassword"), new PasswordConverter(), 7)))
+                while (null != (pwd = guiManager.Prompt("Код доступу", (FlowDocument)FindResource("commentEnterPassword"), new PasswordConverter(), 7)))
                 {
                     if (!sessionInfo.userInfo.IsValidPassword(pwd)) guiManager.Alert("Invalid password");
                     else
@@ -124,14 +127,22 @@ namespace WpfApplication1
 
         public void Print()
         {
-            if (!sessionInfo.CanPrint) return;
+            if (sessionInfo.userInfo.BalanceAfterPrint < 0) return;
             PrintingDialog d = new PrintingDialog(MainWindow);
             state.PaperInside -= sessionInfo.printOptions.SheetsToPrint;
             printerWrapper.Print();
             bool r = (bool)guiManager.ShowDialog(d);
             d.Close();
-            if (r) (MainWindow as MainWindow).ShowWelcomeTab();
-            else (MainWindow as MainWindow).ShowFolder();
+            if (sessionInfo.printProgress.Status == PrintProgress.PrintingStatus.Done)
+            {
+                if (r) (MainWindow as MainWindow).ShowWelcomeTab();
+                else (MainWindow as MainWindow).ShowFolder();
+            }
+            else
+            {
+                guiManager.Alert("Во время печати произошла ошибка. Деньги возвращены на баланс.");
+                (MainWindow as MainWindow).ShowWelcomeTab();
+            }                
         }
 
         public void Cashcode_MoneyIn(object sender, EventArgs e)
@@ -153,6 +164,10 @@ namespace WpfApplication1
             {
                 sessionInfo.userInfo.Balance -= sessionInfo.printOptions.PrintCost;
             }
+            else
+            {
+                //TODO выдать квитанцию
+            }
             server.SendSession(sessionInfo.userInfo.Phone, 
                 sessionInfo.printProgress.Status == PrintProgress.PrintingStatus.Done ? 
                 sessionInfo.printOptions.PagesToPrint : 0, 
@@ -162,8 +177,8 @@ namespace WpfApplication1
         public void Usb_DriveIn(object sender, EventArgs e)
         {
             guiManager.Loading(true);
-            if (errorManager.DetectErrors() != 0) guiManager.Alert("Шеф, все пропало"); //TODO text
-            else if (!server.SendPing()) guiManager.Alert("Нет сервера"); //TODO text
+            if (errorManager.DetectErrors() != 0) guiManager.Alert("Вибачте, термінал тимчасово не працює. Помилка обладнання."); 
+            else if (!server.SendPing()) guiManager.Alert("Вибачте, термінал тимчасово не працює. Помилка з'єднання з сервером.");
             else OpenFolder((e as UsbWrapper.DriveEventArgs).driveLetter + '\\');
         }
 
@@ -175,7 +190,7 @@ namespace WpfApplication1
 
         public void DoService()
         {
-            if (config.AdminCode.Equals(guiManager.Prompt("Password", new FlowDocument(), new PasswordConverter(), 6)))
+            if (config.AdminCode.Equals(guiManager.Prompt("Пароль", new FlowDocument(), new PasswordConverter(), 6)))
             {
                 onService = true;
                 ServiceDialog sd = new ServiceDialog(MainWindow);

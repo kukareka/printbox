@@ -4,7 +4,16 @@
         Title="ServiceDialog"
         WindowStartupLocation="CenterOwner" Style="{StaticResource pbDialog}">
     <Border Style="{StaticResource windowBorder}">
-        <StackPanel Width="300">
+        <StackPanel Width="300" Margin="80 40 80 40">
+            <TextBlock HorizontalAlignment="Center"
+                       Margin="10 10 10 30">
+                <TextBlock.Text> 
+                    <MultiBinding StringFormat="В терміналі {0} грн. (банкнот - {1} шт.)">
+                        <Binding Path="MoneyInside" />
+                        <Binding Path="BanknotesInside" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
             <Button Content="Папір"
                     Height="60"
                     Margin="5"
@@ -25,15 +34,6 @@
                     Click="Close_Click"
                     Height="60"
                     Margin="5" />
-            <TextBlock HorizontalAlignment="Center"
-                       Margin="10">
-                <TextBlock.Text> 
-                    <MultiBinding StringFormat="В терміналі {0} грн. (банкнот - {1} шт.)">
-                        <Binding Path="MoneyInside" />
-                        <Binding Path="BanknotesInside" />
-                    </MultiBinding>
-                </TextBlock.Text>
-            </TextBlock>
         </StackPanel>
     </Border>
 </Window>

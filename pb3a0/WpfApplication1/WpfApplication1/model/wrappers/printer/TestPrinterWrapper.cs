@@ -33,6 +33,11 @@ namespace WpfApplication1
                     app.sessionInfo.printProgress.Status = PrintProgress.PrintingStatus.Done;
                     OnPrintDone(this, new EventArgs());
                 }
+                else if (app.sessionInfo.printProgress.PagesPrinted >= 3)
+                {
+                    app.sessionInfo.printProgress.Status = PrintProgress.PrintingStatus.Error;
+                    OnPrintDone(this, new EventArgs());
+                }
             }
         }
 

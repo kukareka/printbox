@@ -47,7 +47,12 @@ namespace WpfApplication1
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            app.AuthAndPrint();
+            if (app.sessionInfo.printOptions.SheetsToPrint > app.state.PaperInside)
+                app.guiManager.Alert(String.Format("В терміналі недостатньо паперу. В наявності {0} стор.", app.state.PaperInside));
+            else if (app.sessionInfo.printOptions.SheetsToPrint > app.config.MaxPrint)
+                app.guiManager.Alert(String.Format("Неможливо надрукувати більше {0} аркушів за раз (обмеження приймального лотка). Розділіть документ на декілька частин.",
+                    app.config.MaxPaper));
+            else app.AuthAndPrint();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

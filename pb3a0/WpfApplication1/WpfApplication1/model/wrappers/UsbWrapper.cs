@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using log4net;
 using System.Management;
+using System.Windows;
 
 namespace WpfApplication1
 {
@@ -24,13 +25,21 @@ namespace WpfApplication1
 
         public event EventHandler OnDriveIn = null, OnDriveOut = null;
 
+        ManagementEventWatcher eventWatcher;
+
         public UsbWrapper()
         {
             WqlEventQuery q = new WqlEventQuery("__InstanceOperationEvent", "TargetInstance ISA 'Win32_LogicalDisk'");
             q.WithinInterval = TimeSpan.FromSeconds(1);
-            ManagementEventWatcher w = new ManagementEventWatcher(q);
-            w.EventArrived += new EventArrivedEventHandler(OnUsbEvent);
-            w.Start();
+            eventWatcher = new ManagementEventWatcher(q);
+            eventWatcher.EventArrived += new EventArrivedEventHandler(OnUsbEvent);
+            eventWatcher.Start();
+            App.Current.Exit += new ExitEventHandler(OnAppExit);
+        }
+
+        public void OnAppExit(object sender, ExitEventArgs e)
+        {
+            eventWatcher.Stop();
         }
 
         public void OnUsbEvent(object sender, EventArrivedEventArgs e)
